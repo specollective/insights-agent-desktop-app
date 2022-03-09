@@ -18,8 +18,6 @@ jobs:
     - name: publish
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        APPLE_ID: ${{ secrets.APPLE_ID }}
-        APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
       run: npm run publish
 
   publish_on_mac:
@@ -31,6 +29,11 @@ jobs:
         node-version: 14
     - name: install dependencies
       run: npm install
+    - name: Add MacOS certs
+      run: chmod +x add-osx-cert.sh && ./add-osx-cert.sh
+      env:
+        CERTIFICATE_OSX_APPLICATION: ${{ secrets.CERTIFICATE_OSX_APPLICATION }}
+        CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
     - name: publish
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -50,6 +53,4 @@ jobs:
     - name: publish
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        APPLE_ID: ${{ secrets.APPLE_ID }}
-        APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
       run: npm run publish

@@ -13,9 +13,6 @@ jobs:
       run: npm install
     - name: build
       run: npm run make
-      env:
-        APPLE_ID: ${{ secrets.APPLE_ID }}
-        APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
 
   build_on_mac:
     runs-on: macos-latest
@@ -48,6 +45,3 @@ jobs:
       run: npm install
     - name: build
       run: npm run make
-      env:
-        APPLE_ID: ${{ secrets.APPLE_ID }}
-        APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
