@@ -2,7 +2,7 @@
   "name": "electron-skeleton",
   "productName": "electron-skeleton",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Skeleton electron application",
   "main": "src/index.js",
   "repository": "https://github.com/jtorreggiani/electron-skeleton.git",
   "scripts": {
@@ -10,7 +10,8 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
+    "lint": "echo \"No linting configured\"",
+    "test": "echo \"No tests configured\""
   },
   "keywords": [],
   "author": {
@@ -19,48 +20,14 @@
   },
   "license": "MIT",
   "config": {
-    "forge": {
-      "packagerConfig": {},
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "electron_skeleton"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
-        }
-      ],
-      "publishers": [
-        {
-          "name": "@electron-forge/publisher-github",
-          "config": {
-            "repository": {
-              "owner": "jtorreggiani",
-              "name": "electron-skeleton"
-            }
-          }
-        }
-      ]
-    }
+    "forge": "./forge.config.js"
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
     "update-electron-app": "^2.0.1"
   },
   "devDependencies": {
+    "dotenv": "^16.0.0",
     "@electron-forge/cli": "^6.0.0-beta.63",
     "@electron-forge/maker-deb": "^6.0.0-beta.63",
     "@electron-forge/maker-rpm": "^6.0.0-beta.63",
