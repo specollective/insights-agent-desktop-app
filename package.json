@@ -23,11 +23,11 @@
     "forge": "./forge.config.js"
   },
   "dependencies": {
+    "dotenv": "^16.0.0",
     "electron-squirrel-startup": "^1.0.0",
     "update-electron-app": "^2.0.1"
   },
   "devDependencies": {
-    "dotenv": "^16.0.0",
     "@electron-forge/cli": "^6.0.0-beta.63",
     "@electron-forge/maker-deb": "^6.0.0-beta.63",
     "@electron-forge/maker-rpm": "^6.0.0-beta.63",
