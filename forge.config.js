@@ -1,6 +1,20 @@
 require('dotenv').config();
 
 module.exports = {
+  plugins: [
+    ['@electron-forge/plugin-webpack',
+    {
+      mainConfig:'./webpack.main.config.js',
+      renderer: {
+        config: './webpack.renderer.config.js',
+        entrypoints: [{
+          name: 'mainWindow',
+          html: './src/renderer/index.html',
+          js: './src/renderer/index.js'
+        }]
+      }
+    }]
+  ],
   "packagerConfig": {
     "osxSign": {
       "identity": "Developer ID Application: Joseph Torreggiani (TQ27RR68H8)",
