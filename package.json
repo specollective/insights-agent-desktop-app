@@ -3,7 +3,7 @@
   "productName": "electron-skeleton",
   "version": "0.0.3-alpha",
   "description": "Skeleton electron application",
-  "main": "src/index.js",
+  "main": "./.webpack/main",
   "repository": "https://github.com/jtorreggiani/electron-skeleton.git",
   "scripts": {
     "start": "electron-forge start",
