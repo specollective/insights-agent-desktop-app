@@ -1,12 +1,14 @@
 #!/usr/bin/env sh
 
+# Adapted from Tutorial https://shipshape.io/blog/signing-electron-apps-with-github-actions/
+
 KEY_CHAIN=build.keychain
 CERTIFICATE_P12=certificate.p12
 
 # Recreate the certificate from the secure environment variable
 echo $CERTIFICATE_OSX_APPLICATION | base64 --decode > $CERTIFICATE_P12
 
-#create a keychain
+# Create a keychain
 security create-keychain -p actions $KEY_CHAIN
 
 # Make the keychain the default so identities are found
