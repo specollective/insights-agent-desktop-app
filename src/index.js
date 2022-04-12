@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 require('update-electron-app')();
 require('dotenv').config();
@@ -52,3 +52,13 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+ipcMain.on('status-check-request', (event, message) => {
+  console.log(message)
+  // It's so good because below have a delay 5s to execute, and this don't lock rendereder :)
+  setTimeout(() => {
+    console.log('Status check finshed!')
+    // Send reply to a renderer
+    event.sender.send('status-check-reply', 'Status OK')
+  }, 2000)
+});
