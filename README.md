@@ -12,7 +12,7 @@ This repository contains boilerplate for a basic application built with Electron
 
 1. Close repo
 ```
-git clone git@github.com:jtorreggiani/electron-skeleton.git
+git clone git@github.com:specollective/electron-skeleton.git
 ```
 
 2. Install dependencies
