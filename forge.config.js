@@ -3,7 +3,7 @@ require('dotenv').config();
 module.exports = {
   "packagerConfig": {
     "osxSign": {
-      "identity": "Developer ID Application: Joseph Torreggiani (TQ27RR68H8)",
+      "identity": process.env['APPLE_IDENTITY'],
       "hardenedRuntime": true,
       "gatekeeper-assess": false,
       "entitlements": "entitlements.plist",
