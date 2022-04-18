@@ -1,7 +1,7 @@
 {
   "name": "electron-skeleton",
   "productName": "electron-skeleton",
-  "version": "0.0.4-alpha",
+  "version": "0.0.5-alpha",
   "description": "Skeleton electron application",
   "main": "src/index.js",
   "repository": "https://github.com/jtorreggiani/electron-skeleton.git",
