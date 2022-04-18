@@ -56,8 +56,8 @@ app.on('activate', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
-ipcMain.on('status-check-request', (event, data) => {
-  processData(data)
+ipcMain.on('status-check-request', (event, message) => {
+  processData(message);
 
-  event.sender.send('status-check-reply', 'Status OK')
+  event.sender.send('status-check-reply', 'Status OK');
 });
