@@ -43,7 +43,7 @@ module.exports = {
       "config": {
         "repository": {
           "owner": "jtorreggiani",
-          "name": "electron-skeleton"
+          "name": "insights-agent-desktop-app"
         }
       }
     }

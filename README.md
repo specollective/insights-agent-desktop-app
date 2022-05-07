@@ -14,7 +14,7 @@ The boilerplate provided here is designed for rapid prototyping and is actively 
 
 1. Close repo
 ```
-git clone git@github.com:specollective/electron-skeleton.git
+git clone git@github.com:specollective/insights-agent-desktop-app.git
 ```
 
 2. Install dependencies

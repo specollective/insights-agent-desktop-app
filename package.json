@@ -1,10 +1,10 @@
 {
-  "name": "electron-skeleton",
-  "productName": "electron-skeleton",
-  "version": "0.0.4-alpha",
-  "description": "Skeleton electron application",
+  "name": "insights-agent-desktop-app",
+  "productName": "insights-agent-desktop-app",
+  "version": "0.0.5-alpha",
+  "description": "Insights Agent Desktop Application",
   "main": "src/index.js",
-  "repository": "https://github.com/jtorreggiani/electron-skeleton.git",
+  "repository": "https://github.com/jtorreggiani/insights-agent-desktop-app.git",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
