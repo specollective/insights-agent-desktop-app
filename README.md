@@ -1,12 +1,8 @@
-# Electron Skeleton
-
-This repository contains boilerplate for a basic application built with Electron.
+# Insights Agent Desktop App
 
 The code is setup for be hosted open source on Github in order to leverage the free service [update.electronjs.org](https://github.com/electron/update.electronjs.org) for auto-updating production applications.
 
 The boilerplate provided here is designed for rapid prototyping and is actively being developed.
-
-
 
 ## Dependencies
 - electron
