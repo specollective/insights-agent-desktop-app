@@ -42,7 +42,7 @@ module.exports = {
       "name": "@electron-forge/publisher-github",
       "config": {
         "repository": {
-          "owner": "jtorreggiani",
+          "owner": "specollective",
           "name": "insights-agent-desktop-app"
         }
       }
