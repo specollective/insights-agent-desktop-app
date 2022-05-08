@@ -19,7 +19,7 @@ module.exports = {
     {
       "name": "@electron-forge/maker-squirrel",
       "config": {
-        "name": "electron_skeleton"
+        "name": "insights-agent-desktop-app"
       }
     },
     {
