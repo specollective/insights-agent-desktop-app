@@ -1,5 +1,8 @@
 require('dotenv').config();
 
+// console.log(process.env['CSC_LINK'])
+// console.log(process.env['CSC_KEY_PASSWORD'])
+
 module.exports = {
   "packagerConfig": {
     "osxSign": {
@@ -13,13 +16,16 @@ module.exports = {
     "osxNotarize": {
       "appleId": process.env['APPLE_ID'],
       "appleIdPassword": process.env['APPLE_ID_PASS'],
-    }
+    },
+    "executableName": "insights-agent-desktop-app"
   },
   "makers": [
     {
       "name": "@electron-forge/maker-squirrel",
       "config": {
-        "name": "insights-agent-desktop-app"
+        "name": "insights-agent-desktop-app",
+        // "certificateFile": process.env['CSC_LINK'],
+        // "certificatePassword": process.env['CSC_KEY_PASSWORD']
       }
     },
     {
