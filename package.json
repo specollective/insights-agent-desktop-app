@@ -1,10 +1,10 @@
 {
   "name": "insights-agent-desktop-app",
   "productName": "insights-agent-desktop-app",
-  "version": "0.0.9-alpha",
+  "version": "0.0.10-alpha",
   "description": "Insights Agent Desktop Application",
   "main": "src/index.js",
-  "repository": "https://github.com/jtorreggiani/insights-agent-desktop-app.git",
+  "repository": "https://github.com/specollective/insights-agent-desktop-app.git",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
