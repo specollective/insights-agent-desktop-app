@@ -1,7 +1,8 @@
-const fetch = require('electron-fetch').default;
+const fetch = require('electron-fetch').default
+const { BASE_URL } = require('../constants/urls')
 
 function postDataEntry (eventData) {
-  return fetch(`${process.env['BACKEND_API_URL']}/api/data_entries/`, {
+  return fetch(`${BASE_URL}/api/data_entries/`, {
     method: 'POST',
     body: JSON.stringify(eventData),
     headers: {

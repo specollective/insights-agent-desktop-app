@@ -12,7 +12,7 @@ const Store = require('electron-store');
 
 // Application dependencies
 const { postDataEntry } = require('./data-entries');
-const { BASE_URL, DEFAULT_OPTIONS } = require('../constants/urls');
+const { BASE_URL } = require('../constants/urls');
 
 const {
   SCRIPTS_PATH,
@@ -79,12 +79,17 @@ async function captureActivityData () {
     dataEntry.url = url;
 
     if (process.env['DEVELOPMENT']) {
-      console.log(dataEntry);
+      console.log('POST: ', BASE_URL)
+      console.log('DATA ENTRY: ', dataEntry)
     }
 
-    // postDataEntry(dataEntry);
-    // Optional local DB for debugging
-    // store.set(data.timestamp, JSON.stringify(windowData));
+    if (isConnected) {
+      postDataEntry(dataEntry)
+    } else {
+      console.log('Handle offline mode')
+      // Optional local DB for debugging
+      // store.set(data.timestamp, JSON.stringify(windowData));
+    }
   } catch (e) {
     // store.set(data.timestamp, e);
     console.log(e);
