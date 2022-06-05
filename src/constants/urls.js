@@ -5,8 +5,8 @@ const SCRIPTS_PATH = app.isPackaged
     ? path.join(process.resourcesPath, 'scripts')
     : path.join(__dirname, '../../scripts');
 
-// const BASE_URL = 'https://insights-agent-api.specollective.org';
-const BASE_URL = 'http://localhost:8000';
+const BASE_URL = 'https://insights-agent-api.specollective.org';
+// const BASE_URL = 'http://localhost:8000';
 
 const DEFAULT_OPTIONS = {
   mode: 'cors',

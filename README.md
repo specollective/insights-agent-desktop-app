@@ -1,8 +1,18 @@
 # Insights Agent Desktop App
 
-The code is setup for be hosted open source on Github in order to leverage the free service [update.electronjs.org](https://github.com/electron/update.electronjs.org) for auto-updating production applications.
+This repository houses the code for the Insights Agent desktop application. This Electron-based application is designed to be used by individuals who have signed up and been selected to participate in a research study in which participants agree to download the application and enable data collection including the following data points.
 
-The boilerplate provided here is designed for rapid prototyping and is actively being developed.
+- device type / operating system
+- application names
+- tab names (scrubbed for PII)
+- domain names
+- connectivity (connected to wifi or not)
+- device type
+- timestamps
+
+Raw data is anonymized and only persisted for a short period of time before it is aggregated and destroyed.
+
+The code is setup to be hosted open source on Github in order to leverage the free service [update.electronjs.org](https://github.com/electron/update.electronjs.org) for auto-updating production applications.
 
 ## Dependencies
 - electron
@@ -50,5 +60,3 @@ Test building the application for your target platform (in this case OSX).
 ```
 npm run make
 ```
-
-C:\Users\jtorreggiani\Documents\projects\build-justly\insights-agent-desktop-app\node_modules\electron-winstaller\vendor\signtool.exe sign /a /f "C:\Users\jtorreggiani\Documents\projects\build-justly\insights-agent-desktop-app\ev-cert.pfx" /p "E7hBlMexMi" "C:\Users\jtorreggiani\Documents\projects\build-justly\insights-agent-desktop-app\out\insights-agent-desktop-app-win32-x64\insights-agent-desktop-app.exe"

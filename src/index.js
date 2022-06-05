@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('path')
 
 const {
   app,
@@ -6,21 +6,26 @@ const {
   ipcMain,
   Menu,
   Tray,
-} = require('electron');
+} = require('electron')
 
 const {
-  sendAccessCode,
   confirmAccessCode,
+  sendAccessCode,
+} = require('./services/authentication')
+
+const {
   startTracking,
   stopTracking,
-} = require('./utils');
+} = require('./services/activity-data')
 
-require('update-electron-app')({ updateInterval: '5 minutes' });
+const Store = require('electron-store');
+
+require('update-electron-app')({
+  updateInterval: '5 minutes'
+});
 
 // Invoke dotenv to be able to read environment variables from .env file
 require('dotenv').config();
-
-const Store = require('electron-store');
 
 const store = new Store();
 
@@ -43,7 +48,7 @@ const createWindow = () => {
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
-  console.log(app.getPath('userData'))
+  // console.log(app.getPath('userData'))
 
   // Open the DevTools.
   if (process.env['DEVELOPMENT']) {
