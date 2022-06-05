@@ -1,6 +1,5 @@
 const { app } = require('electron');
 const path = require('path');
-const isPackaged = require('electron-is-packaged').isPackaged;
 
 const SCRIPTS_PATH = app.isPackaged
     ? path.join(process.resourcesPath, 'scripts')

@@ -4,6 +4,10 @@ jest.mock('electron-fetch', () => {
   return { default: jest.fn() }
 })
 
+jest.mock('electron', () => {
+  return { app: { isPackaged: false } }
+})
+
 describe('postDataEntry', () => {
   test('returns true', async () => {
     const mockData = {}
@@ -11,7 +15,7 @@ describe('postDataEntry', () => {
     await postDataEntry(mockData)
 
     expect(require('electron-fetch').default).toBeCalledWith(
-      'http://localhost:8000/api/data_entries/',
+      'https://insights-agent-api.specollective.org/api/data_entries/',
       {
         body: '{}',
         headers: { 'Content-Type': 'application/json' },
