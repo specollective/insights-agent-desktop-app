@@ -1,10 +1,28 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
-const { processData } = require('./utils');
-require('update-electron-app')({
-  updateInterval: '5 minutes',
-});
+
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  Menu,
+  Tray,
+} = require('electron');
+
+const {
+  sendAccessCode,
+  confirmAccessCode,
+  startTracking,
+  stopTracking,
+} = require('./utils');
+
+require('update-electron-app')({ updateInterval: '5 minutes' });
+
+// Invoke dotenv to be able to read environment variables from .env file
 require('dotenv').config();
+
+const Store = require('electron-store');
+
+const store = new Store();
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -18,12 +36,14 @@ const createWindow = () => {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
     }
   });
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
+
+  // console.log(app.getPath('userData'))
 
   // Open the DevTools.
   if (process.env['DEVELOPMENT']) {
@@ -53,11 +73,32 @@ app.on('activate', () => {
   }
 });
 
+ipcMain.on('check-status', (event) => {
+  if (store.get('surveyToken')) {
+    startTracking(event);
+    event.sender.send('start-tracking-success', '');
+  }
+});
+
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
-ipcMain.on('status-check-request', (event, message) => {
-  processData(message);
+ipcMain.on('send-access-code', (ipcEvent, phoneNumber) => {
+  sendAccessCode(phoneNumber, ipcEvent);
+});
 
-  event.sender.send('status-check-reply', 'Status OK');
+ipcMain.on('check-access-code', (ipcEvent, accessCode) => {
+  confirmAccessCode(accessCode, ipcEvent);
+});
+
+ipcMain.on('start-tracking', ipcEvent => {
+  startTracking(ipcEvent);
+
+  ipcEvent.sender.send('start-tracking-success', '');
+});
+
+ipcMain.on('stop-tracking', ipcEvent => {
+  stopTracking();
+
+  event.sender.send('stop-tracking-success', '');
 });
