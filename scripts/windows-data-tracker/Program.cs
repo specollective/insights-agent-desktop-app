@@ -24,6 +24,34 @@ namespace WindowsDataTrackerConsoleApp
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         static extern int GetWindowTextLength(IntPtr hWnd);
 
+        [DllImport("user32.dll")]
+        static extern IntPtr GetWindowThreadProcessId(IntPtr hWnd, out IntPtr lpdwProcessId);
+
+        string GetCurrentAppName()
+        {
+            IntPtr activeAppHandle = GetForegroundWindow();
+
+            IntPtr activeAppProcessId;
+            GetWindowThreadProcessId(activeAppHandle, out activeAppProcessId);
+
+            Process currentAppProcess = Process.GetProcessById((int)activeAppProcessId);
+            string currentAppName = FileVersionInfo.GetVersionInfo(currentAppProcess.MainModule.FileName).FileDescription;
+
+            return currentAppName;
+        }
+
+        Process GetCurrentAppProcess()
+        {
+            IntPtr activeAppHandle = GetForegroundWindow();
+
+            IntPtr activeAppProcessId;
+            GetWindowThreadProcessId(activeAppHandle, out activeAppProcessId);
+
+            Process currentAppProcess = Process.GetProcessById((int)activeAppProcessId);
+
+            return currentAppProcess;
+        }
+
         string GetText(AutomationElement element)
         {
             object patternObj;
@@ -71,9 +99,17 @@ namespace WindowsDataTrackerConsoleApp
                 // maybe look at depth of the tree?
                 // maybe look for the refresh control?
                 // in the output, the [#] means depth in the UI tree I found the control
-                if (e.Current.ControlType == ControlType.Edit && e.Current.Name.StartsWith("Address and search bar"))
+                // Console.WriteLine(e.Current.Name);
+
+                if (e.Current.ControlType == ControlType.Edit)
                 {
-                  url = GetText(e);
+                    string spanishLabel = "Barra de direcciones y búsqueda";
+                    string englishLabel = "Address and search bar";
+
+                    if (e.Current.Name.StartsWith(englishLabel) || e.Current.Name.StartsWith(spanishLabel))
+                    {
+                        url = GetText(e);
+                    }
                 }
 
                 if (url != "") {
@@ -93,6 +129,10 @@ namespace WindowsDataTrackerConsoleApp
         [STAThread]
         static void Main()
         {
+            WindowsDataTrackerConsoleApp consoleApp = new WindowsDataTrackerConsoleApp();
+
+            string appName = consoleApp.GetCurrentAppName();
+
             var strTitle = string.Empty;
             var handle = GetForegroundWindow();
             // Obtain the length of the text
@@ -104,33 +144,30 @@ namespace WindowsDataTrackerConsoleApp
               strTitle = stringBuilder.ToString();
             }
 
+            Console.WriteLine(appName);
             Console.WriteLine(strTitle);
 
-            WindowsDataTrackerConsoleApp consoleApp = new WindowsDataTrackerConsoleApp();
-            TreeView treeViewInstance = new System.Windows.Forms.TreeView();
-
-            Process[] procsEdge = Process.GetProcessesByName("msedge");
-
-            foreach (Process p in procsEdge)
+            if (appName != "Microsoft Edge")
             {
-                // the chrome process must have a window
-                if (p.MainWindowHandle == IntPtr.Zero)
-                {
-                  continue;
-                }
-
-                Console.WriteLine(p.ProcessName);
-
-                // Here's Edge
-                AutomationElement topE = AutomationElement.FromHandle(p.MainWindowHandle);
-
-                // Since the recurision will work through all children, I need to start with the first child of Edge
-                TreeWalker tw = TreeWalker.ControlViewWalker;
-
-                TreeNode currentNode = treeViewInstance.Nodes.Add(p.ProcessName);
-
-                consoleApp.TreeRecurse(tw.GetFirstChild(topE), "", currentNode);
+              return;
             }
+
+            TreeView treeViewInstance = new System.Windows.Forms.TreeView();
+            Process edgeProcess = consoleApp.GetCurrentAppProcess();
+
+            // the chrome process must have a window
+            if (edgeProcess.MainWindowHandle == IntPtr.Zero)
+            {
+              return;
+            }
+
+            // Here's Edge
+            AutomationElement topE = AutomationElement.FromHandle(edgeProcess.MainWindowHandle);
+            // Since the recurision will work through all children, I need to start with the first child of Edge
+            TreeWalker tw = TreeWalker.ControlViewWalker;
+            TreeNode currentNode = treeViewInstance.Nodes.Add(edgeProcess.ProcessName);
+
+            consoleApp.TreeRecurse(tw.GetFirstChild(topE), "", currentNode);
         }
     }
 }

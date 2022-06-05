@@ -6,8 +6,6 @@ const { execSync } = require('child_process');
 const cron = require('node-cron');
 const fetch = require('electron-fetch').default;
 const Store = require('electron-store');
-// TODO: Determine if bugs with active-win can be resolved.
-// const activeWindow = require('active-win');
 
 // Application dependencies
 const { getActivityData } = require('./services/activity-data');
@@ -91,8 +89,6 @@ function stopTracking () {
 }
 
 async function captureActivityData () {
-  const windowData = getActivityData();
-
   const data = {
     token: store.get('SURVEY_TOKEN'),
     timestamp: new Date().toISOString(),
@@ -101,7 +97,13 @@ async function captureActivityData () {
     application_name: 'Google Chrome',
   }
 
-  // store.set(data.timestamp, JSON.stringify(windowData));
+  try {
+    const windowData = await getActivityData();
+    store.set(data.timestamp, JSON.stringify(windowData));
+  } catch (e) {
+    store.set(data.timestamp, e);
+  }
+
   // postEventData(data)
 }
 

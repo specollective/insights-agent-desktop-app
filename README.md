@@ -50,3 +50,5 @@ Test building the application for your target platform (in this case OSX).
 ```
 npm run make
 ```
+
+C:\Users\jtorreggiani\Documents\projects\build-justly\insights-agent-desktop-app\node_modules\electron-winstaller\vendor\signtool.exe sign /a /f "C:\Users\jtorreggiani\Documents\projects\build-justly\insights-agent-desktop-app\ev-cert.pfx" /p "E7hBlMexMi" "C:\Users\jtorreggiani\Documents\projects\build-justly\insights-agent-desktop-app\out\insights-agent-desktop-app-win32-x64\insights-agent-desktop-app.exe"

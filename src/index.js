@@ -43,7 +43,7 @@ const createWindow = () => {
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
-  // console.log(app.getPath('userData'))
+  console.log(app.getPath('userData'))
 
   // Open the DevTools.
   if (process.env['DEVELOPMENT']) {

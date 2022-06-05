@@ -1,12 +1,14 @@
 const os = require('os');
 const { execSync } = require('child_process');
+// TODO: Determine if bugs with active-win can be resolved.
+// const activeWindow = require('active-win');
 const {
   SCRIPTS_PATH,
   WINDOWS_EXECUTABLE_PATH,
   MAC_EXECUTABLE_PATH,
 } = require('../constants/scripts');
 
-function getActivityData() {
+async function getActivityData() {
   if (os.platform() === 'win32') {
     const stdout = execSync(`${SCRIPTS_PATH}/${WINDOWS_EXECUTABLE_PATH}`, {
       windowsHide: true,

@@ -1,12 +1,13 @@
 const { app } = require('electron');
 const path = require('path');
+const isPackaged = require('electron-is-packaged').isPackaged;
 
 const SCRIPTS_PATH = app.isPackaged
     ? path.join(process.resourcesPath, 'scripts')
     : path.join(__dirname, '../../scripts');
 
 const WINDOWS_EXECUTABLE_PATH =
-  'windows-data-tracker/bin/release/net5.0/windows-data-tracker.exe';
+  'windows-data-tracker/windows-data-tracker.exe';
 
 const MAC_EXECUTABLE_PATH = 'mac-data-tracker/program.scpt';
 
