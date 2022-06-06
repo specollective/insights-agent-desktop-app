@@ -1,5 +1,7 @@
 class DashboardPage extends WebComponent {
   render () {
+    const isOnline = window.api.isOnline
+
     return `
       <style>
         @import "stylesheets/dashboard-page.css"
@@ -10,12 +12,7 @@ class DashboardPage extends WebComponent {
           <h3>Dashboard</h3>
         </header>
 
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliq Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
-        </p>
+        <p>Data collection in progress.</p>
       </main>
     `
   }

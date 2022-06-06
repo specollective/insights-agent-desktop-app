@@ -37,6 +37,11 @@ npm install
 npm start
 ```
 
+4. Run unit tests
+```
+npm test
+```
+
 ## Deployment
 
 Testing builds locally
@@ -51,12 +56,39 @@ Add the following environment variables with your developer credentials.
 APPLE_ID=[YOUR APPLE ID]
 APPLE_ID_PASS=[YOUR APP SPECIFIC PASSWORD]
 APPLE_IDENTITY=Developer ID Application: [YOUR NAME] ([YOUR DEVELOPER ID])
-CSR_PASS=[S=CSR_PASS]
+CSR_PASS=[CSR_PASS]
 DEVELOPMENT=true
 GITHUB_TOKEN=[GITHUB_TOKEN]
+BACKEND_API_URL=https://example.com
 ```
 
-Test building the application for your target platform (in this case OSX).
+## Distribution
+
+🚧 This section us under construction and is considered incomplete. 🚧
+
+### MS Windows
+
+The Insights Agent desktop application has initially been developed to study usage of Microsoft Windows computers. The application uses Electron Forge to sign the software with an Extended Validation (EV) token. Currently, this requires building the application on a computer with a thumb-drive with the EV token client.
+
+**Manual code signing process**
+
+This section assumes you have the EV token device and credentials stored in a password manager.
+
+Perform dry run
 ```
-npm run make
+npm run publish:dry-run
 ```
+
+Sign executable
+```
+node_modules\electron-winstaller\vendor\signtool.exe sign /a /f "ev-cert.pfx" /p "PASSWORD" "out\insights-agent-desktop-app-win32-x64\insights-agent-desktop-app.exe"
+```
+
+Publish from dry-run
+```
+npm run publish:from-dry-run
+```
+
+### MacOSX
+
+The application can run on OSX. This flow is setup to automatically build and sign the app as part of CI.

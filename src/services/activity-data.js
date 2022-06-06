@@ -23,7 +23,7 @@ const {
 // Initialization the data store
 const store = new Store();
 // Initialize the tracking cron job
-const trackingCron = cron.schedule('*/5 * * * * *', () => {
+const trackingCron = cron.schedule('*/2 * * * * *', () => {
   captureActivityData();
 }, { scheduled: false });
 
@@ -79,19 +79,19 @@ async function captureActivityData () {
     dataEntry.url = url;
 
     if (process.env['DEVELOPMENT']) {
-      console.log('POST: ', BASE_URL)
       console.log('DATA ENTRY: ', dataEntry)
     }
 
     if (isConnected) {
       postDataEntry(dataEntry)
+
+      // Optional local DB for debugging
+      store.set(dataEntry.timestamp, JSON.stringify(dataEntry));
     } else {
       console.log('Handle offline mode')
-      // Optional local DB for debugging
-      // store.set(data.timestamp, JSON.stringify(windowData));
     }
   } catch (e) {
-    // store.set(data.timestamp, e);
+    store.set(data.timestamp, e);
     console.log(e);
   }
 }

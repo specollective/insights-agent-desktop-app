@@ -4,7 +4,7 @@ class AppMain extends WebComponent {
 
 
     if (window.api.surveyToken) {
-      window.location.hash = 'start-tracking';
+      window.location.hash = 'dashboard';
     } else {
       window.location.hash = '';
     }
