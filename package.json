@@ -46,5 +46,8 @@
     "electron": "17.1.1",
     "jest": "^27.5.1",
     "json-server": "^0.17.0"
+  },
+  "build": {
+    "extraResources": ["./scripts/**"]
   }
 }
