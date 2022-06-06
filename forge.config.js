@@ -1,8 +1,5 @@
 require('dotenv').config();
 
-// console.log(process.env['CSC_LINK'])
-// console.log(process.env['CSC_KEY_PASSWORD'])
-
 module.exports = {
   "packagerConfig": {
     "osxSign": {
@@ -24,6 +21,7 @@ module.exports = {
       "name": "@electron-forge/maker-squirrel",
       "config": {
         "name": "insights-agent-desktop-app",
+        // NOTE: We are manually signing the executable right now.
         // "certificateFile": process.env['CSC_LINK'],
         // "certificatePassword": process.env['CSC_KEY_PASSWORD']
       }

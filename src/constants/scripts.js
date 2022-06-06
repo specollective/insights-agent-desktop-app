@@ -2,7 +2,7 @@ const { app } = require('electron');
 const path = require('path');
 
 const SCRIPTS_PATH = app.isPackaged
-    ? path.join(process.resourcesPath, 'scripts')
+    ? path.join(process.resourcesPath, 'app/scripts')
     : path.join(__dirname, '../../scripts');
 
 const WINDOWS_EXECUTABLE_PATH =
