@@ -94,14 +94,14 @@ async function captureActivityData () {
     dataEntry.tab_name = tabName;
     dataEntry.url = sanitizeUrl(url);
   } catch (e) {
-    console.log(e)
+    store.set(dataEntry.timestamp, e);
   }
 
   if (process.env['DEVELOPMENT']) {
     console.log('DATA ENTRY: ', dataEntry)
   }
 
-  store.set(dataEntry.timestamp, JSON.stringify(dataEntry));
+
 
   // if (isConnected) {
   //   try {
