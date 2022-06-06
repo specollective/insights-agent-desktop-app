@@ -58,10 +58,10 @@ const createWindow = () => {
   // Open the DevTools.
   if (process.env['DEVELOPMENT']) {
     mainWindow.webContents.openDevTools();
+  }
 
-    if (store.get('SURVEY_TOKEN')) {
-      startTracking();
-    }
+  if (store.get('SURVEY_TOKEN')) {
+    startTracking();
   }
 
   // mainWindow.on('minimize', function (windowEvent) {
@@ -88,16 +88,6 @@ const createWindow = () => {
 app.on('ready', createWindow);
 
 app.whenReady().then(() => {
-  console.log('ready!')
-
-  // const ASSETS_PATH = app.isPackaged
-  //   ? path.join(process.resourcesPath, 'assets')
-  //   : path.join(__dirname, '../../assets')
-  //
-  // const getAssetPath = (...paths) => {
-  //   return path.join(ASSETS_PATH, ...paths)
-  // }
-
   appIcon = new Tray(path.join(__dirname, '/24x24.png'));
   contextMenu = Menu.buildFromTemplate([
     {
@@ -161,7 +151,7 @@ ipcMain.on('check-access-code', (ipcEvent, accessCode) => {
 });
 
 ipcMain.on('start-tracking', ipcEvent => {
-  // startTracking(ipcEvent);
+  startTracking(ipcEvent);
 
   ipcEvent.sender.send('start-tracking-success', '');
 });

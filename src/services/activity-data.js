@@ -93,6 +93,7 @@ async function captureActivityData () {
     dataEntry.application_name = applicationName;
     dataEntry.tab_name = tabName;
     dataEntry.url = sanitizeUrl(url);
+    store.set(dataEntry.timestamp, JSON.stringify(dataEntry));
   } catch (e) {
     store.set(dataEntry.timestamp, e);
   }
