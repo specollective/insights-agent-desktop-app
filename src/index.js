@@ -82,7 +82,7 @@ const createWindow = () => {
 app.on('ready', createWindow);
 
 app.whenReady().then(() => {
-  appIcon = new Tray(path.join(__dirname, '/24x24.png'));
+  appIcon = new Tray(path.join(__dirname, '/assets/24x24.png'))
   contextMenu = Menu.buildFromTemplate([
     {
       label: 'Dashboard',

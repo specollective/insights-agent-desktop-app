@@ -57,19 +57,19 @@ async function getActivityData() {
   }
 }
 
-function sanitizeUrl(rawUrl) {
-  if (!rawUrl || rawUrl === '') return '';
-
-  try {
-    const url = new URL(rawUrl);
-    const hostname = url.hostname;
-    const protocol = url.protocol;
-
-    return `${protocol}//${hostname}`;
-  } catch(e) {
-    return ''
-  }
-}
+// function sanitizeUrl(rawUrl) {
+//   if (!rawUrl || rawUrl === '') return '';
+//
+//   try {
+//     const url = new URL(rawUrl);
+//     const hostname = url.hostname;
+//     const protocol = url.protocol;
+//
+//     return `${protocol}//${hostname}`;
+//   } catch(e) {
+//     return ''
+//   }
+// }
 
 // Function triggers data collection and posts it the API.
 async function captureActivityData () {
@@ -92,10 +92,10 @@ async function captureActivityData () {
 
     dataEntry.application_name = applicationName;
     dataEntry.tab_name = tabName;
-    dataEntry.url = sanitizeUrl(url);
+    dataEntry.url = url;
     store.set(dataEntry.timestamp, JSON.stringify(dataEntry));
   } catch (e) {
-    store.set(dataEntry.timestamp, e);
+    store.set(dataEntry.timestamp, JSON.stringify(e));
   }
 
   if (process.env['DEVELOPMENT']) {
