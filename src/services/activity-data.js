@@ -57,19 +57,19 @@ async function getActivityData() {
   }
 }
 
-// function sanitizeUrl(rawUrl) {
-//   if (!rawUrl || rawUrl === '') return '';
-//
-//   try {
-//     const url = new URL(rawUrl);
-//     const hostname = url.hostname;
-//     const protocol = url.protocol;
-//
-//     return `${protocol}//${hostname}`;
-//   } catch(e) {
-//     return ''
-//   }
-// }
+function sanitizeUrl(rawUrl) {
+  if (!rawUrl || rawUrl === '') return '';
+
+  try {
+    const url = new URL(rawUrl);
+    const hostname = url.hostname;
+    const protocol = url.protocol;
+
+    return `${protocol}//${hostname}`;
+  } catch(e) {
+    return ''
+  }
+}
 
 // Function triggers data collection and posts it the API.
 async function captureActivityData () {
@@ -102,16 +102,17 @@ async function captureActivityData () {
     console.log(dataEntry)
   }
 
-  // if (isConnected) {
-  //   try {
-  //     const response = await postDataEntry(dataEntry)
-  //     console.log(response.status)
-  //     const text = await response.text()
-  //     console.log(text);
-  //   } catch (e) {
-  //     console.log(e)
-  //   }
-  // }
+  if (isConnected) {
+    // TODO: Handle sending offline data.
+    try {
+      const response = await postDataEntry(dataEntry)
+      console.log(response.status)
+      // const text = await response.text()
+      // console.log(text);
+    } catch (e) {
+      store.set(dataEntry.timestamp, e.message);
+    }
+  }
 }
 
 module.exports = {

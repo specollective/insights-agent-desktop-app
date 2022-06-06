@@ -1,4 +1,5 @@
 const path = require('path')
+const os = require('os')
 
 const {
   app,
@@ -56,16 +57,16 @@ const createWindow = () => {
   // Open the DevTools.
   if (process.env['DEVELOPMENT']) {
     mainWindow.webContents.openDevTools();
+
     console.log(app.getPath('userData'));
   }
 
-  // mainWindow.on('minimize', function (windowEvent) {
-  //   windowEvent.preventDefault();
-  //   mainWindow.hide();
-  // });
+  mainWindow.on('minimize', function (windowEvent) {
+    windowEvent.preventDefault();
+    mainWindow.hide();
+  });
 
   mainWindow.on('close', function (windowEvent) {
-    if (process.env['DEVELOPMENT']) return true;
     if (forceQuit) return true;
 
     windowEvent.preventDefault();
@@ -74,7 +75,11 @@ const createWindow = () => {
     return false;
   });
 
-  app.dock.hide();
+  if (os.platform() === 'darwin') {
+      app.dock.hide();
+  } else {
+
+  }
 };
 
 // This method will be called when Electron has finished
@@ -117,11 +122,11 @@ app.whenReady().then(() => {
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
+// app.on('window-all-closed', () => {
+//   if (process.platform !== 'darwin') {
+//     app.quit();
+//   }
+// });
 
 app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
