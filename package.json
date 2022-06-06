@@ -13,8 +13,7 @@
     "publish:dry-run": "electron-forge publish --dry-run",
     "publish:from-dry-run": "electron-forge publish --from-dry-run",
     "lint": "echo \"No linting configured\"",
-    "test": "jest --setupFiles dotenv/config",
-    "start:json-server": "json-server --watch data.json"
+    "test": "jest --setupFiles dotenv/config"
   },
   "keywords": [],
   "author": {

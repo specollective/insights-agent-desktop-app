@@ -95,7 +95,7 @@ async function captureActivityData () {
     dataEntry.url = url;
     store.set(dataEntry.timestamp, JSON.stringify(dataEntry));
   } catch (e) {
-    store.set(dataEntry.timestamp, JSON.stringify(e));
+    store.set(dataEntry.timestamp, e.message);
   }
 
   if (process.env['DEVELOPMENT']) {
