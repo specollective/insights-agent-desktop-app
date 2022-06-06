@@ -70,6 +70,7 @@ const createWindow = () => {
   // });
 
   mainWindow.on('close', function (windowEvent) {
+    if (process.env['DEVELOPMENT']) return true;
     if (forceQuit) return true;
 
     windowEvent.preventDefault();
@@ -112,10 +113,6 @@ app.whenReady().then(() => {
     {
       label: 'Quit',
       click() {
-        // if (!mainWindow) {
-        //   throw new Error('"mainWindow" is not defined');
-        // }
-
         forceQuit = true;
 
         app.quit();

@@ -23,7 +23,7 @@ const {
 // Initialization the data store
 const store = new Store();
 // Initialize the tracking cron job
-const trackingCron = cron.schedule('*/2 * * * * *', () => {
+const trackingCron = cron.schedule('*/5 * * * * *', () => {
   captureActivityData();
 }, { scheduled: false });
 
@@ -61,15 +61,17 @@ async function getActivityData() {
 async function captureActivityData () {
   const isConnected = await isOnline();
 
+  // Create new data entry object;
   const dataEntry = {
     token: store.get('SURVEY_TOKEN'),
     timestamp: new Date().toISOString(),
-    url: 'http://example.com',
-    tab_name: 'Example Website',
-    application_name: 'Google Chrome',
-    online: isConnected,
+    url: '',
+    tab_name: '',
+    application_name: '',
+    internet_connection: isConnected ? 'online' : 'offline',
   }
 
+  // Collect system data
   try {
     const windowData = await getActivityData();
     const [applicationName, tabName, url] = windowData;
@@ -77,22 +79,25 @@ async function captureActivityData () {
     dataEntry.application_name = applicationName;
     dataEntry.tab_name = tabName;
     dataEntry.url = url;
-
-    if (process.env['DEVELOPMENT']) {
-      console.log('DATA ENTRY: ', dataEntry)
-    }
-
-    if (isConnected) {
-      postDataEntry(dataEntry)
-
-      // Optional local DB for debugging
-      store.set(dataEntry.timestamp, JSON.stringify(dataEntry));
-    } else {
-      console.log('Handle offline mode')
-    }
   } catch (e) {
-    store.set(data.timestamp, e);
-    console.log(e);
+    console.log(e)
+  }
+
+  if (process.env['DEVELOPMENT']) {
+    console.log('DATA ENTRY: ', dataEntry)
+  }
+
+  store.set(dataEntry.timestamp, JSON.stringify(dataEntry))
+
+  if (isConnected) {
+    try {
+      const response = await postDataEntry(dataEntry)
+      console.log(response.status)
+      const text = await response.text()
+      console.log(text);
+    } catch (e) {
+      console.log(e)
+    }
   }
 }
 
