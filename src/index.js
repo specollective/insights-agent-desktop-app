@@ -56,6 +56,7 @@ const createWindow = () => {
   // Open the DevTools.
   if (process.env['DEVELOPMENT']) {
     mainWindow.webContents.openDevTools();
+    console.log(app.getPath('userData'));
   }
 
   // mainWindow.on('minimize', function (windowEvent) {
