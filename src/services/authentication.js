@@ -59,7 +59,7 @@ async function confirmAccessCode(accessCode, event) {
     event.sender.send('check-access-code-success', `processed: success!`);
   } else {
     event.sender.send('check-access-code-error', `error`);
-   }
+  }
 
   return true;
 }

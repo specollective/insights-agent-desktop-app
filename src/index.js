@@ -89,7 +89,8 @@ app.on('ready', createWindow);
 
 app.whenReady().then(() => {
   appIcon = new Tray(path.join(__dirname, '/assets/24x24.png'))
-  contextMenu = Menu.buildFromTemplate([
+
+  const menuActions = [
     {
       label: 'Dashboard',
       click() {
@@ -108,7 +109,16 @@ app.whenReady().then(() => {
         app.quit();
       },
     },
-  ]);
+    {
+      label: 'Clear Data',
+      click() {
+        store.clear();
+        mainWindow.hide();
+      },
+    },
+  ]
+
+  contextMenu = Menu.buildFromTemplate(menuActions);
 
   appIcon.setToolTip('Insights Agent');
   appIcon.setContextMenu(contextMenu);

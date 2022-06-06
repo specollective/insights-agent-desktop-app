@@ -1,7 +1,8 @@
 class ConfirmAccessCodePage extends WebComponent {
   submitForm() {
     const accessCode = this.querySelector('input').value;
-    window.location.hash = 'start-tracking';
+
+    window.api.confirmAccessCode(accessCode);
   }
 
   addEventListeners() {
