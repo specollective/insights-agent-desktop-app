@@ -1,6 +1,8 @@
 # Insights Agent Desktop App
 
-This repository houses the code for the Insights Agent desktop application. This Electron-based application is designed to be used by individuals who have signed up and been selected to participate in a research study in which participants agree to download the application and enable data collection including the following data points.
+🚧 This repository is actively under development and should be consider unstable. 🚧
+
+This repository houses the code for the Insights Agent desktop application. This application is designed to be used by individuals who have signed up and are selected to participate in a research studies where participants download the desktop app and enable data collection of the following data points.
 
 - device type / operating system
 - application names
@@ -10,15 +12,55 @@ This repository houses the code for the Insights Agent desktop application. This
 - device type
 - timestamps
 
-Raw data is anonymized and only persisted for a short period of time before it is aggregated and destroyed.
+Raw data is anonymized and only persisted for a short period of time before it is aggregated and destroyed. The code is setup to be hosted open source on Github in order to leverage the free service [update.electronjs.org](https://github.com/electron/update.electronjs.org) for auto-updating production applications.
 
-The code is setup to be hosted open source on Github in order to leverage the free service [update.electronjs.org](https://github.com/electron/update.electronjs.org) for auto-updating production applications.
+## Software Architecture
+
+The bulk of the source code for the app exists in the `src` folder.
+```
+src
+├── components
+│   ├── common
+│   └── pages
+├── constants
+│   ├── scripts.js
+│   └── urls.js
+├── index.html
+├── index.js
+├── preload.js
+├── renderer.js
+├── services
+│   ├── activity-data.js
+│   ├── authentication.js
+│   └── data-entries.js
+├── stylesheets
+│   ├── confirm-access-code-page.css
+│   ├── dashboard-page.css
+│   ├── index.css
+│   ├── send-access-code-page.css
+│   └── start-tracking-page.css
+└── utils.js
+```
+
+The `scripts` directory contains the platform specific code for collecting usage data.
+```
+scripts
+├── mac-data-tracker
+│   └── program.scpt
+└── windows-data-tracker
+    ├── Program.cs
+    ├── README.md
+    ├── windows-data-tracker.csproj
+    └── windows-data-tracker.exe
+```
 
 ## Dependencies
 - electron
 - electron-forge
 - update-electron-app
 - electron-squirrel-startup
+- electron-forge
+- electron-winstaller
 
 ## Development
 
