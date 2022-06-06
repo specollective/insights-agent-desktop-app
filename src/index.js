@@ -37,8 +37,6 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-console.log(app.getPath('userData'))
-
 const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -58,10 +56,6 @@ const createWindow = () => {
   // Open the DevTools.
   if (process.env['DEVELOPMENT']) {
     mainWindow.webContents.openDevTools();
-  }
-
-  if (store.get('SURVEY_TOKEN')) {
-    startTracking();
   }
 
   // mainWindow.on('minimize', function (windowEvent) {
@@ -112,6 +106,10 @@ app.whenReady().then(() => {
 
   appIcon.setToolTip('Insights Agent');
   appIcon.setContextMenu(contextMenu);
+
+  if (store.get('SURVEY_TOKEN')) {
+    startTracking();
+  }
 });
 
 
@@ -131,13 +129,6 @@ app.on('activate', () => {
     createWindow();
   }
 });
-
-// ipcMain.on('check-status', () => {
-//   if (store.get('SURVEY_TOKEN')) {
-//     startTracking(event);
-//     event.sender.send('start-tracking-success', '');
-//   }
-// });
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.

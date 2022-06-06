@@ -99,10 +99,8 @@ async function captureActivityData () {
   }
 
   if (process.env['DEVELOPMENT']) {
-    console.log('DATA ENTRY: ', dataEntry)
+    console.log(dataEntry)
   }
-
-
 
   // if (isConnected) {
   //   try {
