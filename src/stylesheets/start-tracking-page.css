@@ -1,0 +1,21 @@
+start-tracking-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 90vh;
+}
+
+start-tracking-page p {
+  flex: 1;
+  max-width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2em;
+  text-align: left;
+}
+
+start-tracking-page button {
+  display: block;
+  margin: auto;
+}

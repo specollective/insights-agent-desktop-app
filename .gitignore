@@ -90,3 +90,6 @@ out/
 
 ev-cert.cer
 ev-cert.pfx
+
+.vs
+NOTES.txt

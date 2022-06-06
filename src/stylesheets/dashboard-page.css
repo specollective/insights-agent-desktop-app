@@ -1,0 +1,16 @@
+dashboard-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 50vh;
+}
+
+dashboard-page p {
+  flex: 1;
+  /* max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2em;
+  text-align: left; */
+}
