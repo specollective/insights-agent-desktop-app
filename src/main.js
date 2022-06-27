@@ -103,9 +103,11 @@ const createTrayMenu = () => {
   appIcon.setToolTip('Insights Agent');
   appIcon.setContextMenu(contextMenu);
 
-  if (store.get('SURVEY_TOKEN')) {
-    // console.log('Already ');
-    // startTracking();
+  const startTrackingOnBoot = store.get('SURVEY_TOKEN') &&
+                              store.get('ACTIVITY_TRACKING_ENABLED')
+
+  if (startTrackingOnBoot) {
+    startTracking();
   }
 }
 // This method will be called when Electron has finished
@@ -145,7 +147,6 @@ ipcMain.on('send-access-code', (ipcEvent, phoneNumber) => {
 });
 
 ipcMain.on('check-access-code', (ipcEvent, accessCode) => {
-  // ipcEvent.sender.send('check-access-code', 'yup');
   confirmAccessCode(accessCode, ipcEvent);
 });
 
@@ -157,7 +158,4 @@ ipcMain.on('stop-tracking', ipcEvent => {
   stopTracking(ipcEvent);
   forceQuit = true;
   app.quit();
-  // console.log('ipcMain:stop-tracking');
-  // // stopTracking();
-  // event.sender.send('stop-tracking-success', '');
 });
