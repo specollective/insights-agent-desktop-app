@@ -1,36 +1,33 @@
-class AppMain extends WebComponent {
-  constructor () {
-    super();
+import './renderer/index.jsx';
 
+/**
+ * This file will automatically be loaded by webpack and run in the "renderer" context.
+ * To learn more about the differences between the "main" and the "renderer" context in
+ * Electron, visit:
+ *
+ * https://electronjs.org/docs/tutorial/application-architecture#main-and-renderer-processes
+ *
+ * By default, Node.js integration in this file is disabled. When enabling Node.js integration
+ * in a renderer process, please be aware of potential security implications. You can read
+ * more about security risks here:
+ *
+ * https://electronjs.org/docs/tutorial/security
+ *
+ * To enable Node.js integration in this file, open up `main.js` and enable the `nodeIntegration`
+ * flag:
+ *
+ * ```
+ *  // Create the browser window.
+ *  mainWindow = new BrowserWindow({
+ *    width: 800,
+ *    height: 600,
+ *    webPreferences: {
+ *      nodeIntegration: true
+ *    }
+ *  });
+ * ```
+ */
 
-    if (window.api.surveyToken) {
-      window.location.hash = 'dashboard';
-    } else {
-      window.location.hash = '';
-    }
-  }
+import './index.css';
 
-  render () {
-    return `
-      <app-router>
-        <app-route to="#send-access-code" root="true">
-          <send-access-code-page />
-        </app-route>
-
-        <app-route to="#confirm-access-code">
-          <confirm-access-code-page />
-        </app-route>
-
-        <app-route to="#start-tracking">
-          <start-tracking-page />
-        </app-route>
-
-        <app-route to="#dashboard">
-          <dashboard-page />
-        </app-route>
-      </app-router>
-    `
-  }
-}
-
-window.customElements.define('app-main', AppMain);
+// console.log('👋 This message is being logged by "renderer.js", included via webpack');

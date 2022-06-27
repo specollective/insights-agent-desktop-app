@@ -1,9 +1,6 @@
-/*
-  Preloads data and sets up context bridge. See Electron docs about context isolation
-  for details. https://www.electronjs.org/docs/latest/tutorial/context-isolation
-*/
+// See the Electron documentation for details on how to use preload scripts:
+// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
-// Dependencies
 const path = require('path');
 const { readFileSync } = require('fs');
 const { ipcRenderer, contextBridge } = require('electron');
@@ -14,34 +11,42 @@ const store = new Store();
 const sendMessage = (id, data) => ipcRenderer.send(id, data);
 const onMessage = (id, callback) => ipcRenderer.on(id, callback);
 
+const mapIpcOnMessageToCallback = (message, callback) =>
+  onMessage(message, (ipcEvent, data) => callback(data));
+
 // Set up context bridge exposing it to the window.api.
 contextBridge.exposeInMainWorld(
   'api',
   {
+    surveyToken: store.get('SURVEY_TOKEN'),
+    onboardingStep: store.get('ONBOARDING_STEP') || 'SEND_ACCESS_CODE',
     sendAccessCode: (phoneNumber) => {
       sendMessage('send-access-code', phoneNumber)
     },
     onSendAccessCodeSuccess: (callback) => {
-      onMessage('send-access-code-success', () => {
-        callback();
-      })
+      mapIpcOnMessageToCallback('send-access-code-success', callback);
+    },
+    onSendAccessCodeError: (callback) => {
+      mapIpcOnMessageToCallback('send-access-code-error', callback);
     },
     confirmAccessCode: (accessCode) => {
       sendMessage('check-access-code', accessCode)
     },
     onConfirmAccessCodeSuccess: (callback) => {
-      onMessage('check-access-code-success', () => {
-        callback();
-      })
+      mapIpcOnMessageToCallback('check-access-code-success', callback);
+    },
+    onConfirmAccessCodeError: (callback) => {
+      mapIpcOnMessageToCallback('check-access-code-error', callback);
     },
     startActivityTracking: (callback) => {
-      sendMessage('start-tracking')
+      sendMessage('start-tracking');
     },
     onStartActivityTrackingSuccess: (callback) => {
-      onMessage('start-tracking-success', () => {
-        callback();
-      })
+      mapIpcOnMessageToCallback('start-tracking-success', callback);
     },
-    surveyToken: store.get('SURVEY_TOKEN'),
+    onStartActivityTrackingError: (callback) => {
+      mapIpcOnMessageToCallback('start-tracking-error', callback);
+    },
+    removeAllListeners: () => ipcRenderer.removeAllListeners()
   }
 );

@@ -1,5 +1,5 @@
-const path = require('path')
-const os = require('os')
+import path from 'path';
+import os from 'os';
 
 const {
   app,
@@ -7,34 +7,27 @@ const {
   ipcMain,
   Menu,
   Tray,
-} = require('electron')
+} = require('electron');
 
-const {
-  confirmAccessCode,
-  sendAccessCode,
-} = require('./services/authentication')
-
+const { confirmAccessCode, sendAccessCode } = require('./services/authentication');
 const {
   startTracking,
   stopTracking,
-} = require('./services/activity-data')
+  testTracking,
+} = require('./services/activity-data');
 
 const Store = require('electron-store');
 
-require('update-electron-app')({
-  updateInterval: '5 minutes'
-});
+require('update-electron-app')({ updateInterval: '5 minutes' });
+require('dotenv').config();
 
-// Invoke dotenv to be able to read environment variables from .env file
-require('dotenv').config()
+const store = new Store();
 
-const store = new Store()
-
-let appIcon, contextMenu, mainWindow, forceQuit
+let appIcon, contextMenu, mainWindow, forceQuit;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
+// eslint-disable-next-line global-require
 if (require('electron-squirrel-startup')) {
-  // eslint-disable-line global-require
   app.quit();
 }
 
@@ -45,19 +38,17 @@ const createWindow = () => {
     height: 600,
     autoHideMenuBar: true,
     fullscreenable: false,
-    // icon: getAssetPath('icon.png'),
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-    }
+      preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
+    },
   });
 
   // and load the index.html of the app.
-  mainWindow.loadFile(path.join(__dirname, 'index.html'));
+  mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   // Open the DevTools.
   if (process.env['DEVELOPMENT']) {
     mainWindow.webContents.openDevTools();
-
     console.log(app.getPath('userData'));
   }
 
@@ -74,20 +65,9 @@ const createWindow = () => {
 
     return false;
   });
-
-  if (os.platform() === 'darwin') {
-      app.dock.hide();
-  } else {
-
-  }
 };
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
-
-app.whenReady().then(() => {
+const createTrayMenu = () => {
   appIcon = new Tray(path.join(__dirname, '/assets/24x24.png'))
 
   const menuActions = [
@@ -124,18 +104,29 @@ app.whenReady().then(() => {
   appIcon.setContextMenu(contextMenu);
 
   if (store.get('SURVEY_TOKEN')) {
-    startTracking();
+    console.log('Trigger tracking');
+    // startTracking();
   }
-});
+}
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+// Some APIs can only be used after this event occurs.
+app.on('ready', createWindow);
 
+// TODO: Document whenReady
+app.whenReady().then(createTrayMenu);
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
-// app.on('window-all-closed', () => {
-//   if (process.platform !== 'darwin') {
-//     app.quit();
-//   }
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
+
+// app.on('before-quit', (event) => {
+//   stopTracking();
 // });
 
 app.on('activate', () => {
@@ -154,17 +145,17 @@ ipcMain.on('send-access-code', (ipcEvent, phoneNumber) => {
 });
 
 ipcMain.on('check-access-code', (ipcEvent, accessCode) => {
+  // ipcEvent.sender.send('check-access-code', 'yup');
   confirmAccessCode(accessCode, ipcEvent);
 });
 
 ipcMain.on('start-tracking', ipcEvent => {
-  startTracking(ipcEvent);
-
-  ipcEvent.sender.send('start-tracking-success', '');
+  testTracking(ipcEvent);
 });
 
 ipcMain.on('stop-tracking', ipcEvent => {
   stopTracking();
-
-  event.sender.send('stop-tracking-success', '');
+  // console.log('ipcMain:stop-tracking');
+  // // stopTracking();
+  // event.sender.send('stop-tracking-success', '');
 });
