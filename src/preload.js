@@ -41,6 +41,9 @@ contextBridge.exposeInMainWorld(
     startActivityTracking: (callback) => {
       sendMessage('start-tracking');
     },
+    cancelActivityTracking: (callback) => {
+      sendMessage('stop-tracking');
+    },
     onStartActivityTrackingSuccess: (callback) => {
       mapIpcOnMessageToCallback('start-tracking-success', callback);
     },

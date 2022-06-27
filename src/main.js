@@ -104,7 +104,7 @@ const createTrayMenu = () => {
   appIcon.setContextMenu(contextMenu);
 
   if (store.get('SURVEY_TOKEN')) {
-    console.log('Trigger tracking');
+    // console.log('Already ');
     // startTracking();
   }
 }
@@ -150,11 +150,13 @@ ipcMain.on('check-access-code', (ipcEvent, accessCode) => {
 });
 
 ipcMain.on('start-tracking', ipcEvent => {
-  testTracking(ipcEvent);
+  startTracking(ipcEvent);
 });
 
 ipcMain.on('stop-tracking', ipcEvent => {
-  stopTracking();
+  stopTracking(ipcEvent);
+  forceQuit = true;
+  app.quit();
   // console.log('ipcMain:stop-tracking');
   // // stopTracking();
   // event.sender.send('stop-tracking-success', '');

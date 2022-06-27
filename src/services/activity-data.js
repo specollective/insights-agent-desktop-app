@@ -28,42 +28,84 @@ let dataEntries = [];
 
 // Initialization the data store
 export const store = new Store();
-// Initialize the tracking cron job
-export const trackingCron = cron.schedule('*/5 * * * * *', () => {
+
+export function cronTask(task) {
   captureActivityData();
-}, { scheduled: false });
-
-// Helper function for starting the tracking cron job.
-export function startTracking (ipcEvent) {
-  trackingCron.start();
-
-  return true;
 }
+
+// Initialize the tracking cron job
+export const trackingCron = cron.schedule(
+  '*/5 * * * * *',
+  cronTask,
+  { scheduled: false },
+);
 
 // Helper function for starting the tracking cron job.
 export function stopTracking () {
   trackingCron.stop();
+}
 
-  return true;
+export function log(...args) {
+  console.log(process.env['NODE_ENV']);
+  console.log(...args);
 }
 
 // Helper function for testing if tracking is working.
-export async function testTracking (ipcEvent) {
-  let trackingWorking, windowData, errorMessage;
+export async function startTracking(ipcEvent) {
+  log('startTracking');
 
-  startTracking();
+  let dataEntry, response
 
-  // try {
-  //   const windowData = await execActivityDataTracking();
-  //   ipcEvent.sender.send('start-tracking-success', windowData[0]);
-  // } catch (e) {
-  //   errorMessage = e.message;
-  //   return false
-  // }
-}
+  const errorMessages = [];
 
-export function activityDataSync () {
-  return { status: 'success '}
+  function sendMessage(message, data) {
+    ipcEvent.sender.send(message, JSON.stringify(data));
+  }
+
+  if (store.get('ACTIVITY_TRACKING_ENABLED')) {
+    trackingCron.start();
+    sendMessage('start-tracking-success', 'success');
+    return
+  }
+
+  log('getDataEntry');
+  try {
+    dataEntry = await getDataEntry();
+    log('getDataEntrySuccess');
+  } catch (e) {
+    log('getDataEntryError', e.message);
+    errorMessages.push(e.message);
+    sendMessage('start-tracking-error', errorMessages);
+    return
+  }
+
+  log('postDataEntries');
+  try {
+    const response = await postDataEntries([dataEntry]);
+    log('postDataEntriesStatus', response.status);
+  } catch (e) {
+    log('postDataEntriesError', e.message);
+    errorMessages.push(e.message);
+    sendMessage('start-tracking-error', errorMessages);
+    return
+  }
+
+  log('trackingCron');
+  try {
+    trackingCron.start();
+
+    store.set('ACTIVITY_TRACKING_ENABLED', true);
+    store.set('ONBOARDING_STEP', 'DASHBOARD');
+
+    log('trackingCronSuccess');
+  } catch (e) {
+    log('trackingCronError', e.message);
+    errorMessages.push(e.message);
+    ipcEvent.sender.send('start-tracking-error', JSON.stringify(errorMessages));
+    return
+  }
+
+  ipcEvent.sender.send('start-tracking-success', 'success');
 }
 
 export function trackingScriptPath () {
@@ -78,7 +120,7 @@ export function trackingScriptPath () {
 
 // Function for executing platform specific code to collect data.
 // returns an array of data points.
-export async function execActivityDataTracking() {
+export async function getDataEntry() {
   const scriptPath = trackingScriptPath();
   const isConnected = await isOnline();
 
@@ -107,17 +149,9 @@ export async function execActivityDataTracking() {
   });
 }
 
-export async function collectData() {
-  try {
-    const dataEntry = await execActivityDataTracking();
-    return dataEntry;
-  } catch (e) {
-    console.log(e.message);
-  }
-}
-
 export function storeDataEntry (dataEntry) {
   store.set(dataEntry.timestamp, JSON.stringify(dataEntry));
+
   dataEntries.push(dataEntry);
 }
 
@@ -132,8 +166,8 @@ export async function syncDataWithServer () {
 
 // Function triggers data collection and posts it the API.
 export async function captureActivityData () {
+  const dataEntry = await getDataEntry();
   const isConnected = await isOnline();
-  const dataEntry = await collectData();
 
   storeDataEntry(dataEntry);
 

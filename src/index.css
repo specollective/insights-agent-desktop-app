@@ -90,7 +90,20 @@ input {
 }
 
 .page {
-  display: grid;
+  /* display: grid;
   place-items: center;
-  min-height: 100vh;
+  min-height: 90vh; */
+}
+
+button {
+  margin-right: 1em;
+}
+
+.tracking-details {
+  width: 90%;
+}
+
+.tracking-actions {
+  padding-top: 6em;
+  text-align: right;
 }
