@@ -11,7 +11,7 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\"",
-    "test": "TEST=true jest --setupFiles dotenv/config"
+    "test": "jest --setupFiles dotenv/config"
   },
   "keywords": [],
   "author": {

@@ -12,4 +12,6 @@ window.api = {
   confirmAccessCode: jest.fn(),
   onConfirmAccessCodeSuccess: jest.fn(),
   onConfirmAccessCodeError: jest.fn(),
+  onStartActivityTrackingSuccess: jest.fn(),
+  onStartActivityTrackingError: jest.fn(),
 }
