@@ -59,7 +59,11 @@ export async function startTracking(ipcEvent) {
   const errorMessages = [];
 
   function sendMessage(message, data) {
-    ipcEvent.sender.send(message, JSON.stringify(data));
+    if (ipcEvent) {
+      ipcEvent.sender.send(message, JSON.stringify(data));
+    } else {
+      console.log('NO IPC MAIN PRESENT');
+    }
   }
 
   if (store.get('ACTIVITY_TRACKING_ENABLED')) {

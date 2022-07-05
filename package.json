@@ -68,11 +68,6 @@
     "yup": "^0.32.11",
     "yup-phone": "^1.3.2"
   },
-  "build": {
-    "extraResources": [
-      "./scripts/**"
-    ]
-  },
   "jest": {
     "testEnvironment": "jsdom",
     "setupFilesAfterEnv": [
