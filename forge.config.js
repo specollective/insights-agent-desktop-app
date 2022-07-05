@@ -15,8 +15,8 @@ module.exports = {
       "appleIdPassword": process.env['APPLE_ID_PASS'],
     },
     "executableName": "insights-agent-desktop-app",
-    "extraResources": [
-      "./scripts/**/*",
+    "extraResource": [
+      "./scripts/mac-data-tracker/program.scpt",
     ],
   },
   "makers": [
