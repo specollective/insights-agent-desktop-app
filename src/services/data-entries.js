@@ -22,7 +22,7 @@ export function buildDataEntryFromWindowData(windowData) {
   return {
     application_name: appName,
     tab_name: tabName,
-    url: url,
+    url: sanitizeUrl(url),
     internet_connection: isConnected ? 'online' : 'offline',
     timestamp: new Date().toISOString(),
     token: store.get('SURVEY_TOKEN'),

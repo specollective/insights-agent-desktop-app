@@ -52,9 +52,6 @@ function ActivityTrackingButtonText({ status }) {
 function ActivityTrackingActions({ status, handleSubmit, handleCancel }) {
   const disabled = status === STATUSES.LOADING ? true : false;
 
-  console.log(disabled)
-  // const disabled = false;
-
   return (
     <div className="tracking-actions">
       <button onClick={handleCancel}>Cancel</button>
