@@ -1,8 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { withFormik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import 'yup-phone';
-import { withFormik, Form, Field } from 'formik';
+import formStyles from '../styles/forms';
+
+/**
+ * Represents the login page for the website
+ * @param {Object} props
+ * @returns {React.ReactElement}
+ */
+export function SendAccessCodeForm({ touched, errors }) {
+  return (
+    <div className="page">
+      <Form>
+        <div style={formStyles.form}>
+          <label htmlFor="phoneNumber">
+            Please enter your phone number
+          </label>
+
+          <div>
+            <Field
+              id="phoneNumber"
+              type="text"
+              role="phoneNumber"
+              name="phoneNumber"
+              data-test-id="phone-number"
+              placeholder="Phone number"
+              style={formStyles.input}
+            />
+
+            { touched.phoneNumber
+                && errors.phoneNumber
+                && <div>{errors.phoneNumber}</div>
+            }
+          </div>
+
+          <button
+            style={formStyles.button}
+            type="submit"
+          >
+            Next
+          </button>
+        </div>
+      </Form>
+    </div>
+  )
+}
 
 /**
  * Defines a function to map Formik props to form values
@@ -38,43 +82,6 @@ export const phoneNumberValidator = Yup
 export const validationSchema = Yup.object().shape({
   phoneNumber: phoneNumberValidator,
 });
-
-/**
- * Represents the login page for the website
- * @param {Object} props
- * @returns {React.ReactElement}
- */
-export function SendAccessCodeForm({ touched, errors }) {
-  return (
-    <div className="page">
-      <Form>
-        <div>
-          <label htmlFor="phoneNumber">
-            Please enter your phone number
-          </label>
-
-          <div>
-            <Field
-              id="phoneNumber"
-              type="text"
-              role="phoneNumber"
-              name="phoneNumber"
-              data-test-id="phone-number"
-              placeholder="Phone number"
-            />
-
-            { touched.phoneNumber
-                && errors.phoneNumber
-                && <span>{errors.phoneNumber}</span>
-            }
-          </div>
-
-          <button type="submit">Next</button>
-        </div>
-      </Form>
-    </div>
-  )
-}
 
 /**
  * Wraps SendAccessCodeForm with the withFormik Higher-order component

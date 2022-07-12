@@ -3,6 +3,51 @@ import { useNavigate, Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import 'yup-phone';
 import { withFormik, Form, Field } from 'formik';
+import formStyles from '../styles/forms'
+
+/**
+ * Represents the login page for the website
+ * @param {Object} props
+ * @returns {React.ReactElement}
+ */
+export function ConfirmAccessCodeForm({ touched, errors }) {
+  return (
+    <div className="page">
+      <Form>
+        <div style={formStyles.form}>
+          <label htmlFor="email">
+            Please enter your verification code
+          </label>
+
+          <Field
+            type="text"
+            role="accessCode"
+            name="accessCode"
+            placeholder="1234"
+            style={formStyles.input}
+          />
+
+          { touched.accessCode
+              && errors.accessCode
+              && <span>{errors.accessCode}</span>
+          }
+
+          <div>
+            <Link to="/">I did not receive a verification code</Link>
+          </div>
+
+          <br/>
+
+          <div>
+            <button className={formStyles.button} type="submit">
+              Next
+            </button>
+          </div>
+        </div>
+      </Form>
+    </div>
+  )
+}
 
 /**
  * Defines a function to map Formik props to form values
@@ -37,47 +82,6 @@ export const accessCodeValidator = Yup
 export const validationSchema = Yup.object().shape({
   accessCode: accessCodeValidator,
 });
-
-/**
- * Represents the login page for the website
- * @param {Object} props
- * @returns {React.ReactElement}
- */
-export function ConfirmAccessCodeForm({ touched, errors }) {
-  return (
-    <div className="page">
-      <Form>
-        <div>
-          <label htmlFor="email">
-            Please enter your verification code
-          </label>
-
-          <Field
-            type="text"
-            role="accessCode"
-            name="accessCode"
-            placeholder="1234"
-          />
-
-          { touched.accessCode
-              && errors.accessCode
-              && <span>{errors.accessCode}</span>
-          }
-
-          <div>
-            <Link to="/">I did not receive a verification code</Link>
-          </div>
-
-          <br/>
-
-          <div>
-            <button type="submit">Next</button>
-          </div>
-        </div>
-      </Form>
-    </div>
-  )
-}
 
 export const ConfirmAccessCodeFormWithFormik = withFormik({
   mapPropsToValues,

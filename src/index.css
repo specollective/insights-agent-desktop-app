@@ -104,6 +104,25 @@ button {
 }
 
 .tracking-actions {
-  padding-top: 6em;
-  text-align: right;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 10em;
+}
+
+.tracking-actions button {
+  padding: 0.6em;
+}
+
+.bg-none {
+  background: none;
+  border: none;
+  text-decoration: underline;
+}
+
+.bg-green {
+  background: #70B443;
+  border-radius: 5px;
+  border-width: 0.5px;
+  color: black;
 }

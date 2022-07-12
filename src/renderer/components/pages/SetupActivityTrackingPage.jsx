@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import formStyles from '../styles/forms';
 
 const STATUSES = {
   PENDING: 'PENDING',
@@ -10,25 +11,25 @@ const STATUSES = {
 function ActivityTrackingStatusInstructions ({ status, error }) {
   if (status === STATUSES.PENDING) {
     return (
-      <p>
-        By clicking the Start button, you are confirming to Start the Insights Agent monitoring.
-      </p>
+      <div>
+        <h3>Before you click Start, please read this!</h3>
+        <ul>
+          <li>The purpose of this study is to collect data on how you use your computer.</li>
+          <li>The data will be anonymized to ensure your privacy.</li>
+          <li>You will be paid for taking part in this study.</li>
+        </ul>
+        <p>By clicking on the Start button below, you agree that you are 18 years of age or older, have read the information above and are participating voluntarily.</p>
+        <p><b>Note:</b> You will need to be connected to the internet to begin the process.
+Once running, continuous connection is required.</p>
+      </div>
     )
   }
 
   if (status === STATUSES.LOADING) {
     return (
-      <p>
-        Testing data collection
-      </p>
-    )
-  }
-
-  if (status === STATUSES.SUCCESS) {
-    return (
-      <p>
-        Data collection activated
-      </p>
+      <div>
+        Loading...
+      </div>
     )
   }
 
@@ -58,9 +59,9 @@ function ActivityTrackingActions({ status, handleSubmit, handleCancel }) {
 
   return (
     <div className="tracking-actions">
-      <button onClick={handleCancel}>Cancel</button>
+      <button className="bg-none" onClick={handleCancel}>Cancel</button>
 
-      <button disabled={disabled} onClick={handleSubmit}>
+      <button className="bg-green" disabled={disabled} onClick={handleSubmit}>
         <ActivityTrackingButtonText status={status} />
       </button>
     </div>
@@ -79,7 +80,7 @@ function SetupActivityTrackingPage() {
     } else if (status === STATUSES.SUCCESS) {
       navigate('/dashboard')
     } else if (status === STATUSES.ERROR) {
-      console.log('go to error page ')
+      window.open('https://insights-agent-web-app.specollective.org/')
     }
   }
 
@@ -97,6 +98,7 @@ function SetupActivityTrackingPage() {
   useEffect(() => {
     window.api.onStartActivityTrackingSuccess((message) => {
       setStatus(STATUSES.SUCCESS);
+      navigate('/dashboard');
     });
 
     window.api.onStartActivityTrackingError((message) => {
@@ -109,7 +111,7 @@ function SetupActivityTrackingPage() {
   }, []);
 
   return (
-    <div className="page">
+    <div style={{width: '70%', margin: 'auto', marginTop: '2em'}}>
       <div className="tracking-details">
         <ActivityTrackingStatusInstructions
           status={status}
