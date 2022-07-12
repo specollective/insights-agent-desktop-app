@@ -61,7 +61,12 @@ function ActivityTrackingActions({ status, handleSubmit, handleCancel }) {
     <div className="tracking-actions">
       <button className="bg-none" onClick={handleCancel}>Cancel</button>
 
-      <button className="bg-green" disabled={disabled} onClick={handleSubmit}>
+      <button
+        data-testid="action-button"
+        className="bg-green"
+        disabled={disabled}
+        onClick={handleSubmit}
+      >
         <ActivityTrackingButtonText status={status} />
       </button>
     </div>

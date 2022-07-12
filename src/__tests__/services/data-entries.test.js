@@ -33,13 +33,13 @@ describe('buildDataEntryFromWindowData', () => {
     const dataEntry = buildDataEntryFromWindowData({
       appName: 'a',
       tabName: 'b',
-      url: 'c',
+      url: 'https://example.com/about_us',
       isConnected: true,
     });
 
     expect(dataEntry.application_name).toEqual('a');
     expect(dataEntry.tab_name).toEqual('b');
-    expect(dataEntry.url).toEqual('c');
+    expect(dataEntry.url).toEqual('https://example.com');
     expect(dataEntry.internet_connection).toEqual('online');
   });
 });
