@@ -41,7 +41,7 @@ export const trackingCron = cron.schedule(
 );
 
 // Helper function for starting the tracking cron job.
-export function stopTracking () {
+export function stopTracking() {
   trackingCron.stop();
 }
 
@@ -71,6 +71,8 @@ export async function startTracking(ipcEvent) {
     sendMessage('start-tracking-success', 'success');
     return
   }
+
+  console.log('test tracking');
 
   log('getDataEntry');
   try {
@@ -112,7 +114,7 @@ export async function startTracking(ipcEvent) {
   ipcEvent.sender.send('start-tracking-success', 'success');
 }
 
-export function trackingScriptPath () {
+export function trackingScriptPath() {
   if (os.platform() === 'win32') {
     return `${SCRIPTS_PATH}/${WINDOWS_EXECUTABLE_PATH}`;
   } else if (os.platform() === 'darwin') {
@@ -153,25 +155,45 @@ export async function getDataEntry() {
   });
 }
 
-export function storeDataEntry (dataEntry) {
+export function storeDataEntry(dataEntry) {
   store.set(dataEntry.timestamp, JSON.stringify(dataEntry));
 
   dataEntries.push(dataEntry);
 }
 
-export async function syncDataWithServer () {
+export async function syncDataWithServer() {
   try {
-    await postDataEntries(dataEntries);
-    dataEntries = [];
+    const response = await postDataEntries(dataEntries);
+    const json = await response.json();
+
+    if (response.status === 201) {
+      dataEntries = [];
+    } else {
+      console.log(json);
+    }
   } catch (e) {
     console.log(e.message);
   }
 }
 
 // Function triggers data collection and posts it the API.
-export async function captureActivityData () {
-  const dataEntry = await getDataEntry();
+export async function captureActivityData() {
   const isConnected = await isOnline();
+
+  let dataEntry
+
+  try {
+    dataEntry = await getDataEntry();
+  } catch (e) {
+    dataEntry = {
+      application_name: 'ERROR',
+      tab_name: '',
+      url: '',
+      internet_connection: isConnected ? 'online' : 'offline',
+      timestamp: new Date().toISOString(),
+      token: store.get('SURVEY_TOKEN'),
+    }
+  }
 
   storeDataEntry(dataEntry);
 
