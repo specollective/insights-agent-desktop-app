@@ -70,6 +70,10 @@ const createWindow = () => {
 const createTrayMenu = () => {
   appIcon = new Tray(path.join(__dirname, '/assets/24x24.png'))
 
+  const pauseMessage = store.get('ACTIVITY_TRACKING_ENABLED')
+    ? 'Pause'
+    : 'Start'
+
   const menuActions = [
     {
       label: 'Dashboard',

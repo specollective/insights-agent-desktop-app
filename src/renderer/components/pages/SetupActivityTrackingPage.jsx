@@ -36,7 +36,7 @@ Once running, continuous connection is required.</p>
   if (status === STATUSES.ERROR) {
     return (
       <div style={{ width: '100%', margin: 'auto' }}>
-        <h1>An error occurred went wrong.</h1>
+        <h1>An error occurred.</h1>
 
         <div style={{ background: 'lightGray', width: '100%', padding: '2em' }}>
           { error }
@@ -83,9 +83,9 @@ function SetupActivityTrackingPage() {
       setStatus(STATUSES.LOADING);
       window.api.startActivityTracking();
     } else if (status === STATUSES.SUCCESS) {
-      navigate('/dashboard')
+      navigate('/dashboard');
     } else if (status === STATUSES.ERROR) {
-      window.open('https://insights-agent-web-app.specollective.org/')
+      window.open('https://insights-agent-web-app.specollective.org/');
     }
   }
 
@@ -102,7 +102,7 @@ function SetupActivityTrackingPage() {
 
   useEffect(() => {
     window.api.onStartActivityTrackingSuccess((message) => {
-      setStatus(STATUSES.SUCCESS);
+      // setStatus(STATUSES.SUCCESS);
       navigate('/dashboard');
     });
 

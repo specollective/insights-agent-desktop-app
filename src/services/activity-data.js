@@ -72,8 +72,6 @@ export async function startTracking(ipcEvent) {
     return
   }
 
-  console.log('test tracking');
-
   log('getDataEntry');
   try {
     dataEntry = await getDataEntry();
