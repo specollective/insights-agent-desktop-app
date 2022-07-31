@@ -14,7 +14,10 @@ module.exports = {
       "appleId": process.env['APPLE_ID'],
       "appleIdPassword": process.env['APPLE_ID_PASS'],
     },
-    "executableName": "insights-agent-desktop-app"
+    "executableName": "insights-agent-desktop-app",
+    "extraResource": [
+      "./scripts/mac-data-tracker/program.scpt",
+    ],
   },
   "makers": [
     {
@@ -51,5 +54,26 @@ module.exports = {
         }
       }
     }
+  ],
+  "plugins": [
+    [
+      "@electron-forge/plugin-webpack",
+      {
+        "mainConfig": "./webpack.main.config.js",
+        "renderer": {
+          "config": "./webpack.renderer.config.js",
+          "entryPoints": [
+            {
+              "html": "./src/renderer/index.html",
+              "js": "./src/renderer.js",
+              "name": "main_window",
+              "preload": {
+                "js": "./src/preload.js"
+              }
+            }
+          ]
+        }
+      }
+    ]
   ]
 }

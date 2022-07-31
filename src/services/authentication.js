@@ -22,6 +22,7 @@ async function sendAccessCode(phoneNumber, event) {
       const json = await response.json();
       // 4. Set study participant token in Electron store.
       store.set('USER_TOKEN', json.token);
+      store.set('ONBOARDING_STEP', 'CONFIRM_ACCESS_CODE');
       // 5. Emit Ipc message.
       event.sender.send('send-access-code-success', `success!`);
     } else {
@@ -54,9 +55,10 @@ async function confirmAccessCode(accessCode, event) {
 
     // 5. Set survey token in Electron store.
     store.set('SURVEY_TOKEN', json.survey_token);
+    store.set('ONBOARDING_STEP', 'SETUP');
 
     // 6. Emit IPC success message.
-    event.sender.send('check-access-code-success', `processed: success!`);
+    event.sender.send('check-access-code-success', `success`);
   } else {
     event.sender.send('check-access-code-error', `error`);
   }

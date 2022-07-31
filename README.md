@@ -18,31 +18,44 @@ Raw data is anonymized and only persisted for a short period of time before it i
 
 The bulk of the source code for the app exists in the `src` folder.
 ```
-src
-├── components
-│   ├── common
-│   └── pages
-├── constants
-│   ├── scripts.js
-│   └── urls.js
-├── index.html
-├── index.js
-├── preload.js
-├── renderer.js
-├── services
-│   ├── activity-data.js
-│   ├── authentication.js
-│   └── data-entries.js
-├── stylesheets
-│   ├── confirm-access-code-page.css
-│   ├── dashboard-page.css
+├── LICENSE
+├── README.md
+├── add-osx-cert.sh
+├── assets
+│   ├── entitlements.mac.plist
+│   ├── icon.icns
+│   ├── icon.ico
+│   ├── icon.png
+│   ├── icon.svg
+│   └── icons
+├── babel.config.js
+├── entitlements.plist
+├── forge.config.js
+├── package-lock.json
+├── package.json
+├── scripts
+│   ├── mac-data-tracker
+│   └── windows-data-tracker
+├── src
+│   ├── __tests__
+│   ├── assets
+│   ├── constants
 │   ├── index.css
-│   ├── send-access-code-page.css
-│   └── start-tracking-page.css
-└── utils.js
+│   ├── index.html
+│   ├── main.js
+│   ├── preload.js
+│   ├── react-test-helpers.jsx
+│   ├── renderer
+│   ├── renderer.js
+│   ├── services
+│   └── setupTests.js
+├── webpack.main.config.js
+├── webpack.renderer.config.js
+└── webpack.rules.js
 ```
 
 The `scripts` directory contains the platform specific code for collecting usage data.
+
 ```
 scripts
 ├── mac-data-tracker
@@ -51,7 +64,10 @@ scripts
     ├── Program.cs
     ├── README.md
     ├── windows-data-tracker.csproj
-    └── windows-data-tracker.exe
+    ├── windows-data-tracker.deps.json
+    ├── windows-data-tracker.dll
+    ├── windows-data-tracker.exe
+    └── windows-data-tracker.runtimeconfig.json
 ```
 
 ## Dependencies
