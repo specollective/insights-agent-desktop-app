@@ -3,7 +3,7 @@ const path = require('path');
 
 const SCRIPTS_PATH = app.isPackaged
     ? process.resourcesPath
-    : `${process.cwd()}\\scripts`
+    : `${process.cwd()}/scripts`
 
 const WINDOWS_EXECUTABLE_PATH = app.isPackaged
 ? 'build/windows-data-tracker.exe'
