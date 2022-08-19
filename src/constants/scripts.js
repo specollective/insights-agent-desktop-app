@@ -3,10 +3,12 @@ const path = require('path');
 
 const SCRIPTS_PATH = app.isPackaged
     ? process.resourcesPath
-    : path.join(__dirname, '../../scripts');
+    : `${process.cwd()}\\scripts`
 
-const WINDOWS_EXECUTABLE_PATH =
-  'windows-data-tracker/windows-data-tracker.exe';
+const WINDOWS_EXECUTABLE_PATH = app.isPackaged
+? 'build/windows-data-tracker.exe'
+: 'windows-data-tracker/build/windows-data-tracker.exe';
+
 
 const MAC_EXECUTABLE_PATH = app.isPackaged
   ? 'program.scpt'

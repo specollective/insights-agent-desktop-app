@@ -7,6 +7,7 @@ const {
   ipcMain,
   Menu,
   Tray,
+  nativeImage,
 } = require('electron');
 
 const { confirmAccessCode, sendAccessCode } = require('./services/authentication');
@@ -40,6 +41,7 @@ const createWindow = () => {
     fullscreenable: false,
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
+      nodeIntegration: true,
     },
   });
 
@@ -68,7 +70,9 @@ const createWindow = () => {
 };
 
 const createTrayMenu = () => {
-  appIcon = new Tray(path.join(__dirname, '/assets/24x24.png'))
+  // const icon = nativeImage.createFromPath());
+  console.log(__dirname);
+  appIcon = new Tray(path.join(__dirname, '/assets/icons/24x24.png'));
 
   const pauseMessage = store.get('ACTIVITY_TRACKING_ENABLED')
     ? 'Pause'
@@ -89,6 +93,7 @@ const createTrayMenu = () => {
       label: 'Quit',
       click() {
         forceQuit = true;
+        stopTracking();
 
         app.quit();
       },

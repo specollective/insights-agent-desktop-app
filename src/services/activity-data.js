@@ -114,7 +114,7 @@ export async function startTracking(ipcEvent) {
 
 export function trackingScriptPath() {
   if (os.platform() === 'win32') {
-    return `${SCRIPTS_PATH}/${WINDOWS_EXECUTABLE_PATH}`;
+    return `${SCRIPTS_PATH}\\${WINDOWS_EXECUTABLE_PATH}`;
   } else if (os.platform() === 'darwin') {
     return `osascript ${SCRIPTS_PATH}/${MAC_EXECUTABLE_PATH}`;
   } else {
@@ -198,4 +198,4 @@ export async function captureActivityData() {
   if (isConnected) {
     syncDataWithServer();
   }
-}
+}   
