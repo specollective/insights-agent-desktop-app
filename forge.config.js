@@ -17,6 +17,7 @@ module.exports = {
     "executableName": "insights-agent-desktop-app",
     "extraResource": [
       "./scripts/mac-data-tracker/program.scpt",
+      './scripts/windows-data-tracker/bin/Debug/net6.0/win-x64',
     ],
   },
   "makers": [

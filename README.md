@@ -137,9 +137,18 @@ Perform dry run
 npm run publish:dry-run
 ```
 
-Sign executable
+Sign executables
+
+Manual process using EV Certificate with device access.
+
+Sign C# executable
 ```
-node_modules\electron-winstaller\vendor\signtool.exe sign /a /f "ev-cert.pfx" /p "PASSWORD" "out\insights-agent-desktop-app-win32-x64\insights-agent-desktop-app.exe"
+node_modules\electron-winstaller\vendor\signtool.exe sign /a "scripts\windows-data-tracker\bin\Debug\net6.0\win-x64\windows-data-tracker.exe"
+```
+
+Sign Setup.exe script
+```
+node_modules\electron-winstaller\vendor\signtool.exe sign /a ".\out\make\squirrel.windows\x64\insights-agent-desktop-app-0.1.2-alpha Setup.exe"
 ```
 
 Publish from dry-run
