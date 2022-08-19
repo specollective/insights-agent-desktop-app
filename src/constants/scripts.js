@@ -6,8 +6,8 @@ const SCRIPTS_PATH = app.isPackaged
     : `${process.cwd()}\\scripts`
 
 const WINDOWS_EXECUTABLE_PATH = app.isPackaged
-? 'win-x64/windows-data-tracker.exe'
-: 'windows-data-tracker/bin/Debug/net6.0/win-x64/windows-data-tracker.exe';
+? 'build/windows-data-tracker.exe'
+: 'windows-data-tracker/build/windows-data-tracker.exe';
 
 
 const MAC_EXECUTABLE_PATH = app.isPackaged
