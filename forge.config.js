@@ -26,8 +26,8 @@ module.exports = {
       "config": {
         "name": "insights-agent-desktop-app",
         // NOTE: We are manually signing the executable right now.
-        // "certificateFile": process.env['CSC_LINK'],
-        // "certificatePassword": process.env['CSC_KEY_PASSWORD']
+        "certificateFile": process.env['CERTIFICATE_WINDOWS_PFX'],
+        "certificatePassword": process.env['WINDOWS_CERTIFICATE_PASSWORD'],
       }
     },
     {

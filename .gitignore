@@ -88,8 +88,9 @@ typings/
 # Electron-Forge
 out/
 
-ev-cert.cer
-ev-cert.pfx
+insights-agent.pfx
 
 .vs
 NOTES.txt
+
+workbench

@@ -143,12 +143,11 @@ Manual process using EV Certificate with device access.
 
 Sign C# executable
 ```
-node_modules\electron-winstaller\vendor\signtool.exe sign /a "scripts\windows-data-tracker\bin\Debug\net6.0\win-x64\windows-data-tracker.exe"
+node_modules\electron-winstaller\vendor\signtool.exe sign /a "scripts\windows-data-tracker\build\windows-data-tracker.exe"
 ```
 
-Sign Setup.exe script
-```
-node_modules\electron-winstaller\vendor\signtool.exe sign /a ".\out\make\squirrel.windows\x64\insights-agent-desktop-app-0.1.2-alpha Setup.exe"
+Sign Setup.exe 
+node_modules\electron-winstaller\vendor\signtool.exe sign /a ".\out\make\squirrel.windows\x64\insights-agent-desktop-app-0.1.3-alpha Setup.exe"
 ```
 
 Publish from dry-run
@@ -159,3 +158,8 @@ npm run publish:from-dry-run
 ### MacOSX
 
 The application can run on OSX. This flow is setup to automatically build and sign the app as part of CI.
+
+```
+$fileContentBytes = get-content './insights-agent.pfx' -Encoding Byte
+[System.Convert]::ToBase64String($fileContentBytes) | Out-File 'pfx-encoded-bytes.txt'
+```
