@@ -51,7 +51,9 @@ jobs:
         fileName: 'insights-agent.pfx'
         encodedString: ${{ secrets.CERTIFICATE_WINDOWS_PFX }}
     - name: build
-      run: npm run make
+      run: |
+        npm run make
+        node_modules\electron-winstaller\vendor\signtool.exe sign /f $CERTIFICATE_WINDOWS_PFX /p $WINDOWS_CERTIFICATE_PASSWORD "out\make\squirrel.windows\x64\insights-agent-desktop-app-0.1.5-alpha Setup.exe"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
