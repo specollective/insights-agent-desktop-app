@@ -39,7 +39,6 @@
     "electron": "19.0.4",
     "electron-fetch": "^1.7.4",
     "electron-is-packaged": "^1.0.2",
-    "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^8.0.1",
     "is-online": "^9.0.1",
     "jest-fetch-mock": "^3.0.3",
