@@ -140,7 +140,7 @@ export async function getDataEntry() {
       const [appName, tabName, url] = rawData;
 
       const windowData = {
-        appName,
+        appName: appName === '\r' ? 'MISSING' : appName,
         tabName,
         url,
         isConnected,
@@ -170,6 +170,7 @@ export async function syncDataWithServer() {
       console.log(json);
     }
   } catch (e) {
+    console.log(dataEntries);
     console.log(e.message);
   }
 }
