@@ -1,1 +1,0 @@
-scripts/windows-data-tracker/build/windows-data-tracker.exe filter=lfs diff=lfs merge=lfs -text
