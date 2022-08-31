@@ -51,7 +51,8 @@ jobs:
         encodedString: ${{ secrets.CERTIFICATE_WINDOWS_PFX }}
     - name: build
       run: |
-        echo "CERTIFICATE_WINDOWS_PFX: $CERTIFICATE_WINDOWS_PFX"
+        echo "CERTIFICATE_WINDOWS_PFX: $env:CERTIFICATE_WINDOWS_PFX"
+        echo $CERTIFICATE_WINDOWS_PFX
         npm run make
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
