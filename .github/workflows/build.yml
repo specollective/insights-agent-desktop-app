@@ -35,7 +35,11 @@ jobs:
       run: |
         cd .\scripts\windows-data-tracker
         dotnet publish -r win-x64 --self-contained=true /p:PublishSingleFile=true
-        ls .\bin\Release
+    - name: List files
+      run: |
+        cd .\scripts\windows-data-tracker
+        ls
+
 
   # build_on_linux:
   #   runs-on: ubuntu-latest
