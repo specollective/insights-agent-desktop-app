@@ -49,13 +49,12 @@ jobs:
       with:
         fileName: 'insights-agent.pfx'
         encodedString: ${{ secrets.CERTIFICATE_WINDOWS_PFX }}
+    - name: Setup Debug Session
+      uses: csexton/debugger-action@master
     - name: build
       run: |
-        echo "CERTIFICATE_WINDOWS_PFX: $env:CERTIFICATE_WINDOWS_PFX"
-        echo $CERTIFICATE_WINDOWS_PFX
         npm run make
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
         CERTIFICATE_WINDOWS_PFX: ${{ steps.write_file.outputs.filePath }}
-        TEST_VAR: TEST
