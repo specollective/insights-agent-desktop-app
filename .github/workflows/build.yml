@@ -11,18 +11,12 @@ jobs:
         node-version: 14
     - name: install dependencies
       run: npm install
-    - name: Add Windows certs
+    - name: Setup Windows Certificate
       id: write_file
       uses: timheuer/base64-to-file@v1
       with:
         fileName: 'insights-agent.pfx'
         encodedString: ${{ secrets.CERTIFICATE_WINDOWS_PFX }}
-    - name: Electron Build
-      run: npm run make
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
-        CERTIFICATE_WINDOWS_PFX: ${{ steps.write_file.outputs.filePath }}
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
@@ -31,7 +25,7 @@ jobs:
       run: |
         cd .\scripts\windows-data-tracker
         dotnet restore
-    - name: Build Dotnet tracker
+    - name: Build Dotnet Tracker
       run: |
         cd .\scripts\windows-data-tracker
         dotnet publish -r win-x64 --self-contained=true /p:PublishSingleFile=true -c release
@@ -40,6 +34,12 @@ jobs:
         cd .\scripts\windows-data-tracker
         ls .\bin
         ls .\bin\Release
+    - name: Electron Build
+      run: npm run make
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+        CERTIFICATE_WINDOWS_PFX: ${{ steps.write_file.outputs.filePath }}
 
 
   # build_on_linux:
