@@ -23,6 +23,17 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
         CERTIFICATE_WINDOWS_PFX: ${{ steps.write_file.outputs.filePath }}
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.3
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build Dotnet tracker
+      run: |
+        cd .\scripts\windows-data-tracker
+        dotnet publish -r win-x64 --self-contained=true /p:PublishSingleFile=true
+        ls .\bin\Release
 
   # build_on_linux:
   #   runs-on: ubuntu-latest
