@@ -53,7 +53,7 @@ jobs:
     - name: build
       run: |
         npm run make
-        echo $CERTIFICATE_WINDOWS_PFX
+        echo $env:CERTIFICATE_WINDOWS_PFX
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
