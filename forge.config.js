@@ -16,8 +16,8 @@ module.exports = {
     },
     "executableName": "insights-agent-desktop-app",
     "extraResource": [
-      "./scripts/mac-data-tracker/program.scpt",
-      './scripts/windows-data-tracker/build',
+      // "./scripts/mac-data-tracker/program.scpt",
+      // './scripts/windows-data-tracker/build',
     ],
   },
   "makers": [
@@ -28,7 +28,7 @@ module.exports = {
         // NOTE: We are manually signing the executable right now.
         "certificateFile": process.env['CERTIFICATE_WINDOWS_PFX'],
         "certificatePassword": process.env['WINDOWS_CERTIFICATE_PASSWORD'],
-      }
+      },
     },
     {
       "name": "@electron-forge/maker-zip",
