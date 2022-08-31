@@ -51,9 +51,12 @@ jobs:
         encodedString: ${{ secrets.CERTIFICATE_WINDOWS_PFX }}
     - name: build
       run: |
-        node_modules\electron-winstaller\vendor\signtool.exe sign /f "$env:CERTIFICATE_WINDOWS_PFX" /p "$env:WINDOWS_CERTIFICATE_PASSWORD" "$env:SCRIPT_PATH"
+        ls
+        ls .\scripts\windows-data-tracker\build
+        node_modules\electron-winstaller\vendor\signtool.exe sign /f $CERTIFICATE_WINDOWS_PFX /p $WINDOWS_CERTIFICATE_PASSWORD $SCRIPT_PATH
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
         CERTIFICATE_WINDOWS_PFX: ${{ steps.write_file.outputs.filePath }}
-        SCRIPT_PATH: 'scripts\windows-data-tracker\build\windows-data-tracker.exe'
+        SCRIPT_PATH: .\scripts\windows-data-tracker\build\windows-data-tracker.exe
+        DEBUG: electron-builder
