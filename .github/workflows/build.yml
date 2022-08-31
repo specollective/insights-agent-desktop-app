@@ -2,37 +2,37 @@ name: Build
 on: [push, pull_request]
 
 jobs:
-  build_on_linux:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@master
-      with:
-        node-version: 14
-    - name: install dependencies
-      run: npm install
-    - name: build
-      run: npm run make
+  # build_on_linux:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - uses: actions/setup-node@master
+  #     with:
+  #       node-version: 14
+  #   - name: install dependencies
+  #     run: npm install
+  #   - name: build
+  #     run: npm run make
 
-  build_on_mac:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@master
-      with:
-        node-version: 14
-    - name: install dependencies
-      run: npm install
-    - name: Add MacOS certs
-      run: chmod +x add-osx-cert.sh && ./add-osx-cert.sh
-      env:
-        CERTIFICATE_OSX_APPLICATION: ${{ secrets.CERTIFICATE_OSX_APPLICATION }}
-        CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
-    - name: build
-      run: npm run make
-      env:
-        APPLE_ID: ${{ secrets.APPLE_ID }}
-        APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
+  # build_on_mac:
+  #   runs-on: macos-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - uses: actions/setup-node@master
+  #     with:
+  #       node-version: 14
+  #   - name: install dependencies
+  #     run: npm install
+  #   - name: Add MacOS certs
+  #     run: chmod +x add-osx-cert.sh && ./add-osx-cert.sh
+  #     env:
+  #       CERTIFICATE_OSX_APPLICATION: ${{ secrets.CERTIFICATE_OSX_APPLICATION }}
+  #       CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
+  #   - name: build
+  #     run: npm run make
+  #     env:
+  #       APPLE_ID: ${{ secrets.APPLE_ID }}
+  #       APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
 
   build_on_win:
     runs-on: windows-latest
@@ -51,12 +51,12 @@ jobs:
         encodedString: ${{ secrets.CERTIFICATE_WINDOWS_PFX }}
     - name: build
       run: |
-        ls
-        ls .\scripts\windows-data-tracker\build
-        node_modules\electron-winstaller\vendor\signtool.exe sign /f $CERTIFICATE_WINDOWS_PFX /p $WINDOWS_CERTIFICATE_PASSWORD $SCRIPT_PATH
+        echo $env:SCRIPT_PATH
+        echo $env:CERTIFICATE_WINDOWS_PFX
+
+        node_modules\electron-winstaller\vendor\signtool.exe sign /f $env:CERTIFICATE_WINDOWS_PFX /p $env:WINDOWS_CERTIFICATE_PASSWORD $env:SCRIPT_PATH
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
         CERTIFICATE_WINDOWS_PFX: ${{ steps.write_file.outputs.filePath }}
-        SCRIPT_PATH: .\scripts\windows-data-tracker\build\windows-data-tracker.exe
-        DEBUG: electron-builder
+        SCRIPT_PATH: D:\a\insights-agent-desktop-app\insights-agent-desktop-app\scripts\windows-data-tracker\build\windows-data-tracker.exe
