@@ -17,6 +17,22 @@ jobs:
       with:
         fileName: 'insights-agent.pfx'
         encodedString: ${{ secrets.CERTIFICATE_WINDOWS_PFX }}
+            - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'
+    - name: Restore dependencies
+      run: |
+        cd .\scripts\windows-data-tracker
+        dotnet restore
+    - name: Build Dotnet Tracker
+      run: |
+        cd .\scripts\windows-data-tracker
+        dotnet publish -r win-x64 --self-contained=true /p:PublishSingleFile=true -c release
+    - name: List files
+      run: |
+        Copy-Item -Path ".\scripts\windows-data-tracker\bin\Release\net6.0\win-x64\publish\*" -Destination ".\scripts\windows-data-tracker\build" -recurse -Force
+        ls ".\scripts\windows-data-tracker\build"
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
