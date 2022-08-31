@@ -28,7 +28,9 @@ jobs:
       with:
         dotnet-version: '6.0.x'
     - name: Restore dependencies
-      run: dotnet restore
+      run: |
+        cd .\scripts\windows-data-tracker
+        dotnet restore
     - name: Build Dotnet tracker
       run: |
         cd .\scripts\windows-data-tracker
