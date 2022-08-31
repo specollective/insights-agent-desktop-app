@@ -32,8 +32,7 @@ jobs:
     - name: List files
       run: |
         cd .\scripts\windows-data-tracker
-        ls .\bin
-        ls .\bin\Release
+        ls .\bin\release\net6.0\win-x64\publish
     - name: Electron Build
       run: npm run make
       env:
