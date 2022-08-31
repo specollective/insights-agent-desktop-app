@@ -15,7 +15,7 @@ function DashboardPage() {
         If you would like to opt out of this study, click the Pause button in the taskbar and follow instructions.
       </p>
 
-      <p>Version: 0.1.6-alpha</p>
+      <p>Version: 0.1.7-alpha</p>
     </div>
   )
 }
