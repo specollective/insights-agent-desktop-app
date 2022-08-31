@@ -167,11 +167,12 @@ export async function syncDataWithServer() {
     if (response.status === 201) {
       dataEntries = [];
     } else {
-      console.log(json);
+      throw new Error(JSON.stringify(json));
     }
   } catch (e) {
     console.log(dataEntries);
     console.log(e.message);
+    dataEntries = [];
   }
 }
 
@@ -183,18 +184,19 @@ export async function captureActivityData() {
 
   try {
     dataEntry = await getDataEntry();
+    dataEntries.push(dataEntry);
   } catch (e) {
     dataEntry = {
-      application_name: 'ERROR',
+      application_name: '',
       tab_name: '',
       url: '',
       internet_connection: isConnected ? 'online' : 'offline',
       timestamp: new Date().toISOString(),
       token: store.get('SURVEY_TOKEN'),
+      error: e.message,
     }
+    store.set(dataEntry.timestamp, JSON.stringify(dataEntry));
   }
-
-  storeDataEntry(dataEntry);
 
   if (isConnected) {
     syncDataWithServer();
