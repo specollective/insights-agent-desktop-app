@@ -148,6 +148,8 @@ export async function getDataEntry() {
 
       const dataEntry = buildDataEntryFromWindowData(windowData);
 
+      console.log(dataEntry);
+
       resolve(dataEntry);
     });
   });
@@ -160,6 +162,7 @@ export function storeDataEntry(dataEntry) {
 }
 
 export async function syncDataWithServer() {
+  console.log('sync', dataEntries);
   try {
     const response = await postDataEntries(dataEntries);
     const json = await response.json();
@@ -201,4 +204,4 @@ export async function captureActivityData() {
   if (isConnected) {
     syncDataWithServer();
   }
-}   
+}

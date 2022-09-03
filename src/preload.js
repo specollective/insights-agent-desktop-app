@@ -1,10 +1,12 @@
 // See the Electron documentation for details on how to use preload scripts:
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
+// TODO: Refactor to ES6 Modules
 const path = require('path');
 const { readFileSync } = require('fs');
 const { ipcRenderer, contextBridge } = require('electron');
 const Store = require('electron-store');
+const packageJson = require('../package.json');
 
 // Initialization
 const store = new Store();
@@ -18,6 +20,7 @@ const mapIpcOnMessageToCallback = (message, callback) =>
 contextBridge.exposeInMainWorld(
   'api',
   {
+    applicationVersion: packageJson.version,
     surveyToken: store.get('SURVEY_TOKEN'),
     onboardingStep: store.get('ONBOARDING_STEP') || 'SEND_ACCESS_CODE',
     sendAccessCode: (phoneNumber) => {

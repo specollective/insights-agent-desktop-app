@@ -1,5 +1,6 @@
 import path from 'path';
 import os from 'os';
+import packageJson from '../package.json';
 
 const {
   app,
@@ -51,7 +52,8 @@ const createWindow = () => {
   // Open the DevTools.
   if (process.env['DEVELOPMENT']) {
     mainWindow.webContents.openDevTools();
-    console.log(app.getPath('userData'));
+    console.log(`USER DATA PATH: ${app.getPath('userData')}`);
+    console.log(`APPLICATION VERSION ${packageJson.version}`);
   }
 
   mainWindow.on('minimize', function (windowEvent) {
@@ -69,7 +71,9 @@ const createWindow = () => {
   });
 };
 
+// Creates the icon widget on the top level menu on OSX and the "tray" bottom menu on Windows.
 const createTrayMenu = () => {
+  // TODO: Look into newer syntax for icons.
   // const icon = nativeImage.createFromPath());
   console.log(__dirname);
   appIcon = new Tray(path.join(__dirname, '/assets/icons/24x24.png'));
