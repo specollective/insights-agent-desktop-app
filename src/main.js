@@ -1,5 +1,4 @@
 import path from 'path';
-import os from 'os';
 
 import {
   app,
@@ -7,7 +6,6 @@ import {
   ipcMain,
   Menu,
   Tray,
-  nativeImage,
 } from 'electron';
 
 import {
@@ -18,7 +16,6 @@ import {
 import {
   startTracking,
   stopTracking,
-  testTracking,
 } from './services/activity-data';
 
 import makeMockAPI from './mock-api';
