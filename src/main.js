@@ -22,6 +22,15 @@ const Store = require('electron-store');
 require('update-electron-app')({ updateInterval: '5 minutes' });
 require('dotenv').config();
 
+const makeMockAPI = require('./mock-api');
+
+const useMockApi = process.env.USE_MOCK_API;
+const isDevelopment = process.env.NODE_ENV === 'development';
+
+if (isDevelopment) {
+  makeMockAPI({ environment: 'development' });
+}
+
 const store = new Store();
 
 let appIcon, contextMenu, mainWindow, forceQuit;
@@ -49,7 +58,7 @@ const createWindow = () => {
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   // Open the DevTools.
-  if (process.env['DEVELOPMENT']) {
+  if (isDevelopment) {
     mainWindow.webContents.openDevTools();
     console.log(app.getPath('userData'));
   }
@@ -70,8 +79,6 @@ const createWindow = () => {
 };
 
 const createTrayMenu = () => {
-  // const icon = nativeImage.createFromPath());
-  console.log(__dirname);
   appIcon = new Tray(path.join(__dirname, '/assets/icons/24x24.png'));
 
   const pauseMessage = store.get('ACTIVITY_TRACKING_ENABLED')

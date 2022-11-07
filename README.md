@@ -80,7 +80,7 @@ scripts
 
 ## Development
 
-1. Close repo
+1. Clone repo
 ```
 git clone git@github.com:specollective/insights-agent-desktop-app.git
 ```
@@ -90,9 +90,9 @@ git clone git@github.com:specollective/insights-agent-desktop-app.git
 npm install
 ```
 
-3. Start development app
+3. Start desktop app with fake backend
 ```
-npm start
+npm run start:dev
 ```
 
 4. Run unit tests
@@ -102,64 +102,4 @@ npm test
 
 ## Deployment
 
-Testing builds locally
-
-Create a .env file.
-```
-touch .env
-```
-
-Add the following environment variables with your developer credentials.
-```
-APPLE_ID=[YOUR APPLE ID]
-APPLE_ID_PASS=[YOUR APP SPECIFIC PASSWORD]
-APPLE_IDENTITY=Developer ID Application: [YOUR NAME] ([YOUR DEVELOPER ID])
-CSR_PASS=[CSR_PASS]
-DEVELOPMENT=true
-GITHUB_TOKEN=[GITHUB_TOKEN]
-BACKEND_API_URL=https://example.com
-```
-
-## Distribution
-
-🚧 This section us under construction and is considered incomplete. 🚧
-
-### MS Windows
-
-The Insights Agent desktop application has initially been developed to study usage of Microsoft Windows computers. The application uses Electron Forge to sign the software with an Extended Validation (EV) token. Currently, this requires building the application on a computer with a thumb-drive with the EV token client.
-
-**Manual code signing process**
-
-This section assumes you have the EV token device and credentials stored in a password manager.
-
-Perform dry run
-```
-npm run publish:dry-run
-```
-
-Sign executables
-
-Manual process using EV Certificate with device access.
-
-Sign C# executable
-```
-node_modules\electron-winstaller\vendor\signtool.exe sign /a "scripts\windows-data-tracker\build\windows-data-tracker.exe"
-```
-
-Sign Setup.exe 
-node_modules\electron-winstaller\vendor\signtool.exe sign /a ".\out\make\squirrel.windows\x64\insights-agent-desktop-app-0.1.3-alpha Setup.exe"
-```
-
-Publish from dry-run
-```
-npm run publish:from-dry-run
-```
-
-### MacOSX
-
-The application can run on OSX. This flow is setup to automatically build and sign the app as part of CI.
-
-```
-$fileContentBytes = get-content './insights-agent.pfx' -Encoding Byte
-[System.Convert]::ToBase64String($fileContentBytes) | Out-File 'pfx-encoded-bytes.txt'
-```
+Deployments are automated with Github Actions and Github Releases. See the `.github` directory for more details about the build configuration.

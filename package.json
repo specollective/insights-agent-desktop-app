@@ -7,6 +7,7 @@
   "repository": "https://github.com/specollective/insights-agent-desktop-app.git",
   "scripts": {
     "start": "electron-forge start",
+    "dev": "USE_MOCK_API=true electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
