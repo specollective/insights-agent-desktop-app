@@ -1,12 +1,12 @@
 // Third party depedencies
-const fetch = require('electron-fetch').default
-const Store = require('electron-store')
+const fetch = require('electron-fetch').default;
+const Store = require('electron-store');
 
 // Application dependencies
-const { BASE_URL, DEFAULT_OPTIONS } = require('../constants/urls')
+const { BASE_URL, DEFAULT_OPTIONS } = require('../constants/urls');
 
 // Initialization
-const store = new Store()
+const store = new Store();
 
 async function sendAccessCode(phoneNumber, event) {
   try {

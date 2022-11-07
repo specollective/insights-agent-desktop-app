@@ -1,26 +1,36 @@
 import path from 'path';
-import os from 'os';
 
-const {
+import {
   app,
   BrowserWindow,
   ipcMain,
   Menu,
   Tray,
-  nativeImage,
-} = require('electron');
+} from 'electron';
 
-const { confirmAccessCode, sendAccessCode } = require('./services/authentication');
-const {
+import {
+  confirmAccessCode,
+  sendAccessCode
+} from './services/authentication';
+
+import {
   startTracking,
   stopTracking,
-  testTracking,
-} = require('./services/activity-data');
+} from './services/activity-data';
 
-const Store = require('electron-store');
+import makeMockAPI from './mock-api';
+import Store from 'electron-store';
 
+// TODO: Convert to ES6 syntax
 require('update-electron-app')({ updateInterval: '5 minutes' });
 require('dotenv').config();
+
+const useMockApi = process.env.USE_MOCK_API === 'true';
+const isDevelopment = process.env.DEVELOPMENT === 'true';
+
+if (useMockApi && isDevelopment) {
+  makeMockAPI({ environment: 'development' });
+}
 
 const store = new Store();
 
@@ -49,7 +59,7 @@ const createWindow = () => {
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   // Open the DevTools.
-  if (process.env['DEVELOPMENT']) {
+  if (isDevelopment) {
     mainWindow.webContents.openDevTools();
     console.log(app.getPath('userData'));
   }
@@ -70,8 +80,6 @@ const createWindow = () => {
 };
 
 const createTrayMenu = () => {
-  // const icon = nativeImage.createFromPath());
-  console.log(__dirname);
   appIcon = new Tray(path.join(__dirname, '/assets/icons/24x24.png'));
 
   const pauseMessage = store.get('ACTIVITY_TRACKING_ENABLED')

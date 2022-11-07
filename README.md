@@ -1,8 +1,8 @@
 # Insights Agent Desktop App
 
-🚧 This repository is actively under development and should be consider unstable. 🚧
+🚧 This code is actively under development and should be considered unstable. 🚧
 
-This repository houses the code for the Insights Agent desktop application. This application is designed to be used by individuals who have signed up and are selected to participate in a research studies where participants download the desktop app and enable data collection of the following data points.
+This repository contains the code for the Insights Agent desktop application. It is designed to be used by individuals who have signed up and are selected to participate in research studies where participants download the app and enable data collection of the following data points.
 
 - device type / operating system
 - application names
@@ -12,11 +12,12 @@ This repository houses the code for the Insights Agent desktop application. This
 - device type
 - timestamps
 
-Raw data is anonymized and only persisted for a short period of time before it is aggregated and destroyed. The code is setup to be hosted open source on Github in order to leverage the free service [update.electronjs.org](https://github.com/electron/update.electronjs.org) for auto-updating production applications.
+Raw data is anonymized and only persisted for a short period of time before being aggregated, analyzed, and destroyed. The code is setup to be hosted open source on Github in order to leverage the free service [update.electronjs.org](https://github.com/electron/update.electronjs.org) for auto-updating production applications.
 
 ## Software Architecture
 
 The bulk of the source code for the app exists in the `src` folder.
+
 ```
 ├── LICENSE
 ├── README.md
@@ -71,6 +72,7 @@ scripts
 ```
 
 ## Dependencies
+
 - electron
 - electron-forge
 - update-electron-app
@@ -80,86 +82,49 @@ scripts
 
 ## Development
 
-1. Close repo
+### 1. Clone repo
+
 ```
 git clone git@github.com:specollective/insights-agent-desktop-app.git
 ```
 
-2. Install dependencies
+### 2. Install dependencies
+
 ```
 npm install
 ```
 
-3. Start development app
+### 3. Create am environment file
+
+Copy the contents of `.env.example` to a new `.env` file.
+
+```
+cp .env.example .env
+```
+
+The `.env` file should have the following variagbles set.
+
+```
+DEVELOPMENT=true
+USE_MOCK_API=true
+```
+
+### 4. Start the app in development mode
+
 ```
 npm start
 ```
 
-4. Run unit tests
+### 5. Run unit tests
+
 ```
 npm test
 ```
 
+### 6. Testing against production API
+
+Set the `DEVELOPMENT` variable to false the `.env` file before running `npm start`.
+
 ## Deployment
 
-Testing builds locally
-
-Create a .env file.
-```
-touch .env
-```
-
-Add the following environment variables with your developer credentials.
-```
-APPLE_ID=[YOUR APPLE ID]
-APPLE_ID_PASS=[YOUR APP SPECIFIC PASSWORD]
-APPLE_IDENTITY=Developer ID Application: [YOUR NAME] ([YOUR DEVELOPER ID])
-CSR_PASS=[CSR_PASS]
-DEVELOPMENT=true
-GITHUB_TOKEN=[GITHUB_TOKEN]
-BACKEND_API_URL=https://example.com
-```
-
-## Distribution
-
-🚧 This section us under construction and is considered incomplete. 🚧
-
-### MS Windows
-
-The Insights Agent desktop application has initially been developed to study usage of Microsoft Windows computers. The application uses Electron Forge to sign the software with an Extended Validation (EV) token. Currently, this requires building the application on a computer with a thumb-drive with the EV token client.
-
-**Manual code signing process**
-
-This section assumes you have the EV token device and credentials stored in a password manager.
-
-Perform dry run
-```
-npm run publish:dry-run
-```
-
-Sign executables
-
-Manual process using EV Certificate with device access.
-
-Sign C# executable
-```
-node_modules\electron-winstaller\vendor\signtool.exe sign /a "scripts\windows-data-tracker\build\windows-data-tracker.exe"
-```
-
-Sign Setup.exe 
-node_modules\electron-winstaller\vendor\signtool.exe sign /a ".\out\make\squirrel.windows\x64\insights-agent-desktop-app-0.1.3-alpha Setup.exe"
-```
-
-Publish from dry-run
-```
-npm run publish:from-dry-run
-```
-
-### MacOSX
-
-The application can run on OSX. This flow is setup to automatically build and sign the app as part of CI.
-
-```
-$fileContentBytes = get-content './insights-agent.pfx' -Encoding Byte
-[System.Convert]::ToBase64String($fileContentBytes) | Out-File 'pfx-encoded-bytes.txt'
-```
+Deployments are automated with Github Actions and Github Releases. See the `.github` directory for more details about the build configuration.
