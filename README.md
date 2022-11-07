@@ -1,8 +1,8 @@
 # Insights Agent Desktop App
 
-🚧 This repository is actively under development and should be consider unstable. 🚧
+🚧 This code is actively under development and should be considered unstable. 🚧
 
-This repository houses the code for the Insights Agent desktop application. This application is designed to be used by individuals who have signed up and are selected to participate in a research studies where participants download the desktop app and enable data collection of the following data points.
+This repository contains the code for the Insights Agent desktop application. It is designed to be used by individuals who have signed up and are selected to participate in research studies where participants download the app and enable data collection of the following data points.
 
 - device type / operating system
 - application names
@@ -12,11 +12,12 @@ This repository houses the code for the Insights Agent desktop application. This
 - device type
 - timestamps
 
-Raw data is anonymized and only persisted for a short period of time before it is aggregated and destroyed. The code is setup to be hosted open source on Github in order to leverage the free service [update.electronjs.org](https://github.com/electron/update.electronjs.org) for auto-updating production applications.
+Raw data is anonymized and only persisted for a short period of time before being aggregated, analyzed, and destroyed. The code is setup to be hosted open source on Github in order to leverage the free service [update.electronjs.org](https://github.com/electron/update.electronjs.org) for auto-updating production applications.
 
 ## Software Architecture
 
 The bulk of the source code for the app exists in the `src` folder.
+
 ```
 ├── LICENSE
 ├── README.md
@@ -71,6 +72,7 @@ scripts
 ```
 
 ## Dependencies
+
 - electron
 - electron-forge
 - update-electron-app
@@ -80,25 +82,48 @@ scripts
 
 ## Development
 
-1. Clone repo
+### 1. Clone repo
+
 ```
 git clone git@github.com:specollective/insights-agent-desktop-app.git
 ```
 
-2. Install dependencies
+### 2. Install dependencies
+
 ```
 npm install
 ```
 
-3. Start desktop app with fake backend
+### 3. Create am environment file
+
+Copy the contents of `.env.example` to a new `.env` file.
+
 ```
-npm run start:dev
+cp .env.example .env
 ```
 
-4. Run unit tests
+The `.env` file should have the following variagbles set.
+
+```
+DEVELOPMENT=true
+USE_MOCK_API=true
+```
+
+### 4. Start the app in development mode
+
+```
+npm start
+```
+
+### 5. Run unit tests
+
 ```
 npm test
 ```
+
+### 6. Testing against production API
+
+Set the `DEVELOPMENT` variable to false the `.env` file before running `npm start`.
 
 ## Deployment
 

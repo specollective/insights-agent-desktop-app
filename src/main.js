@@ -1,33 +1,37 @@
 import path from 'path';
 import os from 'os';
 
-const {
+import {
   app,
   BrowserWindow,
   ipcMain,
   Menu,
   Tray,
   nativeImage,
-} = require('electron');
+} from 'electron';
 
-const { confirmAccessCode, sendAccessCode } = require('./services/authentication');
-const {
+import {
+  confirmAccessCode,
+  sendAccessCode
+} from './services/authentication';
+
+import {
   startTracking,
   stopTracking,
   testTracking,
-} = require('./services/activity-data');
+} from './services/activity-data';
 
-const Store = require('electron-store');
+import makeMockAPI from './mock-api';
+import Store from 'electron-store';
 
+// TODO: Convert to ES6 syntax
 require('update-electron-app')({ updateInterval: '5 minutes' });
 require('dotenv').config();
 
-const makeMockAPI = require('./mock-api');
+const useMockApi = process.env.USE_MOCK_API === 'true';
+const isDevelopment = process.env.DEVELOPMENT === 'true';
 
-const useMockApi = process.env.USE_MOCK_API;
-const isDevelopment = process.env.NODE_ENV === 'development';
-
-if (isDevelopment) {
+if (useMockApi && isDevelopment) {
   makeMockAPI({ environment: 'development' });
 }
 

@@ -1,6 +1,6 @@
 const { app } = require('electron');
 
-const BASE_URL = process.env.NODE_ENV === 'development'
+const BASE_URL = process.env.DEVELOPMENT === 'true'
   ? 'http://localhost:3333'
   : 'https://insights-agent-api.specollective.org';
 
