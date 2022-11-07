@@ -1,14 +1,16 @@
 const { app } = require('electron');
 const path = require('path');
+const escape = require('escape-path-with-spaces');
+
+const processPath = escape(process.cwd());
 
 const SCRIPTS_PATH = app.isPackaged
     ? process.resourcesPath
-    : `${process.cwd()}/scripts`
+    : `${processPath}/scripts`
 
 const WINDOWS_EXECUTABLE_PATH = app.isPackaged
 ? 'build/windows-data-tracker.exe'
 : 'windows-data-tracker/build/windows-data-tracker.exe';
-
 
 const MAC_EXECUTABLE_PATH = app.isPackaged
   ? 'program.scpt'
