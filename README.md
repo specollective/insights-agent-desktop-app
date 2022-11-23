@@ -1,5 +1,8 @@
 # Insights Agent Desktop App
 
+The Build justly Project and Georgia Hispanic Chamber of Commerce, partnered to launch and execute a technology study. The study will endeavor to not only to better understand the barriers/frictions and interests/needs to technology of Hispanic small business owners in the state of Georgia but will also work to develop specific ways to bring down the barriers to technology competency.  This study, will be measuring efforts through both opt-in telemetry collection alongside on-going qualitative interviews and surveys which will be shared publicly. 
+
+
 🚧 This code is actively under development and should be considered unstable. 🚧
 
 This repository contains the code for the Insights Agent desktop application. It is designed to be used by individuals who have signed up and are selected to participate in research studies where participants download the app and enable data collection of the following data points.
@@ -12,7 +15,6 @@ This repository contains the code for the Insights Agent desktop application. It
 - device type
 - timestamps
 
-Raw data is anonymized and only persisted for a short period of time before being aggregated, analyzed, and destroyed. The code is setup to be hosted open source on Github in order to leverage the free service [update.electronjs.org](https://github.com/electron/update.electronjs.org) for auto-updating production applications.
 
 ## Software Architecture
 
