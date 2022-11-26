@@ -19,21 +19,7 @@ Raw data is anonymized and only persisted for a short period of time before bein
 The bulk of the source code for the app exists in the `src` folder.
 
 ```
-├── LICENSE
-├── README.md
-├── add-osx-cert.sh
 ├── assets
-│   ├── entitlements.mac.plist
-│   ├── icon.icns
-│   ├── icon.ico
-│   ├── icon.png
-│   ├── icon.svg
-│   └── icons
-├── babel.config.js
-├── entitlements.plist
-├── forge.config.js
-├── package-lock.json
-├── package.json
 ├── scripts
 │   ├── mac-data-tracker
 │   └── windows-data-tracker
@@ -50,6 +36,14 @@ The bulk of the source code for the app exists in the `src` folder.
 │   ├── renderer.js
 │   ├── services
 │   └── setupTests.js
+├── README.md
+├── LICENSE
+├── package-lock.json
+├── package.json
+├── add-osx-cert.sh
+├── babel.config.js
+├── entitlements.plist
+├── forge.config.js
 ├── webpack.main.config.js
 ├── webpack.renderer.config.js
 └── webpack.rules.js
