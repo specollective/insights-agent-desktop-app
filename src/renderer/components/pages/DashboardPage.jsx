@@ -8,14 +8,12 @@ function DashboardPage() {
       </p>
 
       <p>
-        If you are having trouble or have any questions, please contact 800-555-1234.
+        If you are having trouble or have any questions, please contact tech4all@buildjustly.org.
       </p>
 
       <p>
         If you would like to opt out of this study, click the Pause button in the taskbar and follow instructions.
       </p>
-
-      <p>Version: 0.1.9-alpha</p>
     </div>
   )
 }

@@ -132,6 +132,8 @@ button {
 
 .dashboard {
   min-height: fit-content;
-  font-size:18px;
   padding: 20px 10px;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 24px;
 }
