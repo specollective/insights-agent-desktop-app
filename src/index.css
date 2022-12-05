@@ -95,14 +95,10 @@ input {
   height: 1em;
 }
 
-p {
-  font-size:18px;
-}
-
 .page {
-  /* display: grid;
+  display: grid;
   place-items: center;
-  min-height: 90vh; */
+  min-height: 90vh;
 }
 
 button {
@@ -132,4 +128,10 @@ button {
   border-radius: 5px;
   border-width: 0.5px;
   color: black;
+}
+
+.dashboard {
+  min-height: fit-content;
+  font-size:18px;
+  padding: 20px 10px;
 }

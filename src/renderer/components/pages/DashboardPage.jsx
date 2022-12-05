@@ -2,7 +2,7 @@ import React from 'react';
 
 function DashboardPage() {
   return (
-    <div className="page">
+    <div className="page dashboard">
       <p>
         The Insights Agent is now running. By closing this window, you will not pause the study.
       </p>
