@@ -95,6 +95,10 @@ input {
   height: 1em;
 }
 
+p {
+  font-size:18px;
+}
+
 .page {
   /* display: grid;
   place-items: center;
