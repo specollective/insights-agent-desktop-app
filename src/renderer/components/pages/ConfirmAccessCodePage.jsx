@@ -23,7 +23,7 @@ export function ConfirmAccessCodeForm({ touched, errors }) {
               type="text"
               role="accessCode"
               name="accessCode"
-              placeholder="1234"
+              placeholder="XXXXXX"
               className="w-96 py-2 pl-2 m-0 rounded-lg text-left"
             />
 
