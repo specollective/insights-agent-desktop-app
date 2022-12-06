@@ -3,7 +3,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import 'yup-phone';
 import { withFormik, Form, Field } from 'formik';
-import formStyles from '../styles/forms'
 
 /**
  * Represents the login page for the website
@@ -12,34 +11,36 @@ import formStyles from '../styles/forms'
  */
 export function ConfirmAccessCodeForm({ touched, errors }) {
   return (
-    <div className="page">
+    <div className='grid place-items-center h-screen'>
       <Form>
-        <div style={formStyles.form}>
+        <div>
           <label htmlFor="email">
             Please enter your verification code
           </label>
 
-          <Field
-            type="text"
-            role="accessCode"
-            name="accessCode"
-            placeholder="1234"
-            style={formStyles.input}
-          />
+          <div className='grid place-items-center'>
+            <Field
+              type="text"
+              role="accessCode"
+              name="accessCode"
+              placeholder="1234"
+              className="w-96 py-2 pl-2 m-0 rounded-lg text-left"
+            />
 
-          { touched.accessCode
-              && errors.accessCode
-              && <span>{errors.accessCode}</span>
-          }
+            { touched.accessCode
+                && errors.accessCode
+                && <span>{errors.accessCode}</span>
+            }
 
-          <div>
-            <Link to="/">I did not receive a verification code</Link>
+            <div className='pt-8'>
+              <Link to="/">I did not receive a verification code</Link>
+            </div>
           </div>
 
           <br/>
 
           <div>
-            <button className={formStyles.button} type="submit">
+            <button type="submit" className='relative float-right top-20 left-20 font-light font-base cursor-pointer underline'>
               Next
             </button>
           </div>
