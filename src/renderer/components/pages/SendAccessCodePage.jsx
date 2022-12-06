@@ -12,7 +12,7 @@ import formStyles from '../styles/forms';
  */
 export function SendAccessCodeForm({ touched, errors }) {
   return (
-    <div className="page">
+    <div className="page mt-2">
       <Form>
         <div style={formStyles.form}>
           <label htmlFor="phoneNumber">
