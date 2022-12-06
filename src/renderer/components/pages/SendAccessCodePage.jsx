@@ -12,20 +12,20 @@ import 'yup-phone'
  */
 export function SendAccessCodeForm({ touched, errors }) {
   return (
-    <div className='grid justify-center'>
+    <div className='grid place-items-center h-screen'>
       <Form>
         <div>
-          <label htmlFor='phoneNumber'>Please enter your phone number</label>
+          <label htmlFor='phoneNumber'>Please enter your phone number:</label>
 
-          <div>
+          <div className='grid place-items-center'>
             <Field
               id='phoneNumber'
               type='text'
               role='phoneNumber'
               name='phoneNumber'
               data-test-id='phone-number'
-              placeholder='Phone number'
-              // style={'color'}
+              placeholder='(XXX) XXX-XXXX'
+              className="w-96 py-2 m-0 rounded-lg text-left"
             />
 
             {touched.phoneNumber && errors.phoneNumber && (
