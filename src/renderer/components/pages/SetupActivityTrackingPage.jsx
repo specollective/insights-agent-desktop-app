@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import formStyles from '../styles/forms';
 
 const STATUSES = {
   PENDING: 'PENDING',
@@ -12,15 +11,18 @@ function ActivityTrackingStatusInstructions ({ status, error }) {
   if (status === STATUSES.PENDING) {
     return (
       <div>
-        <h1 className="text-2xl font-bold py-8">Before you click Start, please read this.</h1>
-        <ul>
+        <h1 className='py-8 text-2xl font-bold'>Before you click Start, please read this.</h1>
+        <ul className='list-disc pl-10 text-lg '>
           <li>The purpose of this study is to collect data on how you use your computer.</li>
           <li>The data will be anonymized to ensure your privacy.</li>
           <li>You will be paid for taking part in this study.</li>
         </ul>
-        <p>By clicking on the Start button below, you agree that you are 18 years of age or older, have read the information above and are participating voluntarily.</p>
-        <p><b>Note:</b> You will need to be connected to the internet to begin the process.
-Once running, continuous connection is required.</p>
+        <p className='py-2 text-lg'>
+          By clicking on the Start button below, you agree that you are 18 years of age or older, have read the information above and are participating voluntarily.
+        </p>
+        <p className='py-2 text-base font-bold'>
+          Note: You will need to be connected to the internet to begin the process. Once running, continuous connection is required.
+        </p>
       </div>
     )
   }
@@ -35,7 +37,6 @@ Once running, continuous connection is required.</p>
 
   if (status === STATUSES.ERROR) {
     return (
-      // <div style={{ width: '100%', margin: 'auto' }}>
       <div>
         <h1>An error occurred.</h1>
 
@@ -117,20 +118,17 @@ function SetupActivityTrackingPage() {
   }, []);
 
   return (
-    // <div style={{width: '70%', margin: 'auto', marginTop: '2em'}}>
-    <div className="">
-      <div className="tracking-details">
-        <ActivityTrackingStatusInstructions
-          status={status}
-          error={error}
-        />
+    <div>
+      <ActivityTrackingStatusInstructions
+        status={status}
+        error={error}
+      />
 
-        <ActivityTrackingActions
-          status={status}
-          handleSubmit={handleSubmit}
-          handleCancel={handleCancel}
-        />
-      </div>
+      <ActivityTrackingActions
+        status={status}
+        handleSubmit={handleSubmit}
+        handleCancel={handleCancel}
+      />
     </div>
   )
 }
