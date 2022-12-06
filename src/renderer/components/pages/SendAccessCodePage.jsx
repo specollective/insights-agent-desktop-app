@@ -25,7 +25,7 @@ export function SendAccessCodeForm({ touched, errors }) {
               name='phoneNumber'
               data-test-id='phone-number'
               placeholder='(XXX) XXX-XXXX'
-              className="w-96 py-2 m-0 rounded-lg text-left"
+              className="w-96 py-2 pl-2 m-0 rounded-lg text-left"
             />
 
             {touched.phoneNumber && errors.phoneNumber && (
@@ -33,7 +33,7 @@ export function SendAccessCodeForm({ touched, errors }) {
             )}
           </div>
 
-          <button className='float-right' type='submit'>
+          <button className='relative float-right top-36 left-20 font-light font-base cursor-pointer underline' type='submit'>
             Next
           </button>
         </div>
