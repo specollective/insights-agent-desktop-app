@@ -8,6 +8,8 @@ body {
   margin: auto;
   max-width: 38rem;
   padding: 2rem;
+  background-color: #313131;
+  color:white;
 }
 
 .loader {
