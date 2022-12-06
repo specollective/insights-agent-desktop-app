@@ -15,7 +15,7 @@ describe('Send access code page', () => {
   it('renders expected copy', () => {
     renderPage(<SetupActivityTrackingPage />);
 
-    expect(screen.getByText(/Before you click Start, please read this!/i))
+    expect(screen.getByText(/Before you click Start, please read this./i))
       .toBeInTheDocument();
   });
 
