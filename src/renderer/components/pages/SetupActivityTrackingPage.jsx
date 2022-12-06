@@ -12,7 +12,7 @@ function ActivityTrackingStatusInstructions ({ status, error }) {
     return (
       <div>
         <h1 className='py-8 text-2xl font-bold'>Before you click Start, please read this.</h1>
-        <ul className='list-disc pl-10 text-lg '>
+        <ul className='list-disc py-4 pl-10 text-lg '>
           <li>The purpose of this study is to collect data on how you use your computer.</li>
           <li>The data will be anonymized to ensure your privacy.</li>
           <li>You will be paid for taking part in this study.</li>
@@ -60,12 +60,12 @@ function ActivityTrackingActions({ status, handleSubmit, handleCancel }) {
   const disabled = status === STATUSES.LOADING ? true : false;
 
   return (
-    <div className="tracking-actions">
-      <button className="bg-none" onClick={handleCancel}>Cancel</button>
+    <div className="float-right py-5">
+      <button className="bg-none pr-12" onClick={handleCancel}>Cancel</button>
 
       <button
         data-testid="action-button"
-        className="bg-green"
+        className='rounded w-28 h-11 bg-[#70B443] text-xl font-semibold'
         disabled={disabled}
         onClick={handleSubmit}
       >
