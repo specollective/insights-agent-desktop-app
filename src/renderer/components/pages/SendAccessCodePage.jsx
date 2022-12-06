@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { withFormik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import 'yup-phone'
-// import formStyles from '../styles/forms'
 
 /**
  * Represents the login page for the website
