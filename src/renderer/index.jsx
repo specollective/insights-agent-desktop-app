@@ -27,7 +27,7 @@ function App () {
     <MemoryRouter initialEntries={[initialRoute]}>
       <Routes>
         <Route path="/" element={<SendAccessCodePage />} />
-        <Route path="/dashboard" element={<ConfirmAccessCodePage />} />
+        <Route path="/confirm" element={<ConfirmAccessCodePage />} />
         <Route path="/setup" element={<SetupActivityTrackingPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
       </Routes>
