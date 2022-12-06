@@ -11,7 +11,7 @@ function ActivityTrackingStatusInstructions ({ status, error }) {
   if (status === STATUSES.PENDING) {
     return (
       <div>
-        <h1 className='py-8 text-2xl font-bold'>Before you click Start, please read this.</h1>
+        <h1 className='py-2 text-2xl font-bold'>Before you click Start, please read this.</h1>
         <ul className='list-disc py-4 pl-10 text-lg '>
           <li>The purpose of this study is to collect data on how you use your computer.</li>
           <li>The data will be anonymized to ensure your privacy.</li>
