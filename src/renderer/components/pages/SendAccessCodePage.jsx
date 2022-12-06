@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { withFormik, Form, Field } from 'formik';
-import * as Yup from 'yup';
-import 'yup-phone';
-import formStyles from '../styles/forms';
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { withFormik, Form, Field } from 'formik'
+import * as Yup from 'yup'
+import 'yup-phone'
+// import formStyles from '../styles/forms'
 
 /**
  * Represents the login page for the website
@@ -12,34 +12,28 @@ import formStyles from '../styles/forms';
  */
 export function SendAccessCodeForm({ touched, errors }) {
   return (
-    <div className="page mt-2">
+    <div className='grid justify-center'>
       <Form>
-        <div style={formStyles.form}>
-          <label htmlFor="phoneNumber">
-            Please enter your phone number
-          </label>
+        <div>
+          <label htmlFor='phoneNumber'>Please enter your phone number</label>
 
           <div>
             <Field
-              id="phoneNumber"
-              type="text"
-              role="phoneNumber"
-              name="phoneNumber"
-              data-test-id="phone-number"
-              placeholder="Phone number"
-              style={formStyles.input}
+              id='phoneNumber'
+              type='text'
+              role='phoneNumber'
+              name='phoneNumber'
+              data-test-id='phone-number'
+              placeholder='Phone number'
+              // style={'color'}
             />
 
-            { touched.phoneNumber
-                && errors.phoneNumber
-                && <div>{errors.phoneNumber}</div>
-            }
+            {touched.phoneNumber && errors.phoneNumber && (
+              <div>{errors.phoneNumber}</div>
+            )}
           </div>
 
-          <button
-            style={formStyles.button}
-            type="submit"
-          >
+          <button className='float-right' type='submit'>
             Next
           </button>
         </div>
@@ -54,7 +48,7 @@ export function SendAccessCodeForm({ touched, errors }) {
  * @param {} props - includes email and password
  * @returns {object} - formatted field values
  */
-export function mapPropsToValues ({ phoneNumber }) {
+export function mapPropsToValues({ phoneNumber }) {
   return { phoneNumber: phoneNumber || '' }
 }
 
@@ -65,11 +59,10 @@ export function mapPropsToValues ({ phoneNumber }) {
  * @returns {Response} - fetch response object
  */
 export function handleSubmit(values, { props }) {
-  props.handleSubmit(values);
+  props.handleSubmit(values)
 }
 
-export const phoneNumberValidator = Yup
-  .string()
+export const phoneNumberValidator = Yup.string()
   .required('Phone number is required')
   .phone('USA', true, 'Phone number is invalid')
 
@@ -81,7 +74,7 @@ export const phoneNumberValidator = Yup
  */
 export const validationSchema = Yup.object().shape({
   phoneNumber: phoneNumberValidator,
-});
+})
 
 /**
  * Wraps SendAccessCodeForm with the withFormik Higher-order component
@@ -90,7 +83,7 @@ export const SendAccessCodeFormWithFormik = withFormik({
   mapPropsToValues,
   handleSubmit,
   validationSchema,
-})(SendAccessCodeForm);
+})(SendAccessCodeForm)
 
 /**
  * Represents page for sending an access code.
@@ -98,25 +91,23 @@ export const SendAccessCodeFormWithFormik = withFormik({
  * @returns {React.ReactElement}
  */
 function SendAccessCodePage() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   function handleSubmit({ phoneNumber }) {
-    window.api.sendAccessCode(phoneNumber);
+    window.api.sendAccessCode(phoneNumber)
   }
 
   useEffect(() => {
-    window.api.onSendAccessCodeSuccess(() => navigate('/confirm'));
-    window.api.onSendAccessCodeError((error) => alert(error));
+    window.api.onSendAccessCodeSuccess(() => navigate('/confirm'))
+    window.api.onSendAccessCodeError((error) => alert(error))
 
     // https://patrickpassarella.com/blog/creating-electron-react-app
-    return () => window.api.removeAllListeners();
-  }, []);
+    return () => window.api.removeAllListeners()
+  }, [])
 
   return (
     <div>
-      <SendAccessCodeFormWithFormik
-        handleSubmit={handleSubmit}
-      />
+      <SendAccessCodeFormWithFormik handleSubmit={handleSubmit} />
     </div>
   )
 }
