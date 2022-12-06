@@ -12,7 +12,7 @@ function ActivityTrackingStatusInstructions ({ status, error }) {
   if (status === STATUSES.PENDING) {
     return (
       <div>
-        <h3>Before you click Start, please read this!</h3>
+        <h1 className="text-2xl font-bold py-8">Before you click Start, please read this.</h1>
         <ul>
           <li>The purpose of this study is to collect data on how you use your computer.</li>
           <li>The data will be anonymized to ensure your privacy.</li>
@@ -35,7 +35,8 @@ Once running, continuous connection is required.</p>
 
   if (status === STATUSES.ERROR) {
     return (
-      <div style={{ width: '100%', margin: 'auto' }}>
+      // <div style={{ width: '100%', margin: 'auto' }}>
+      <div>
         <h1>An error occurred.</h1>
 
         <div style={{ background: 'lightGray', width: '100%', padding: '2em' }}>
@@ -116,7 +117,8 @@ function SetupActivityTrackingPage() {
   }, []);
 
   return (
-    <div style={{width: '70%', margin: 'auto', marginTop: '2em'}}>
+    // <div style={{width: '70%', margin: 'auto', marginTop: '2em'}}>
+    <div className="">
       <div className="tracking-details">
         <ActivityTrackingStatusInstructions
           status={status}
