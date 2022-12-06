@@ -1,9 +1,13 @@
-const rules = require('./webpack.rules');
-const path = require('path');
+const rules = require("./webpack.rules");
+const path = require("path");
 
 rules.push({
   test: /\.css$/,
-  use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
+  use: [                    
+    "style-loader",
+    "css-loader",
+    "postcss-loader"
+  ]
 });
 
 module.exports = {
@@ -12,10 +16,10 @@ module.exports = {
     rules,
   },
   resolve: {
-    extensions: ['.js', '.ts', '.jsx', '.tsx', '.css'],
+    extensions: [".js", ".ts", ".jsx", ".tsx", ".css"],
     alias: {
-      'components': path.resolve(__dirname, './src/renderer/components'),
-      'services': path.resolve(__dirname, './src/services'),
+      components: path.resolve(__dirname, "./src/renderer/components"),
+      services: path.resolve(__dirname, "./src/services"),
     },
   },
   devtool: "nosources-source-map",
