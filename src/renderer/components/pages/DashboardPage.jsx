@@ -1,9 +1,10 @@
 import React from 'react';
+import dashboardStyles from '../styles/dashboard';
 
 function DashboardPage() {
   return (
     <>
-      <div className="page dashboard">
+      <section className="page" style={dashboardStyles.dashboard}>
         <p>
           The Insights Agent is now running. By closing this window, you will not pause the study.
         </p>
@@ -15,9 +16,9 @@ function DashboardPage() {
         <p>
           If you would like to opt out of this study, click the Pause button in the taskbar and follow instructions.
         </p>
-      </div>
+      </section>
 
-      <button className="close" onClick={window.close}>Close</button>
+      <button style={dashboardStyles.close} onClick={window.close}>Close</button>
     </>
   )
 }
