@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import formStyles from '../styles/forms';
 
 const STATUSES = {
   PENDING: 'PENDING',
@@ -12,15 +11,18 @@ function ActivityTrackingStatusInstructions ({ status, error }) {
   if (status === STATUSES.PENDING) {
     return (
       <div>
-        <h3>Before you click Start, please read this!</h3>
-        <ul>
+        <h1 className='py-2 text-2xl font-bold'>Before you click Start, please read this.</h1>
+        <ul className='list-disc py-4 pl-10 text-lg '>
           <li>The purpose of this study is to collect data on how you use your computer.</li>
           <li>The data will be anonymized to ensure your privacy.</li>
           <li>You will be paid for taking part in this study.</li>
         </ul>
-        <p>By clicking on the Start button below, you agree that you are 18 years of age or older, have read the information above and are participating voluntarily.</p>
-        <p><b>Note:</b> You will need to be connected to the internet to begin the process.
-Once running, continuous connection is required.</p>
+        <p className='py-2 text-lg'>
+          By clicking on the Start button below, you agree that you are 18 years of age or older, have read the information above and are participating voluntarily.
+        </p>
+        <p className='py-2 text-base font-bold'>
+          Note: You will need to be connected to the internet to begin the process. Once running, continuous connection is required.
+        </p>
       </div>
     )
   }
@@ -35,7 +37,7 @@ Once running, continuous connection is required.</p>
 
   if (status === STATUSES.ERROR) {
     return (
-      <div style={{ width: '100%', margin: 'auto' }}>
+      <div>
         <h1>An error occurred.</h1>
 
         <div style={{ background: 'lightGray', width: '100%', padding: '2em' }}>
@@ -58,12 +60,12 @@ function ActivityTrackingActions({ status, handleSubmit, handleCancel }) {
   const disabled = status === STATUSES.LOADING ? true : false;
 
   return (
-    <div className="tracking-actions">
-      <button className="bg-none" onClick={handleCancel}>Cancel</button>
+    <div className="float-right py-5">
+      <button className="bg-none pr-12" onClick={handleCancel}>Cancel</button>
 
       <button
         data-testid="action-button"
-        className="bg-green"
+        className='rounded w-28 h-11 bg-[#70B443] text-xl font-semibold'
         disabled={disabled}
         onClick={handleSubmit}
       >
@@ -116,19 +118,17 @@ function SetupActivityTrackingPage() {
   }, []);
 
   return (
-    <div style={{width: '70%', margin: 'auto', marginTop: '2em'}}>
-      <div className="tracking-details">
-        <ActivityTrackingStatusInstructions
-          status={status}
-          error={error}
-        />
+    <div>
+      <ActivityTrackingStatusInstructions
+        status={status}
+        error={error}
+      />
 
-        <ActivityTrackingActions
-          status={status}
-          handleSubmit={handleSubmit}
-          handleCancel={handleCancel}
-        />
-      </div>
+      <ActivityTrackingActions
+        status={status}
+        handleSubmit={handleSubmit}
+        handleCancel={handleCancel}
+      />
     </div>
   )
 }
