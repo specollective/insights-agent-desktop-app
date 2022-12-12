@@ -1,6 +1,6 @@
 # Insights Agent Desktop App
 
-The Build justly Project and Georgia Hispanic Chamber of Commerce, partnered to launch and execute a technology study. The study will endeavor to not only to better understand the barriers/frictions and interests/needs to technology of Hispanic small business owners in the state of Georgia but will also work to develop specific ways to bring down the barriers to technology competency.  This study, will be measuring efforts through both opt-in telemetry collection alongside on-going qualitative interviews and surveys which will be shared publicly. 
+The Build justly Project has partnered to launch and execute a technology study. The study will endeavor to not only to better understand the barriers/frictions and interests/needs to technology of Hispanic small business owners in the state of Georgia but will also work to develop specific ways to bring down the barriers to technology competency.  This study, will be measuring efforts through both opt-in telemetry collection alongside on-going qualitative interviews and surveys which will be shared publicly. The insights-agent-web-app contains code for the online survey for participant signup and the insights-agent-desktop-app repo contains the code for the desktop app that monitors participant activity. 
 
 
 🚧 This code is actively under development and should be considered unstable. 🚧
