@@ -24,7 +24,7 @@ export function ConfirmAccessCodeForm({ touched, errors }) {
               role="accessCode"
               name="accessCode"
               placeholder="XXXXXX"
-              className="w-96 py-2 pl-2 m-0 rounded-lg text-left"
+              className="w-96 py-2 pl-2 m-0 rounded-lg text-left text-desktopBgBlack"
             />
 
             { touched.accessCode
