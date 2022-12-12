@@ -93,3 +93,4 @@ insights-agent.pfx
 NOTES.txt
 workbench
 src/mock-api.json
+yarn.lock

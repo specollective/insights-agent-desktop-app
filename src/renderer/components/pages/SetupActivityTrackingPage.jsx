@@ -118,17 +118,18 @@ function SetupActivityTrackingPage() {
   }, []);
 
   return (
-    <div>
+    <div className='grid place-content-center h-screen'>
       <ActivityTrackingStatusInstructions
         status={status}
         error={error}
       />
-
-      <ActivityTrackingActions
-        status={status}
-        handleSubmit={handleSubmit}
-        handleCancel={handleCancel}
-      />
+      <div className='float-right pt-8'>
+        <ActivityTrackingActions
+          status={status}
+          handleSubmit={handleSubmit}
+          handleCancel={handleCancel}
+        />
+      </div>
     </div>
   )
 }
