@@ -7,7 +7,7 @@ body {
     Arial, sans-serif;
   margin: auto;
   max-width: 38rem;
-  padding: 2rem;
+  /* padding: 2rem; */
   background-color: #313131;
   color:white;
 }
