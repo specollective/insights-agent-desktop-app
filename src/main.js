@@ -80,7 +80,7 @@ const createWindow = () => {
 };
 
 const createTrayMenu = () => {
-  appIcon = new Tray(path.join(__dirname, '/assets/icons/24x24.png'));
+  appIcon = new Tray(path.join(__dirname, '/assets/icons/buildJUSTLYicon.png'));
 
   const pauseMessage = store.get('ACTIVITY_TRACKING_ENABLED')
     ? 'Pause'
