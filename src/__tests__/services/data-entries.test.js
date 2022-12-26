@@ -18,7 +18,7 @@ describe('postDataEntries', () => {
     await postDataEntries(mockData)
 
     expect(require('electron-fetch').default).toBeCalledWith(
-      'https://insights-agent-api.specollective.org/agent-data-ingestion',
+      'http://localhost:6000/agent-data-ingestion',
       {
         body: '{"data":[]}',
         headers: { 'Content-Type': 'application/json' },

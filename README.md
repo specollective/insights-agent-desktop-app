@@ -15,7 +15,6 @@ This repository contains the code for the Insights Agent desktop application. It
 - device type
 - timestamps
 
-
 ## Software Architecture
 
 The bulk of the source code for the app exists in the `src` folder.

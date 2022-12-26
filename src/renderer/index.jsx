@@ -24,9 +24,11 @@ function App () {
   const initialRoute = ROUTES[window.api.onboardingStep]
 
   return (
-    <MemoryRouter>
+    <MemoryRouter initialEntries={[initialRoute]}>
       <Routes>
-        <Route path="/" element={<SetupActivityTrackingPage />} />
+        <Route path="/" element={<SendAccessCodePage />} />
+        <Route path="/confirm" element={<ConfirmAccessCodePage />} />
+        <Route path="/setup" element={<SetupActivityTrackingPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
       </Routes>
     </MemoryRouter>
