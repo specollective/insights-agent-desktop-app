@@ -13,14 +13,14 @@ jest.mock('electron', () => {
 
 describe('postDataEntries', () => {
   it('returns true', async () => {
-    const mockData = {}
+    const mockData = []
 
     await postDataEntries(mockData)
 
     expect(require('electron-fetch').default).toBeCalledWith(
-      'https://insights-agent-api.specollective.org/api/data_entries/',
+      'https://insights-agent-api.specollective.org/agent-data-ingestion',
       {
-        body: '{}',
+        body: '{"data":[]}',
         headers: { 'Content-Type': 'application/json' },
         method: 'POST'
       },

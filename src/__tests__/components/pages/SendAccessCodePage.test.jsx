@@ -24,7 +24,7 @@ describe('Send access code page', () => {
 
     expect(window.api.sendAccessCode).not.toHaveBeenCalled();
 
-    const input = screen.getByLabelText('Please enter your phone number');
+    const input = screen.getByLabelText('Please enter your phone number:');
 
     fireEvent.change(input, {target: {value: '+18455914054'}});
 
