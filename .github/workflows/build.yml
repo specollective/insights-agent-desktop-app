@@ -17,7 +17,7 @@ jobs:
       with:
         fileName: 'insights-agent.pfx'
         encodedString: ${{ secrets.CERTIFICATE_WINDOWS_PFX }}
-            - name: Setup .NET
+    - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '6.0.x'
