@@ -56,13 +56,12 @@ async function confirmAccessCode(accessCode, event) {
   // 3. Confirm the response is successful.
   if (response.ok) {
     // 4. Parse the JSON response.
-    const json = await response.json()
+    const json = await response.json();
 
     // 5. Set survey token in Electron store.
-    store.set('SURVEY_TOKEN', json.survey_token);
-
-    store.set('SURVEY_INFORMATION', )
-
+    store.set('SURVEY_TOKEN', json.survey_id);
+    store.set('SURVEY_ID', json.survey_id);
+    store.set('SURVEY_TABLE_KEY', json.table_key);
     store.set('ONBOARDING_STEP', 'SETUP');
 
     // 6. Emit IPC success message.
