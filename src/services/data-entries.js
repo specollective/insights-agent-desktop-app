@@ -1,25 +1,35 @@
 const fetch = require('electron-fetch').default;
-const { BASE_URL } = require('../constants/urls');
+const { BASE_INGESTION_URL } = require('../constants/urls');
 const Store = require('electron-store');
 
 export const store = new Store();
 
 export function postDataEntries (dataEntries) {
-  const endpoint = `${BASE_URL}/api/data_entries/`
-
+  const endpoint = `${BASE_INGESTION_URL}/agent-data-ingestion`
   return fetch(endpoint, {
     method: 'POST',
-    body: JSON.stringify(dataEntries),
+    body: JSON.stringify({ data: dataEntries }),
     headers: {
       'Content-Type': 'application/json',
     },
   })
 }
 
+/*
+  * This function takes the window data and returns a data entry object.
+  * @param {Object} windowData - The window data object.
+  * @param {String} windowData.appName - The name of the application.
+  * @param {String} windowData.tabName - The name of the tab.
+  * @param {String} windowData.url - The url of the tab.
+  * @param {Boolean} windowData.isConnected - The internet connection status.
+  * @returns {Object} - The data entry object.
+*/
 export function buildDataEntryFromWindowData(windowData) {
   const { appName, tabName, url, isConnected } = windowData;
 
   return {
+    survey_id: store.get('SURVEY_ID'),
+    table_key: store.get('SURVEY_TABLE_KEY'),
     application_name: appName,
     tab_name: tabName,
     url: sanitizeUrl(url),

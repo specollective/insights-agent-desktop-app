@@ -24,7 +24,7 @@ export function SendAccessCodeForm({ touched, errors }) {
               name='phoneNumber'
               data-test-id='phone-number'
               placeholder='(XXX) XXX-XXXX'
-              className="w-96 py-2 pl-2 m-0 rounded-lg text-left"
+              className="w-96 py-2 pl-2 m-0 rounded-lg text-left text-black"
             />
 
             {touched.phoneNumber && errors.phoneNumber && (
