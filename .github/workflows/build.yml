@@ -55,6 +55,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
         CERTIFICATE_WINDOWS_PFX: ${{ steps.write_file.outputs.filePath }}
+        INGESTION_URL: ${{ secrets.INGESTION_URL }}
+        BACKEND_API_URL: ${{ secrets.BACKEND_API_URL }}
 
 
   # build_on_linux:
