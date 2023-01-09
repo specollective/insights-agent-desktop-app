@@ -49,11 +49,6 @@ jobs:
       run: |
         Copy-Item -Path ".\scripts\windows-data-tracker\bin\Release\net6.0\win-x64\publish\*" -Destination ".\scripts\windows-data-tracker\build" -recurse -Force
         ls ".\scripts\windows-data-tracker\build"
-    - name: Create .env file
-      run: |
-        touch .env
-        echo INGESTION_URL=${{ secrets.INGESTION_URL }} >> .env
-        echo BACKEND_API_URL=${{ secrets.BACKEND_API_URL }} >> .env
     - name: Electron Build
       run: npm run make
       env:
