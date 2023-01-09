@@ -1,4 +1,5 @@
 // const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
   /**
@@ -11,4 +12,10 @@ module.exports = {
     rules: require('./webpack.rules'),
   },
   devtool: "nosources-source-map",
+  plugins: [
+    new webpack.EnvironmentPlugin({
+      INGESTION_URL: JSON.stringify(process.env.INGESTION_URL),
+      BACKEND_API_URL: JSON.stringify(process.env.BACKEND_API_URL),
+    }),
+  ],
 };
