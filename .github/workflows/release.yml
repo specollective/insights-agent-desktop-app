@@ -77,6 +77,11 @@ jobs:
       run: |
         Copy-Item -Path ".\scripts\windows-data-tracker\bin\Release\net6.0\win-x64\publish\*" -Destination ".\scripts\windows-data-tracker\build" -recurse -Force
         ls ".\scripts\windows-data-tracker\build"
+    - name: Create a .env file
+      run: |
+        New-Item -Path .\ -Name ".env" -ItemType "file" -Force
+        Add-Content -Path ".env" -Value "BACKEND_API_URL=${{ secrets.BACKEND_API_URL }}"
+        Add-Content -Path ".env" -Value "INGESTION_URL=${{ secrets.INGESTION_URL }}"
     - name: Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
