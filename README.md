@@ -123,3 +123,9 @@ Set the `DEVELOPMENT` variable to false the `.env` file before running `npm star
 ## Deployment
 
 Deployments are automated with Github Actions and Github Releases. See the `.github` directory for more details about the build configuration.
+
+## Troubleshooting
+
+**Error name not resolved error**
+
+This is probably the easiest way to clear DNS cache on Windows computer, and here's how it works: Open the Run box by using the Windows 11 keyboard shortcut Windows key + R. Now, type the following command: ipconfig /flushdns and hit Enter. This will flush the DNS cache on your Windows 11 computer

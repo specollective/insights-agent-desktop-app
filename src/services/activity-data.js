@@ -1,6 +1,11 @@
 // NodeJS Standard library depedencies
 import os from 'os'
+<<<<<<< HEAD
 import { exec } from 'child_process'
+=======
+import { powerMonitor } from 'electron';
+import { execSync, exec } from 'child_process'
+>>>>>>> ca00a35 (Add idle time metrics.)
 import isOnline from 'is-online'
 
 // Third party depedencies
@@ -162,6 +167,7 @@ export function trackingScriptPath() {
 export async function getDataEntry() {
   const scriptPath = trackingScriptPath()
   const isConnected = await isOnline()
+  const idleTime = powerMonitor.getSystemIdleTime()
 
   return new Promise((resolve, reject) => {
     exec(scriptPath, (error, stdout, stderr) => {
@@ -170,19 +176,24 @@ export async function getDataEntry() {
         return;
       }
 
+      // Get the raw data from the script.
       const rawData = stdout.toString('utf8').split('\n')
+      
+      // Parse the data from the script.
       const [appName, tabName, url] = rawData
 
+      // Build the window data object.
       const windowData = {
         appName: appName === '\r' ? 'MISSING' : appName,
         tabName,
         url,
         isConnected,
+        idleTime,
       }
 
-      const dataEntry = buildDataEntryFromWindowData(windowData);
+      const dataEntry = buildDataEntryFromWindowData(windowData)
 
-      resolve(dataEntry);
+      resolve(dataEntry)
     });
   });
 }

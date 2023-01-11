@@ -44,6 +44,7 @@ describe('buildDataEntryFromWindowData', () => {
       tabName: 'Profile for Jose Torres',
       url: 'https://example.com/about_us',
       isConnected: true,
+      idleTime: 2,
     })
 
     expect(dataEntry.application_name).toEqual('a')
@@ -52,5 +53,6 @@ describe('buildDataEntryFromWindowData', () => {
     // NOTE: The URL removes path and query params
     expect(dataEntry.url).toEqual('https://example.com')
     expect(dataEntry.internet_connection).toEqual('online')
+    expect(dataEntry.idle_time).toEqual(2)
   })
 })
