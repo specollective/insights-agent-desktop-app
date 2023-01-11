@@ -37,7 +37,7 @@
     "babel-loader": "^8.2.5",
     "css-loader": "^6.0.0",
     "dotenv": "^16.0.0",
-    "electron": "19.0.4",
+    "electron": "22.0.1",
     "electron-fetch": "^1.7.4",
     "electron-is-packaged": "^1.0.2",
     "electron-store": "^8.0.1",
