@@ -61,8 +61,6 @@ export async function startTracking(ipcEvent) {
   function sendMessage(message, data) {
     if (ipcEvent) {
       ipcEvent.sender.send(message, JSON.stringify(data));
-    } else {
-      console.log('NO IPC MAIN PRESENT');
     }
   }
 
@@ -170,8 +168,6 @@ export async function syncDataWithServer() {
       throw new Error(JSON.stringify(json));
     }
   } catch (e) {
-    console.log(dataEntries);
-    console.log(e.message);
     dataEntries = [];
   }
 }

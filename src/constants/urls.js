@@ -2,9 +2,8 @@ const { app } = require('electron');
 
 const BASE_URL = process.env.DEVELOPMENT === 'true'
   ? 'https://localhost:8000'
-  : 'https://insights-agent-api.specollective.org';
-
-// TODO: Handle ingestion gracefully in development.  
+  : process.env.BACKEND_API_URL;
+ 
 const BASE_INGESTION_URL = process.env.DEVELOPMENT === 'true'
   ? 'http://localhost:6000'
   : process.env.INGESTION_URL;
