@@ -1,12 +1,15 @@
 import React from 'react';
 import dashboardStyles from '../styles/dashboard';
+import { useTranslation } from 'react-i18next';
 
 function DashboardPage() {
+  const { t } = useTranslation();
+
   return (
     <>
       <section className='grid place-content-center h-screen text-lg'>
         <p>
-          The Insights Agent is now running. By closing this window, you will not pause the study.
+          {t('dashboard.welcome')}
         </p><br />
 
         <p>
