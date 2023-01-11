@@ -28,6 +28,8 @@ require('dotenv').config();
 const useMockApi = process.env.USE_MOCK_API === 'true';
 const isDevelopment = process.env.DEVELOPMENT === 'true';
 
+// NOTE: Depending on the environment you are running in, you may need to
+// change comment out these lines for manual testing.
 if (useMockApi && isDevelopment) {
   makeMockAPI({ environment: 'development' });
 }
@@ -61,7 +63,7 @@ const createWindow = () => {
   // Open the DevTools.
   if (isDevelopment) {
     mainWindow.webContents.openDevTools();
-    console.log(app.getPath('userData'));
+    console.log('APP_PATH', app.getPath('userData'));
   }
 
   mainWindow.on('minimize', function (windowEvent) {
