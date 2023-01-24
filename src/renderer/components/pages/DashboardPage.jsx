@@ -13,14 +13,13 @@ function DashboardPage() {
         </p><br />
 
         <p>
-          If you are having trouble or have any questions, please contact tech4all@buildjustly.org.
+          {t('dashboard.contact')}
         </p><br />
-
+          {t('dashboard.optout')}
         <p>
-          If you would like to opt out of this study, click the Pause button in the taskbar and follow instructions.
         </p><br />
         <div className='float-right pt-8'>
-          <button style={dashboardStyles.close} onClick={window.close}>Close</button>
+          <button style={dashboardStyles.close} onClick={window.close}>{t('dashboard.close')}</button>
         </div>
       </section>
     </>
