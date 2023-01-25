@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { withFormik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import 'yup-phone'
+import { t } from 'i18next'
 
 /**
  * Represents the login page for the website
@@ -10,11 +11,13 @@ import 'yup-phone'
  * @returns {React.ReactElement}
  */
 export function SendAccessCodeForm({ touched, errors }) {
+  const { t } = useTranslation();
+  
   return (
     <div className='grid place-items-center h-screen'>
       <Form>
         <div>
-          <label htmlFor='phoneNumber'>Please enter your phone number:</label>
+          <label htmlFor='phoneNumber'>{t('send.number')}</label>
 
           <div className='grid place-items-center'>
             <Field
@@ -33,7 +36,7 @@ export function SendAccessCodeForm({ touched, errors }) {
           </div>
 
           <button className='relative float-right top-36 left-20 font-light font-base cursor-pointer underline' type='submit'>
-            Next
+            {t('next')}
           </button>
         </div>
       </Form>
