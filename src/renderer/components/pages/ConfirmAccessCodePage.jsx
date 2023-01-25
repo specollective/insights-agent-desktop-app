@@ -10,12 +10,14 @@ import { withFormik, Form, Field } from 'formik';
  * @returns {React.ReactElement}
  */
 export function ConfirmAccessCodeForm({ touched, errors }) {
+  const { t } = useTranslation();
+  
   return (
     <div className='grid place-items-center h-screen'>
       <Form>
         <div>
           <label htmlFor="email">
-            Please enter your verification code
+            {t('confirmation.code')}
           </label>
 
           <div className='grid place-items-center'>
@@ -33,7 +35,7 @@ export function ConfirmAccessCodeForm({ touched, errors }) {
             }
 
             <div className='pt-8'>
-              <Link to="/">I did not receive a verification code</Link>
+              <Link to="/">{t('noVerfication')}</Link>
             </div>
           </div>
 
@@ -41,7 +43,7 @@ export function ConfirmAccessCodeForm({ touched, errors }) {
 
           <div>
             <button type="submit" className='relative float-right top-20 left-20 font-light font-base cursor-pointer underline'>
-              Next
+              {t('next')}
             </button>
           </div>
         </div>
