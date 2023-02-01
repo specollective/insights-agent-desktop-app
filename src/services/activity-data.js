@@ -7,7 +7,7 @@ import isOnline from 'is-online'
 import cron from 'node-cron'
 import fetch from 'electron-fetch'
 import Store from 'electron-store'
-const { SyncRedactor } = require('redact-pii');
+import { SyncRedactor } from 'redact-pii';
 // TODO: Determine if bugs with active-win can be resolved.
 // const activeWindow = require('active-win');
 
@@ -126,6 +126,7 @@ export function trackingScriptPath() {
 export async function getDataEntry() {
   const scriptPath = trackingScriptPath();
   const isConnected = await isOnline();
+  // redact-pii
   const redactor = new SyncRedactor();
 
   return new Promise((resolve, reject) => {
@@ -139,7 +140,7 @@ export async function getDataEntry() {
 
       const [appName, tabName, url] = rawData;
 
-      //redact PII from tabName
+      //redact PII from tabName and insert into windowData instead of original tabName
       const redactedTabName = redactor.redact(tabName);
 
       const windowData = {
