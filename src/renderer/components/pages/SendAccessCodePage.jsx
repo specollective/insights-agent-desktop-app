@@ -75,9 +75,7 @@ export const validationSchema = Yup.object().shape({
   phoneNumber: phoneNumberValidator,
 })
 
-export const num = await serialNumber(function (err, value) {
-  console.log(value);
-});
+
 
 /**
  * Wraps SendAccessCodeForm with the withFormik Higher-order component
