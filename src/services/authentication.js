@@ -1,6 +1,7 @@
 // Third party depedencies
 const fetch = require('electron-fetch').default;
 const Store = require('electron-store');
+const serialNumber = require('serial-number')
 
 // Application dependencies
 const { BASE_URL, DEFAULT_OPTIONS } = require('../constants/urls');
