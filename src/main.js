@@ -1,4 +1,5 @@
 import path from 'path';
+const serialNumber = require("serial-number");
 
 import {
   app,
@@ -64,6 +65,9 @@ const createWindow = () => {
   if (isDevelopment) {
     mainWindow.webContents.openDevTools();
     console.log('APP_PATH', app.getPath('userData'));
+    serialNumber((error, serial) => {
+      console.log(serial)
+    })
   }
 
   mainWindow.on('minimize', function (windowEvent) {
