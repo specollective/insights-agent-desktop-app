@@ -1,6 +1,7 @@
-import { t } from 'i18next';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
 
 const STATUSES = {
   PENDING: 'PENDING',
@@ -9,12 +10,14 @@ const STATUSES = {
 }
 
 function ActivityTrackingStatusInstructions ({ status, error }) {
+  const { t } = useTranslation()
+
   if (status === STATUSES.PENDING) {
     return (
       <div>
         <h1 className='py-2 text-2xl font-bold'>{t('setup.before')}</h1>
         <ul className='list-disc py-4 pl-10 text-lg '>
-          <li>{t('setup.process')}</li>
+          <li>{t('setup.purpose')}</li>
           <li>{t('setup.privacy')}</li>
           <li>{t('setup.paid')}</li>
         </ul>

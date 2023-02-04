@@ -36,7 +36,7 @@ export function ConfirmAccessCodeForm({ touched, errors }) {
             }
 
             <div className='pt-8'>
-              <Link to="/">{t('noVerfication')}</Link>
+              <Link to="/">{t('confirmation.noVerfication')}</Link>
             </div>
           </div>
 
