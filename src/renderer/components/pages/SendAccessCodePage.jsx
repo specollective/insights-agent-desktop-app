@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { withFormik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import 'yup-phone'
-import { t } from 'i18next'
+import { useTranslation } from 'react-i18next';
 
 /**
  * Represents the login page for the website

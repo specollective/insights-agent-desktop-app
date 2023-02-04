@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import 'yup-phone';
 import { withFormik, Form, Field } from 'formik';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Represents the login page for the website
