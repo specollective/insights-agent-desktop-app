@@ -19,7 +19,7 @@ function DashboardPage() {
         <p>
         </p><br />
         <div className='float-right pt-8'>
-          <button style={dashboardStyles.close} onClick={window.close}>{t('dashboard.close')}</button>
+          <button style={dashboardStyles.close} onClick={window.close}>{t('close')}</button>
         </div>
       </section>
     </>

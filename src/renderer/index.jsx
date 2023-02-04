@@ -14,6 +14,7 @@ import SetupActivityTrackingPage from './components/pages/SetupActivityTrackingP
 import DashboardPage from './components/pages/DashboardPage';
 import i18n from './utils/i18n';
 import LocaleContext from './utils/LocaleContext';
+import Layout from './components/elements/Layout';
 
 const ROUTES = {
   'SEND_ACCESS_CODE': '/',
@@ -34,14 +35,16 @@ function App () {
 
   return (
     <LocaleContext.Provider value={{ locale, setLocale }}>
-      <MemoryRouter initialEntries={[initialRoute]}>
-        <Routes>
-          <Route path="/" element={<SendAccessCodePage />} />
-          <Route path="/confirm" element={<ConfirmAccessCodePage />} />
-          <Route path="/setup" element={<SetupActivityTrackingPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-        </Routes>
-      </MemoryRouter>
+      <Layout>
+        <MemoryRouter initialEntries={[initialRoute]}>
+          <Routes>
+            <Route path="/" element={<SendAccessCodePage />} />
+            <Route path="/confirm" element={<ConfirmAccessCodePage />} />
+            <Route path="/setup" element={<SetupActivityTrackingPage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
+          </Routes>
+        </MemoryRouter>
+      </Layout>
     </LocaleContext.Provider>
   )
 }
