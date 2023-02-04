@@ -8,6 +8,7 @@ import {
   useNavigate,
 } from 'react-router-dom';
 
+import VerifySerialNumberPage from "./components/pages/VerifySerialNumberPage";
 import SendAccessCodePage from './components/pages/SendAccessCodePage';
 import ConfirmAccessCodePage from './components/pages/ConfirmAccessCodePage';
 import SetupActivityTrackingPage from './components/pages/SetupActivityTrackingPage';
@@ -16,11 +17,12 @@ import i18n from './utils/i18n';
 import LocaleContext from './utils/LocaleContext';
 
 const ROUTES = {
-  'SEND_ACCESS_CODE': '/',
-  'SETUP': '/setup',
-  'CONFIRM_ACCESS_CODE': '/confirm',
-  'DASHBOARD': '/dashboard',
-}
+   VERIFY_SERIAL_NUMBER: '/',
+  // 'SEND_ACCESS_CODE': '/', Rerouting homepage to verify serial number
+  SETUP: "/setup",
+  CONFIRM_ACCESS_CODE: "/confirm",
+  DASHBOARD: "/dashboard",
+};
 
 function App () {
   const initialRoute = ROUTES[window.api.onboardingStep]
@@ -36,14 +38,15 @@ function App () {
     <LocaleContext.Provider value={{ locale, setLocale }}>
       <MemoryRouter initialEntries={[initialRoute]}>
         <Routes>
-          <Route path="/" element={<SendAccessCodePage />} />
+          <Route path="/" element={<VerifySerialNumberPage />} />
+          {/* <Route path="/" element={<SendAccessCodePage />} /> */}
           <Route path="/confirm" element={<ConfirmAccessCodePage />} />
           <Route path="/setup" element={<SetupActivityTrackingPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
         </Routes>
       </MemoryRouter>
     </LocaleContext.Provider>
-  )
+  );
 }
 
 const rootElement = document.getElementById('root');

@@ -15,41 +15,47 @@ const mapIpcOnMessageToCallback = (message, callback) =>
   onMessage(message, (ipcEvent, data) => callback(data));
 
 // Set up context bridge exposing it to the window.api.
-contextBridge.exposeInMainWorld(
-  'api',
-  {
-    surveyToken: store.get('SURVEY_TOKEN'),
-    onboardingStep: store.get('ONBOARDING_STEP') || 'SEND_ACCESS_CODE',
-    sendAccessCode: (phoneNumber) => {
-      sendMessage('send-access-code', phoneNumber)
-    },
-    onSendAccessCodeSuccess: (callback) => {
-      mapIpcOnMessageToCallback('send-access-code-success', callback);
-    },
-    onSendAccessCodeError: (callback) => {
-      mapIpcOnMessageToCallback('send-access-code-error', callback);
-    },
-    confirmAccessCode: (accessCode) => {
-      sendMessage('check-access-code', accessCode)
-    },
-    onConfirmAccessCodeSuccess: (callback) => {
-      mapIpcOnMessageToCallback('check-access-code-success', callback);
-    },
-    onConfirmAccessCodeError: (callback) => {
-      mapIpcOnMessageToCallback('check-access-code-error', callback);
-    },
-    startActivityTracking: (callback) => {
-      sendMessage('start-tracking');
-    },
-    cancelActivityTracking: (callback) => {
-      sendMessage('stop-tracking');
-    },
-    onStartActivityTrackingSuccess: (callback) => {
-      mapIpcOnMessageToCallback('start-tracking-success', callback);
-    },
-    onStartActivityTrackingError: (callback) => {
-      mapIpcOnMessageToCallback('start-tracking-error', callback);
-    },
-    removeAllListeners: () => ipcRenderer.removeAllListeners()
-  }
-);
+contextBridge.exposeInMainWorld("api", {
+  surveyToken: store.get("SURVEY_TOKEN"),
+  onboardingStep: store.get("ONBOARDING_STEP") || "SEND_ACCESS_CODE",
+  sendAccessCode: (phoneNumber) => {
+    sendMessage("send-access-code", phoneNumber);
+  },
+  onSendAccessCodeSuccess: (callback) => {
+    mapIpcOnMessageToCallback("send-access-code-success", callback);
+  },
+  onSendAccessCodeError: (callback) => {
+    mapIpcOnMessageToCallback("send-access-code-error", callback);
+  },
+  confirmAccessCode: (accessCode) => {
+    sendMessage("check-access-code", accessCode);
+  },
+  onConfirmAccessCodeSuccess: (callback) => {
+    mapIpcOnMessageToCallback("check-access-code-success", callback);
+  },
+  onConfirmAccessCodeError: (callback) => {
+    mapIpcOnMessageToCallback("check-access-code-error", callback);
+  },
+  confirmSerialNumber: (serialNumber) => {
+    sendMessage("check-serial-number", serialNumber);
+  },
+  onConfirmSerialNumberSuccess: (callback) => {
+    mapIpcOnMessageToCallback("check-serial-number-success", callback);
+  },
+  onConfirmSerialNumberError: (callback) => {
+    mapIpcOnMessageToCallback("check-serial-number-error", callback);
+  },
+  startActivityTracking: (callback) => {
+    sendMessage("start-tracking");
+  },
+  cancelActivityTracking: (callback) => {
+    sendMessage("stop-tracking");
+  },
+  onStartActivityTrackingSuccess: (callback) => {
+    mapIpcOnMessageToCallback("start-tracking-success", callback);
+  },
+  onStartActivityTrackingError: (callback) => {
+    mapIpcOnMessageToCallback("start-tracking-error", callback);
+  },
+  removeAllListeners: () => ipcRenderer.removeAllListeners(),
+});

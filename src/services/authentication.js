@@ -11,7 +11,6 @@ const store = new Store();
 
 async function sendAccessCode(phoneNumber, event) {
   console.log('did this event attempt to re-render the main process?')
-
   try {
     // 1. Make post request to send access code.
     const response = await fetch(`${BASE_URL}/api/send_access_code`, {
@@ -74,7 +73,48 @@ async function confirmAccessCode(accessCode, event) {
   return true;
 }
 
+async function verifySerialNumber(serialNumber, event) {
+  // 1. Grab user token from Electron store.
+  const userToken = store.get("USER_TOKEN");
+
+  //2. Get serial number from device
+  serialNumber((error, serial) => {
+     return serial
+     console.log(`This is${serial}`);
+   });
+
+  // 3. Make post request to confirm serial number.
+  const response = await fetch(`${BASE_URL}/api/validate_serial_number`, {
+    ...DEFAULT_OPTIONS,
+    method: "POST",
+    body: JSON.stringify({
+      serial_number: serialNumber,
+      token: userToken,
+    }),
+  });
+
+  // 4. Confirm the response is successful.
+  if (response.ok) {
+    // 5. Parse the JSON response.
+    const json = await response.json();
+
+    // 6. Set survey token in Electron store. Commenting out as it is related to survey
+     store.set("SURVEY_TOKEN", json.survey_id);
+     store.set("SURVEY_ID", json.survey_id);
+     store.set("SURVEY_TABLE_KEY", json.table_key);
+     store.set("ONBOARDING_STEP", "SETUP");
+
+    // 7. Emit IPC success message.
+    event.sender.send("check-access-code-success", `success`);
+  } else {
+    event.sender.send("check-access-code-error", `error`);
+  }
+
+  return true;
+}
+
 module.exports = {
   sendAccessCode,
   confirmAccessCode,
-}
+  verifySerialNumber,
+};
