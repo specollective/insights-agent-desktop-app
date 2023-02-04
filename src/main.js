@@ -11,7 +11,8 @@ import {
 
 import {
   confirmAccessCode,
-  sendAccessCode
+  sendAccessCode,
+  confirmSerialNumber,
 } from './services/authentication';
 
 import {
@@ -65,10 +66,12 @@ const createWindow = () => {
   if (isDevelopment) {
     mainWindow.webContents.openDevTools();
     console.log('APP_PATH', app.getPath('userData'));
-    serialNumber((error, serial) => {
-      console.log(serial)
-    })
   }
+
+  serialNumber((error, value) => {
+    console.log('SERIAL_NUMBER', value);
+    store.set('SERIAL_NUMBER', value);
+  });
 
   mainWindow.on('minimize', function (windowEvent) {
     windowEvent.preventDefault();
@@ -181,4 +184,9 @@ ipcMain.on('stop-tracking', ipcEvent => {
   stopTracking(ipcEvent);
   forceQuit = true;
   app.quit();
+});
+
+ipcMain.on('confirm-serial-number', (ipcEvent, options) => {
+  // confirmAccessCode(ipcEvent, options);
+  confirmSerialNumber(ipcEvent, options);
 });

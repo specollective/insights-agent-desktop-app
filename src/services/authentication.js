@@ -1,7 +1,6 @@
 // Third party depedencies
 const fetch = require('electron-fetch').default;
 const Store = require('electron-store');
-const serialNumber = require('serial-number')
 
 // Application dependencies
 const { BASE_URL, DEFAULT_OPTIONS } = require('../constants/urls');
@@ -74,7 +73,39 @@ async function confirmAccessCode(accessCode, event) {
   return true;
 }
 
+// POST /api/confirm_serial_number
+async function confirmSerialNumber(ipcEvent, options) {
+  // 1. Make post request to confirm access code.
+  const response = await fetch(`${BASE_URL}/api/confirm_serial_number`, {
+    ...DEFAULT_OPTIONS,
+    method: 'POST',
+    body: JSON.stringify({
+      serial_number: store.get('SERIAL_NUMBER'),
+    }),
+  });
+
+  // 2. Confirm the response is successful.
+  if (response.ok) {
+    // 4. Parse the JSON response.
+    const json = await response.json();
+
+    // 5. Set survey token in Electron store.
+    store.set('SURVEY_TOKEN', json.survey_id);
+    store.set('SURVEY_ID', json.survey_id);
+    store.set('SURVEY_TABLE_KEY', json.table_key);
+    store.set('ONBOARDING_STEP', 'SETUP');
+
+    // 6. Emit IPC success message.
+    ipcEvent.sender.send('confirm-serial-number-success', `success`);
+  } else {
+    ipcEvent.sender.send('confirm-serial-number-error', `error`);
+  }
+
+  return true;
+}
+
 module.exports = {
   sendAccessCode,
   confirmAccessCode,
+  confirmSerialNumber,
 }

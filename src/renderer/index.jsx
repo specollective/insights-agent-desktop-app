@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import {
-  MemoryRouter,
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-} from 'react-router-dom';
-
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import LandingPage from './components/pages/LandingPage';
 import SendAccessCodePage from './components/pages/SendAccessCodePage';
 import ConfirmAccessCodePage from './components/pages/ConfirmAccessCodePage';
 import SetupActivityTrackingPage from './components/pages/SetupActivityTrackingPage';
@@ -20,6 +14,7 @@ const ROUTES = {
   'SETUP': '/setup',
   'CONFIRM_ACCESS_CODE': '/confirm',
   'DASHBOARD': '/dashboard',
+  'CONFIRM_SERIAL_NUMBER': '/confirm-serial-number',
 }
 
 function App () {
@@ -36,7 +31,8 @@ function App () {
     <LocaleContext.Provider value={{ locale, setLocale }}>
       <MemoryRouter initialEntries={[initialRoute]}>
         <Routes>
-          <Route path="/" element={<SendAccessCodePage />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/send-access-code" element={<SendAccessCodePage />} />
           <Route path="/confirm" element={<ConfirmAccessCodePage />} />
           <Route path="/setup" element={<SetupActivityTrackingPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />

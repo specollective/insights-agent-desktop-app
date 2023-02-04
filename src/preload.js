@@ -50,6 +50,15 @@ contextBridge.exposeInMainWorld(
     onStartActivityTrackingError: (callback) => {
       mapIpcOnMessageToCallback('start-tracking-error', callback);
     },
+    confirmSerialNumber: () => {
+      sendMessage('confirm-serial-number', {})
+    },
+    onConfirmSerialNumberSuccess: (callback) => {
+      mapIpcOnMessageToCallback('confirm-serial-number-success', callback);
+    },
+    onConfirmSerialNumberError: (callback) => {
+      mapIpcOnMessageToCallback('confirm-serial-number-error', callback);
+    },
     removeAllListeners: () => ipcRenderer.removeAllListeners()
   }
 );
