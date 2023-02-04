@@ -1,17 +1,10 @@
 import {
   confirmSerialNumber,
-} from 'services/authentication'
+} from 'services/authentication';
 
-jest.mock('electron-fetch', () => {
-  return {
-    default: jest.fn().mockReturnValue(Promise.resolve({
-      ok: true,
-      json: () => {
-        return {};
-      },
-    }))
-  }
-})
+const electronFetch = require('electron-fetch').default;
+
+jest.mock('electron-fetch');
 
 
 jest.mock('electron-store', () => {
@@ -30,6 +23,17 @@ jest.mock('electron', () => {
 })
 
 describe('confirmSerialNumber', () => {
+  beforeEach(() => {
+    electronFetch.mockImplementation(() => {
+      return Promise.resolve({
+        ok: true,
+        json: () => {
+          return {};
+        },
+      })
+    })
+  })
+
   it('calls fetch with correct parameters', async () => {
     const mockIPCEvent = {
       sender: {
@@ -52,7 +56,7 @@ describe('confirmSerialNumber', () => {
     )
   })
 
-  it('calls IPC event with success message', async () => {
+  it('handles events for success states', async () => {
     const mockIPCEvent = {
       sender: {
         send: jest.fn()
@@ -66,4 +70,23 @@ describe('confirmSerialNumber', () => {
       'success',
     );
   })
+
+  it('handles events for error states', async () => {
+    electronFetch.mockImplementation(() => {
+      return Promise.resolve({ ok: false });
+    });
+
+    const mockIPCEvent = {
+      sender: {
+        send: jest.fn()
+      },
+    }
+
+    await confirmSerialNumber(mockIPCEvent, {});
+
+    expect(mockIPCEvent.sender.send).toBeCalledWith(
+      'confirm-serial-number-error',
+      'error',
+    );
+  });
 });
