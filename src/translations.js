@@ -23,7 +23,12 @@ const translations = {
         agreement: "By clicking on the Start button below, you agree that you are 18 years of age or older, have read the information above and are participating voluntarily.",
         note: "Note: You will need to be connected to the internet to begin the process. Once running, continuous connection is required.",
       },
-    }
+      menu: {
+        quit: "Quit",
+        clear: "Reset",
+        dashboard: "Dashboard",
+      },
+    },
   },
   es: {
     translation: {
@@ -48,6 +53,11 @@ const translations = {
         paid: "Se te pagará por hacer parte de este estudio.",
         agreement: "Al hacer clic en el botón Iniciar de abajo, estás aceptando que tienes 18 años o más, has leído la información anterior y participas voluntariamente.",
         note: "Nota: Necesitará conexión a Internet para comenzar el proceso. Una vez inicie el proceso, se requiere una conexión continua.",
+      },
+      menu: {
+        quit: "Salir",
+        clear: "Reiniciar",
+        dashboard: "Panel de control",
       },
     }
   },
