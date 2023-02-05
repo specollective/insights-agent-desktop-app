@@ -1,22 +1,19 @@
-const { app } = require('electron');
+import { DEVELOPMENT_MODE } from 'constants/environments';
 
-const BASE_URL = process.env.DEVELOPMENT === 'true'
+export const BASE_URL = DEVELOPMENT_MODE
   ? 'https://localhost:8000'
   : process.env.BACKEND_API_URL;
  
-const BASE_INGESTION_URL = process.env.DEVELOPMENT === 'true'
-  ? 'http://localhost:6000'
+export const BASE_INGESTION_URL = DEVELOPMENT_MODE
+  ? 'https://localhost:8000'
   : process.env.INGESTION_URL;
 
-const DEFAULT_OPTIONS = {
+export const INGESTION_URL = `${BASE_INGESTION_URL}/agent-data-ingestion`
+
+export const DEFAULT_OPTIONS = {
   mode: 'cors',
   headers: {
     'Content-Type': 'application/json',
   },
 }
 
-module.exports = {
-  DEFAULT_OPTIONS,
-  BASE_URL,
-  BASE_INGESTION_URL
-}

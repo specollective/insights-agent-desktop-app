@@ -1,4 +1,4 @@
-// const path = require('path');
+const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
@@ -18,4 +18,11 @@ module.exports = {
       BACKEND_API_URL: JSON.stringify(process.env.BACKEND_API_URL),
     }),
   ],
+  resolve: {
+    alias: {
+      services: path.resolve(__dirname, "./src/services"),
+      constants: path.resolve(__dirname, "./src/constants"),
+      utils: path.resolve(__dirname, "./src/utils"),
+    },
+  },
 };
