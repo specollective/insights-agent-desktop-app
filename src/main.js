@@ -1,5 +1,4 @@
 import path from 'path';
-const serialNumber = require("serial-number");
 
 import {
   app,
@@ -8,6 +7,8 @@ import {
   Menu,
   Tray,
 } from 'electron';
+
+import serialNumber from 'serial-number';
 
 import {
   confirmAccessCode,
@@ -21,18 +22,18 @@ import {
   startCron,
 } from './services/activity-data';
 
-import makeMockAPI from './mock-api';
+// import makeMockAPI from './mock-api';
 import Store from 'electron-store';
 
 // TODO: Convert to ES6 syntax
 require('update-electron-app')({ updateInterval: '5 minutes' });
 require('dotenv').config();
 
-const useMockApi = process.env.USE_MOCK_API === 'true';
 const isDevelopment = process.env.DEVELOPMENT === 'true';
 
 // NOTE: Depending on the environment you are running in, you may need to
 // change comment out these lines for manual testing.
+// const useMockApi = process.env.USE_MOCK_API === 'true';
 // if (useMockApi && isDevelopment) {
 //   makeMockAPI({ environment: 'development' });
 // }
