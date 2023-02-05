@@ -1,11 +1,7 @@
 // NodeJS Standard library depedencies
 import os from 'os'
-<<<<<<< HEAD
+import { powerMonitor } from 'electron'
 import { exec } from 'child_process'
-=======
-import { powerMonitor } from 'electron';
-import { execSync, exec } from 'child_process'
->>>>>>> ca00a35 (Add idle time metrics.)
 import isOnline from 'is-online'
 
 // Third party depedencies
