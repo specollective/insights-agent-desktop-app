@@ -3,9 +3,9 @@ import {
   buildDataEntryFromWindowData,
 } from 'services/data-entries'
 
-import electronFetch from 'electron-fetch';
+import electronFetch from 'electron-fetch'
 
-jest.mock('electron-fetch');
+jest.mock('electron-fetch')
 
 jest.mock('electron', () => {
   return { app: { isPackaged: false } }
@@ -41,14 +41,16 @@ describe('buildDataEntryFromWindowData', () => {
   it('builds data entry', async () => {
     const dataEntry = buildDataEntryFromWindowData({
       appName: 'a',
-      tabName: 'b',
+      tabName: 'Profile for Jose Torres',
       url: 'https://example.com/about_us',
       isConnected: true,
-    });
+    })
 
-    expect(dataEntry.application_name).toEqual('a');
-    expect(dataEntry.tab_name).toEqual('b');
-    expect(dataEntry.url).toEqual('https://example.com');
-    expect(dataEntry.internet_connection).toEqual('online');
-  });
-});
+    expect(dataEntry.application_name).toEqual('a')
+    // NOTE: The name is filtered to remote PII
+    expect(dataEntry.tab_name).toEqual('Profile for PERSON_NAME')
+    // NOTE: The URL removes path and query params
+    expect(dataEntry.url).toEqual('https://example.com')
+    expect(dataEntry.internet_connection).toEqual('online')
+  })
+})

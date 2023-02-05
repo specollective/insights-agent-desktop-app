@@ -2,7 +2,6 @@
 import os from 'os'
 import { exec } from 'child_process'
 import isOnline from 'is-online'
-import { SyncRedactor } from 'redact-pii'
 
 // Third party depedencies
 import cron from 'node-cron'
@@ -173,15 +172,11 @@ export async function getDataEntry() {
       }
 
       const rawData = stdout.toString('utf8').split('\n')
-
       const [appName, tabName, url] = rawData
-   
-      // Redact PII from tabName and insert into windowData instead of original tabName
-      const redactedTabName = redactor.redact(tabName)
 
       const windowData = {
         appName: appName === '\r' ? 'MISSING' : appName,
-        redactedTabName,
+        tabName,
         url,
         isConnected,
       }
