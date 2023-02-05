@@ -1,10 +1,8 @@
-const fetch = require('electron-fetch').default;
-const { INGESTION_URL } = require('../constants/urls');
-const Store = require('electron-store');
+import fetch from 'electron-fetch';
+import { INGESTION_URL } from '../constants/urls';
+import Store from 'electron-store';
 
-export const store = new Store();
-
-const isDevelopment = process.env.DEVELOPMENT === 'true';
+const store = new Store();
 
 export function postDataEntries (dataEntries) {
   return fetch(INGESTION_URL, {

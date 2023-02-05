@@ -1,14 +1,14 @@
 // Third party depedencies
-const fetch = require('electron-fetch').default;
-const Store = require('electron-store');
+import fetch from 'electron-fetch';
+import Store from 'electron-store';
 
 // Application dependencies
-const { BASE_URL, DEFAULT_OPTIONS } = require('../constants/urls');
+import { BASE_URL, DEFAULT_OPTIONS } from '../constants/urls';
 
 // Initialization
 const store = new Store();
 
-async function sendAccessCode(phoneNumber, event) {
+export async function sendAccessCode(phoneNumber, event) {
   console.log('did this event attempt to re-render the main process?')
 
   try {
@@ -39,7 +39,7 @@ async function sendAccessCode(phoneNumber, event) {
 }
 
 // POST /api/confirm_access_code
-async function confirmAccessCode(accessCode, event) {
+export async function confirmAccessCode(accessCode, event) {
   // 1. Grab user token from Electron store.
   const userToken = store.get('USER_TOKEN');
 
@@ -74,7 +74,7 @@ async function confirmAccessCode(accessCode, event) {
 }
 
 // POST /api/confirm_serial_number
-async function confirmSerialNumber(ipcEvent, options) {
+export async function confirmSerialNumber(ipcEvent, options) {
   // 1. Make post request to confirm access code.
   const response = await fetch(`${BASE_URL}/api/confirm_serial_number`, {
     ...DEFAULT_OPTIONS,
@@ -103,10 +103,4 @@ async function confirmSerialNumber(ipcEvent, options) {
   }
 
   return true;
-}
-
-module.exports = {
-  sendAccessCode,
-  confirmAccessCode,
-  confirmSerialNumber,
 }

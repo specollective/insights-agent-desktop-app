@@ -3,26 +3,35 @@ import {
   buildDataEntryFromWindowData,
 } from 'services/data-entries'
 
-jest.mock('electron-fetch', () => {
-  return { default: jest.fn() }
-})
+import electronFetch from 'electron-fetch';
+
+jest.mock('electron-fetch');
 
 jest.mock('electron', () => {
   return { app: { isPackaged: false } }
 })
 
 describe('postDataEntries', () => {
+  beforeEach(() => {
+    electronFetch.mockImplementation(() => {
+      return Promise.resolve({
+        ok: true,
+        json: () => ({}),
+      })
+    })
+  });
+
   it('returns true', async () => {
     const mockData = []
 
     await postDataEntries(mockData)
 
     expect(require('electron-fetch').default).toBeCalledWith(
-      'http://localhost:6000/agent-data-ingestion',
+      'https://localhost:8000/agent-data-ingestion',
       {
         body: '{"data":[]}',
         headers: { 'Content-Type': 'application/json' },
-        method: 'POST'
+        method: 'POST',
       },
     )
   })

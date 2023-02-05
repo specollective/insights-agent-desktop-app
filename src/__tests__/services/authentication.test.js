@@ -2,7 +2,7 @@ import {
   confirmSerialNumber,
 } from 'services/authentication';
 
-const electronFetch = require('electron-fetch').default;
+import electronFetch from 'electron-fetch';
 
 jest.mock('electron-fetch');
 

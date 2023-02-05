@@ -22,14 +22,14 @@ import {
   startCron,
 } from './services/activity-data';
 
+import { DEVELOPMENT_MODE } from './constants/environments';
+
 // import makeMockAPI from './mock-api';
 import Store from 'electron-store';
 
 // TODO: Convert to ES6 syntax
 require('update-electron-app')({ updateInterval: '5 minutes' });
 require('dotenv').config();
-
-const isDevelopment = process.env.DEVELOPMENT === 'true';
 
 // NOTE: Depending on the environment you are running in, you may need to
 // change comment out these lines for manual testing.
@@ -68,7 +68,7 @@ const createWindow = () => {
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   // Open the DevTools.
-  if (isDevelopment) {
+  if (DEVELOPMENT_MODE) {
     mainWindow.webContents.openDevTools();
     console.log('APP_PATH', app.getPath('userData'));
   }

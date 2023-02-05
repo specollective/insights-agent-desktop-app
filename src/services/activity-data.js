@@ -1,6 +1,6 @@
 // NodeJS Standard library depedencies
 import os from 'os'
-import { execSync, exec } from 'child_process'
+import { exec } from 'child_process'
 import isOnline from 'is-online'
 
 // Third party depedencies
