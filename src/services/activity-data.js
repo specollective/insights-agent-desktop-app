@@ -21,6 +21,17 @@ import {
   MAC_EXECUTABLE_PATH,
 } from 'constants/scripts'
 
+import {
+  ONBOARDING_STEP,
+  ONBOARDING_STEPS,
+  DATA_ENTRIES,
+} from 'constants/configs'
+
+import {
+  START_TRACKING_SUCCESS,
+  START_TRACKING_ERROR,
+} from 'constants/events'
+
 import { log } from 'utils/logging'
 
 // Initialization the data store
@@ -48,19 +59,19 @@ export function stopCron() {
 
 // Helper function for starting the tracking cron job.
 export function stopTracking() {
-  stopCron();
+  stopCron()
 }
 
 export function readObjectStore(key) {
-  return store.get(key);
+  return store.get(key)
 }
 
 export function writeObjectStore(key, dataEntries) {
-  store.set(key, dataEntries);
+  store.set(key, dataEntries)
 }
 
 export function initObjectStore(key) {
-  store.set(key, []);
+  store.set(key, [])
 }
 
 // Helper method for testing the data entry tracking.
@@ -103,45 +114,46 @@ export async function testDataIngestion(dataEntry) {
 export async function startTracking(ipcEvent) {
   log('startTracking');
 
-  const [dataEntry, dataEntryError] = await testGetDataEntry();
+  const [dataEntry, dataEntryError] = await testGetDataEntry()
   if (!dataEntry || dataEntryError) {
-    log('Data entry error', dataEntryError);
-    ipcEvent.sender.send('start-tracking-error', dataEntryError);
-    return;
+    log('Data entry error', dataEntryError)
+    ipcEvent.sender.send(START_TRACKING_ERROR, dataEntryError)
+    return
   }
 
-  const [response, responseError] = await testDataIngestion(dataEntry);
+  const [response, responseError] = await testDataIngestion(dataEntry)
   if (!response || responseError) {
-    log('Request error', responseError);
-    ipcEvent.sender.send('start-tracking-error', responseError);
-    return;
+    log('Request error', responseError)
+    ipcEvent.sender.send(START_TRACKING_ERROR, responseError)
+    return
   }
 
   if (!dataEntryError && !responseError) {
-    log('Tests success, starting cron');
+    log('Tests success, starting cron')
   }
 
   try {
-    startCron();
-    store.set('ACTIVITY_TRACKING_ENABLED', true);
-    store.set('ONBOARDING_STEP', 'DASHBOARD');
+    // Start cron job
+    startCron()
+    // Update onboarding step
+    store.set(ONBOARDING_STEP, ONBOARDING_STEPS.DASHBOARD)
   } catch(e) {
-    log('cron error', e.message);
-    ipcEvent.sender.send('start-tracking-error', e.message);
-    return;
+    log('cron error', e.message)
+    ipcEvent.sender.send(START_TRACKING_ERROR, e.message)
+    return
   }
 
-  ipcEvent.sender.send('start-tracking-success', 'success');
+  ipcEvent.sender.send(START_TRACKING_SUCCESS, 'success')
 }
 
 // Generate the path to run the native executable.
 export function trackingScriptPath() {
   if (os.platform() === 'win32') {
-    return `${SCRIPTS_PATH}\\${WINDOWS_EXECUTABLE_PATH}`;
+    return `${SCRIPTS_PATH}\\${WINDOWS_EXECUTABLE_PATH}`
   } else if (os.platform() === 'darwin') {
-    return `osascript ${SCRIPTS_PATH}/${MAC_EXECUTABLE_PATH}`;
+    return `osascript ${SCRIPTS_PATH}/${MAC_EXECUTABLE_PATH}`
   } else {
-    throw(`Unsupported platform ${os.platform()}`);
+    throw(`Unsupported platform ${os.platform()}`)
   }
 }
 
@@ -186,7 +198,7 @@ export async function syncDataWithServer() {
 
     if (response.ok) {
       log(`Synced ${dataEntries.length} data entries`);
-      store.set(DATA_ENTRIES_KEY, []);
+      store.set(DATA_ENTRIES, []);
     } else {
       log('Request error occurred');
       const errorMessage = await response.text();
@@ -202,12 +214,12 @@ export async function captureActivityData() {
   log('capturing activity data');
 
   const isConnected = await isOnline();
-  const dataEntries = store.get(DATA_ENTRIES_KEY);
+  const dataEntries = store.get(DATA_ENTRIES);
 
   try {
     const dataEntry = await getDataEntry();
     dataEntries.push(dataEntry);
-    store.set(DATA_ENTRIES_KEY, dataEntries);
+    store.set(DATA_ENTRIES, dataEntries);
   } catch (e) {
     log('An error occurred capturing data');
     log(e.message);

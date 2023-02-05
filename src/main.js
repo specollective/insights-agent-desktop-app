@@ -24,10 +24,27 @@ import {
 
 import { DEVELOPMENT_MODE } from 'constants/environments'
 
+import {
+  DATA_ENTRIES,
+  ONBOARDING_STEP,
+  ONBOARDING_STEPS,
+} from 'constants/configs'
+
 import { log } from 'utils/logging'
 
 // import makeMockAPI from './mock-api';
 import Store from 'electron-store'
+
+import i18next from 'i18next'
+import translations from './translations';
+
+import {
+  SEND_ACCESS_CODE,
+  CONFIRM_ACCESS_CODE,
+  CONFIRM_SERIAL_NUMBER,
+  START_TRACKING,
+  STOP_TRACKING,
+} from './constants/events'
 
 // TODO: Convert to ES6 syntax
 require('update-electron-app')({ updateInterval: '5 minutes' })
@@ -50,10 +67,15 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-store.set('DATA_ENTRIES', []);
-store.set('ERRORS', []);
+const createWindow = async () => {
+  const locale = app.getLocale()
 
-const createWindow = () => {
+  await i18next.init({
+    lng: locale,
+    debug: true,
+    resources: translations,
+  });
+
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 800,
@@ -74,6 +96,9 @@ const createWindow = () => {
     mainWindow.webContents.openDevTools();
   }
 
+  // Initial data entries store
+  store.set(DATA_ENTRIES, []);
+
   // Log your config path.
   log('APP_PATH', app.getPath('userData'));
 
@@ -83,6 +108,10 @@ const createWindow = () => {
 
     store.set('SERIAL_NUMBER', value)
   })
+
+  if (store.get(ONBOARDING_STEP) === ONBOARDING_STEPS.DASHBOARD) {
+    startCron()
+  }
 
   // Override minimize default functionality.
   mainWindow.on('minimize', function (windowEvent) {
@@ -104,13 +133,9 @@ const createWindow = () => {
 const createTrayMenu = () => {
   appIcon = new Tray(path.join(__dirname, '/assets/icons/buildJUSTLYicon.png'));
 
-  // const pauseMessage = store.get('ACTIVITY_TRACKING_ENABLED')
-  //   ? 'Pause'
-  //   : 'Start'
-
   const menuActions = [
     {
-      label: 'Dashboard',
+      label: i18next.t('menu.dashboard'),
       click() {
         if (!mainWindow) {
           throw new Error('"mainWindow" is not defined');
@@ -120,7 +145,7 @@ const createTrayMenu = () => {
       },
     },
     {
-      label: 'Quit',
+      label: i18next.t('menu.quit'),
       click() {
         forceQuit = true;
         stopTracking();
@@ -129,25 +154,20 @@ const createTrayMenu = () => {
       },
     },
     {
-      label: 'Clear Data',
+      label: i18next.t('menu.clear'),
       click() {
-        store.clear();
-        mainWindow.hide();
+        forceQuit = true;
+
+        store.clear()
+        app.quit();
       },
     },
   ]
 
-  contextMenu = Menu.buildFromTemplate(menuActions);
+  contextMenu = Menu.buildFromTemplate(menuActions)
 
-  appIcon.setToolTip('Insights Agent');
-  appIcon.setContextMenu(contextMenu);
-
-  const startTrackingOnBoot = store.get('SURVEY_TOKEN') &&
-                              store.get('ACTIVITY_TRACKING_ENABLED')
-
-  if (startTrackingOnBoot) {
-    startCron();
-  }
+  appIcon.setToolTip('Insights Agent')
+  appIcon.setContextMenu(contextMenu)
 }
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -181,25 +201,24 @@ app.on('activate', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
-ipcMain.on('send-access-code', (ipcEvent, phoneNumber) => {
-  sendAccessCode(phoneNumber, ipcEvent);
+ipcMain.on(SEND_ACCESS_CODE, (ipcEvent, phoneNumber) => {
+  sendAccessCode(phoneNumber, ipcEvent)
 })
 
-ipcMain.on('check-access-code', (ipcEvent, accessCode) => {
-  confirmAccessCode(accessCode, ipcEvent);
+ipcMain.on(CONFIRM_ACCESS_CODE, (ipcEvent, accessCode) => {
+  confirmAccessCode(accessCode, ipcEvent)
 })
 
-ipcMain.on('start-tracking', ipcEvent => {
-  startTracking(ipcEvent);
+ipcMain.on(START_TRACKING, ipcEvent => {
+  startTracking(ipcEvent)
 })
 
-ipcMain.on('stop-tracking', ipcEvent => {
-  stopTracking(ipcEvent);
-  forceQuit = true;
-  app.quit();
+ipcMain.on(STOP_TRACKING, ipcEvent => {
+  stopTracking(ipcEvent)
+  forceQuit = true
+  app.quit()
 })
 
-ipcMain.on('confirm-serial-number', (ipcEvent, options) => {
-  // confirmAccessCode(ipcEvent, options);
+ipcMain.on(CONFIRM_SERIAL_NUMBER, (ipcEvent, options) => {
   confirmSerialNumber(ipcEvent, options);
 })

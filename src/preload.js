@@ -1,10 +1,25 @@
 // See the Electron documentation for details on how to use preload scripts:
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
-const path = require('path');
-const { readFileSync } = require('fs');
-const { ipcRenderer, contextBridge } = require('electron');
-const Store = require('electron-store');
+import path from 'path'
+const { readFileSync } = require('fs')
+const { ipcRenderer, contextBridge } = require('electron')
+const Store = require('electron-store')
+import {
+  SEND_ACCESS_CODE,
+  SEND_ACCESS_CODE_SUCCESS,
+  SEND_ACCESS_CODE_ERROR,
+  CONFIRM_ACCESS_CODE,
+  CONFIRM_ACCESS_CODE_SUCCESS,
+  CONFIRM_ACCESS_CODE_ERROR,
+  CONFIRM_SERIAL_NUMBER,
+  CONFIRM_SERIAL_NUMBER_SUCCESS,
+  CONFIRM_SERIAL_NUMBER_ERROR,
+  START_TRACKING,
+  START_TRACKING_SUCCESS,
+  START_TRACKING_ERROR,
+  STOP_TRACKING,
+} from 'constants/events'
 
 // Initialization
 const store = new Store();
@@ -21,44 +36,44 @@ contextBridge.exposeInMainWorld(
     surveyToken: store.get('SURVEY_TOKEN'),
     onboardingStep: store.get('ONBOARDING_STEP') || 'LANDING_PAGE',
     sendAccessCode: (phoneNumber) => {
-      sendMessage('send-access-code', phoneNumber)
+      sendMessage(SEND_ACCESS_CODE, phoneNumber)
     },
     onSendAccessCodeSuccess: (callback) => {
-      mapIpcOnMessageToCallback('send-access-code-success', callback);
+      mapIpcOnMessageToCallback(SEND_ACCESS_CODE_SUCCESS, callback);
     },
     onSendAccessCodeError: (callback) => {
-      mapIpcOnMessageToCallback('send-access-code-error', callback);
+      mapIpcOnMessageToCallback(SEND_ACCESS_CODE_ERROR, callback);
     },
     confirmAccessCode: (accessCode) => {
-      sendMessage('check-access-code', accessCode)
+      sendMessage(CONFIRM_ACCESS_CODE, accessCode)
     },
     onConfirmAccessCodeSuccess: (callback) => {
-      mapIpcOnMessageToCallback('check-access-code-success', callback);
+      mapIpcOnMessageToCallback(CONFIRM_ACCESS_CODE_SUCCESS, callback);
     },
     onConfirmAccessCodeError: (callback) => {
-      mapIpcOnMessageToCallback('check-access-code-error', callback);
+      mapIpcOnMessageToCallback(CONFIRM_ACCESS_CODE_ERROR, callback);
     },
     startActivityTracking: (callback) => {
-      sendMessage('start-tracking');
+      sendMessage(START_TRACKING);
     },
     cancelActivityTracking: (callback) => {
-      sendMessage('stop-tracking');
+      sendMessage(STOP_TRACKING);
     },
     onStartActivityTrackingSuccess: (callback) => {
-      mapIpcOnMessageToCallback('start-tracking-success', callback);
+      mapIpcOnMessageToCallback(START_TRACKING_SUCCESS, callback);
     },
     onStartActivityTrackingError: (callback) => {
-      mapIpcOnMessageToCallback('start-tracking-error', callback);
+      mapIpcOnMessageToCallback(START_TRACKING_ERROR, callback);
     },
     confirmSerialNumber: () => {
-      sendMessage('confirm-serial-number', {})
+      sendMessage(CONFIRM_SERIAL_NUMBER, {})
     },
     onConfirmSerialNumberSuccess: (callback) => {
-      mapIpcOnMessageToCallback('confirm-serial-number-success', callback);
+      mapIpcOnMessageToCallback(CONFIRM_SERIAL_NUMBER_SUCCESS, callback);
     },
     onConfirmSerialNumberError: (callback) => {
-      mapIpcOnMessageToCallback('confirm-serial-number-error', callback);
+      mapIpcOnMessageToCallback(CONFIRM_SERIAL_NUMBER_ERROR, callback);
     },
-    removeAllListeners: () => ipcRenderer.removeAllListeners()
+    removeAllListeners: () => ipcRenderer.removeAllListeners(),
   }
 );

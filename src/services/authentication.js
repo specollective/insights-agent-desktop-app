@@ -4,6 +4,25 @@ import Store from 'electron-store'
 
 // Application dependencies
 import { BASE_URL, DEFAULT_OPTIONS } from 'constants/urls'
+
+import {
+  ONBOARDING_STEP,
+  ONBOARDING_STEPS,
+  SURVEY_ID,
+  SURVEY_TABLE_KEY,
+  SURVEY_TOKEN,
+  USER_TOKEN,
+} from 'constants/configs'
+
+import {
+  SEND_ACCESS_CODE_ERROR,
+  SEND_ACCESS_CODE_SUCCESS,
+  CONFIRM_ACCESS_CODE_SUCCESS,
+  CONFIRM_ACCESS_CODE_ERROR,
+  CONFIRM_SERIAL_NUMBER_SUCCESS,
+  CONFIRM_SERIAL_NUMBER_ERROR,
+} from 'constants/events'
+
 import { log } from 'utils/logging'
 
 // Initialization
@@ -21,21 +40,19 @@ export async function sendAccessCode(phoneNumber, event) {
     // 2. Confirm response is successful.
     if (response.ok) {
       // 3. Parse JSON response.
-      const json = await response.json();
+      const json = await response.json()
       // 4. Set study participant token in Electron store.
-      store.set('USER_TOKEN', json.token)
-
+      store.set(USER_TOKEN, json.token)
       // something might need to happen here, dunno, but it's here for now
-      store.set('ONBOARDING_STEP', 'CONFIRM_ACCESS_CODE')
-
+      store.set(ONBOARDING_STEP, ONBOARDING_STEPS.CONFIRM_ACCESS_CODE)
       // 5. Emit Ipc message.
-      event.sender.send('send-access-code-success', `success!`)
+      event.sender.send(SEND_ACCESS_CODE_SUCCESS, `success!`)
     } else {
       throw('Something went wrong')
     }
   } catch (e) {
     log('error', e)
-    event.sender.send('send-access-code-error', `error`)
+    event.sender.send(SEND_ACCESS_CODE_ERROR, 'error')
   }
 }
 
@@ -43,7 +60,7 @@ export async function sendAccessCode(phoneNumber, event) {
 // POST /api/confirm_access_code
 export async function confirmAccessCode(accessCode, ipcEvent) {
   // 1. Grab user token from Electron store.
-  const userToken = store.get('USER_TOKEN')
+  const userToken = store.get(USER_TOKEN)
 
   // 2. Make post request to confirm access code.
   const response = await fetch(`${BASE_URL}/api/confirm_access_code`, {
@@ -61,15 +78,15 @@ export async function confirmAccessCode(accessCode, ipcEvent) {
     const json = await response.json()
 
     // 5. Set survey token in Electron store.
-    store.set('SURVEY_TOKEN', json.survey_id)
-    store.set('SURVEY_ID', json.survey_id)
-    store.set('SURVEY_TABLE_KEY', json.table_key)
-    store.set('ONBOARDING_STEP', 'SETUP')
+    store.set(SURVEY_TOKEN, json.survey_id)
+    store.set(SURVEY_ID, json.survey_id)
+    store.set(SURVEY_TABLE_KEY, json.table_key)
+    store.set(ONBOARDING_STEP, ONBOARDING_STEPS.SETUP)
 
     // 6. Emit IPC success message.
-    ipcEvent.sender.send('check-access-code-success', `success`)
+    ipcEvent.sender.send(CONFIRM_ACCESS_CODE_SUCCESS, `success`)
   } else {
-    ipcEvent.sender.send('check-access-code-error', `error`)
+    ipcEvent.sender.send(CONFIRM_ACCESS_CODE_ERROR, `error`)
   }
 
   return true
@@ -93,16 +110,16 @@ export async function confirmSerialNumber(ipcEvent, options) {
     const json = await response.json()
 
     // 4. Set survey token in Electron store.
-    store.set('SURVEY_TOKEN', json.survey_id)
-    store.set('SURVEY_ID', json.survey_id)
-    store.set('SURVEY_TABLE_KEY', json.table_key)
-    store.set('ONBOARDING_STEP', 'SETUP')
+    store.set(SURVEY_TOKEN, json.survey_id)
+    store.set(SURVEY_ID, json.survey_id)
+    store.set(SURVEY_TABLE_KEY, json.table_key)
+    store.set(ONBOARDING_STEP, ONBOARDING_STEPS.SETUP)
 
     // 5a. Emit IPC success message.
-    ipcEvent.sender.send('confirm-serial-number-success', `success`)
+    ipcEvent.sender.send(CONFIRM_SERIAL_NUMBER_SUCCESS, `success`)
   } else {
     // 5b. Emit IPC error mesage.
-    ipcEvent.sender.send('confirm-serial-number-error', `error`)
+    ipcEvent.sender.send(CONFIRM_SERIAL_NUMBER_ERROR, `error`)
   }
 
   return true
