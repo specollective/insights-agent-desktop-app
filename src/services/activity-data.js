@@ -162,7 +162,6 @@ export function trackingScriptPath() {
 export async function getDataEntry() {
   const scriptPath = trackingScriptPath()
   const isConnected = await isOnline()
-  const redactor = new SyncRedactor()
 
   return new Promise((resolve, reject) => {
     exec(scriptPath, (error, stdout, stderr) => {
