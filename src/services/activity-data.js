@@ -1,13 +1,12 @@
 // NodeJS Standard library depedencies
 import os from 'os'
-import { execSync, exec } from 'child_process'
+import { exec } from 'child_process'
 import isOnline from 'is-online'
+import { SyncRedactor } from 'redact-pii'
 
 // Third party depedencies
 import cron from 'node-cron'
-import fetch from 'electron-fetch'
 import Store from 'electron-store'
-import { SyncRedactor } from 'redact-pii';
 // TODO: Determine if bugs with active-win can be resolved.
 // const activeWindow = require('active-win');
 
@@ -124,10 +123,9 @@ export function trackingScriptPath() {
 // Function for executing platform specific code to collect data.
 // returns an array of data points.
 export async function getDataEntry() {
-  const scriptPath = trackingScriptPath();
-  const isConnected = await isOnline();
-  // redact-pii
-  const redactor = new SyncRedactor();
+  const scriptPath = trackingScriptPath()
+  const isConnected = await isOnline()
+  const redactor = new SyncRedactor()
 
   return new Promise((resolve, reject) => {
     exec(scriptPath, (error, stdout, stderr) => {
@@ -138,10 +136,10 @@ export async function getDataEntry() {
 
       const rawData = stdout.toString('utf8').split('\n')
 
-      const [appName, tabName, url] = rawData;
-
-      //redact PII from tabName and insert into windowData instead of original tabName
-      const redactedTabName = redactor.redact(tabName);
+      const [appName, tabName, url] = rawData
+   
+      // Redact PII from tabName and insert into windowData instead of original tabName
+      const redactedTabName = redactor.redact(tabName)
 
       const windowData = {
         appName: appName === '\r' ? 'MISSING' : appName,
