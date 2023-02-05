@@ -160,8 +160,8 @@ export function trackingScriptPath() {
 // Function for executing platform specific code to collect data.
 // returns an array of data points.
 export async function getDataEntry() {
-  const scriptPath = trackingScriptPath();
-  const isConnected = await isOnline();
+  const scriptPath = trackingScriptPath()
+  const isConnected = await isOnline()
 
   return new Promise((resolve, reject) => {
     exec(scriptPath, (error, stdout, stderr) => {
@@ -170,8 +170,8 @@ export async function getDataEntry() {
         return;
       }
 
-      const rawData = stdout.toString('utf8').split('\n');
-      const [appName, tabName, url] = rawData;
+      const rawData = stdout.toString('utf8').split('\n')
+      const [appName, tabName, url] = rawData
 
       const windowData = {
         appName: appName === '\r' ? 'MISSING' : appName,

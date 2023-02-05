@@ -1,8 +1,10 @@
 import fetch from 'electron-fetch'
 import { INGESTION_URL } from 'constants/urls'
 import Store from 'electron-store'
+import { SyncRedactor } from 'redact-pii'
 
-const store = new Store();
+const store = new Store()
+const redactor = new SyncRedactor()
 
 export function postDataEntries (dataEntries) {
   return fetch(INGESTION_URL, {
@@ -31,7 +33,7 @@ export function buildDataEntryFromWindowData(windowData) {
     table_key: store.get('SURVEY_TABLE_KEY'),
     token: store.get('SURVEY_TOKEN'),
     application_name: appName,
-    tab_name: tabName,
+    tab_name: redactor.redact(tabName),
     url: sanitizeUrl(url),
     internet_connection: isConnected ? 'online' : 'offline',
     timestamp: new Date().toISOString(),
