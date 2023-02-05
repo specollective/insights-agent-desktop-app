@@ -1,6 +1,6 @@
-import fetch from 'electron-fetch';
-import { INGESTION_URL } from '../constants/urls';
-import Store from 'electron-store';
+import fetch from 'electron-fetch'
+import { INGESTION_URL } from 'constants/urls'
+import Store from 'electron-store'
 
 const store = new Store();
 
@@ -39,14 +39,14 @@ export function buildDataEntryFromWindowData(windowData) {
 }
 
 export function sanitizeUrl(rawUrl) {
-  if (!rawUrl || rawUrl === '') return '';
+  if (!rawUrl || rawUrl === '') return ''
 
   try {
     const url = new URL(rawUrl);
     const hostname = url.hostname;
     const protocol = url.protocol;
 
-    return `${protocol}//${hostname}`;
+    return `${protocol}//${hostname}`
   } catch(e) {
     return ''
   }

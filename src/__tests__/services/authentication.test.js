@@ -6,7 +6,6 @@ import electronFetch from 'electron-fetch';
 
 jest.mock('electron-fetch');
 
-
 jest.mock('electron-store', () => {
   class Store {
     set () {}
@@ -27,9 +26,7 @@ describe('confirmSerialNumber', () => {
     electronFetch.mockImplementation(() => {
       return Promise.resolve({
         ok: true,
-        json: () => {
-          return {};
-        },
+        json: () => ({}),
       })
     })
   })

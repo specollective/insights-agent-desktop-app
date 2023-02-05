@@ -1,4 +1,4 @@
-import { DEVELOPMENT_MODE } from './environments';
+import { DEVELOPMENT_MODE } from 'constants/environments';
 
 export const BASE_URL = DEVELOPMENT_MODE
   ? 'https://localhost:8000'

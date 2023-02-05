@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 
 function LandingPage() {
   const navigate = useNavigate()
 
   function confirmSerialNumber() {
-    console.log('clicked confirmSerialNumber');
-    window.api.confirmSerialNumber();
+    window.api.confirmSerialNumber()
   }
 
   useEffect(() => {
@@ -33,4 +32,4 @@ function LandingPage() {
   );
 }
 
-export default LandingPage;
+export default LandingPage

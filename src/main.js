@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'path'
 
 import {
   app,
@@ -6,30 +6,32 @@ import {
   ipcMain,
   Menu,
   Tray,
-} from 'electron';
+} from 'electron'
 
-import serialNumber from 'serial-number';
+import serialNumber from 'serial-number'
 
 import {
   confirmAccessCode,
-  sendAccessCode,
   confirmSerialNumber,
-} from './services/authentication';
+  sendAccessCode,
+} from 'services/authentication'
 
 import {
+  startCron,
   startTracking,
   stopTracking,
-  startCron,
-} from './services/activity-data';
+} from 'services/activity-data'
 
-import { DEVELOPMENT_MODE } from './constants/environments';
+import { DEVELOPMENT_MODE } from 'constants/environments'
+
+import { log } from 'utils/logging'
 
 // import makeMockAPI from './mock-api';
-import Store from 'electron-store';
+import Store from 'electron-store'
 
 // TODO: Convert to ES6 syntax
-require('update-electron-app')({ updateInterval: '5 minutes' });
-require('dotenv').config();
+require('update-electron-app')({ updateInterval: '5 minutes' })
+require('dotenv').config()
 
 // NOTE: Depending on the environment you are running in, you may need to
 // change comment out these lines for manual testing.
@@ -70,19 +72,25 @@ const createWindow = () => {
   // Open the DevTools.
   if (DEVELOPMENT_MODE) {
     mainWindow.webContents.openDevTools();
-    console.log('APP_PATH', app.getPath('userData'));
   }
 
-  serialNumber((error, value) => {
-    console.log('SERIAL_NUMBER', value);
-    store.set('SERIAL_NUMBER', value);
-  });
+  // Log your config path.
+  log('APP_PATH', app.getPath('userData'));
 
+  // Read the device's serial number
+  serialNumber((error, value) => {
+    log('SERIAL_NUMBER', value)
+
+    store.set('SERIAL_NUMBER', value)
+  })
+
+  // Override minimize default functionality.
   mainWindow.on('minimize', function (windowEvent) {
     windowEvent.preventDefault();
     mainWindow.hide();
   });
 
+  // Override close default functionality.
   mainWindow.on('close', function (windowEvent) {
     if (forceQuit) return true;
 
@@ -96,9 +104,9 @@ const createWindow = () => {
 const createTrayMenu = () => {
   appIcon = new Tray(path.join(__dirname, '/assets/icons/buildJUSTLYicon.png'));
 
-  const pauseMessage = store.get('ACTIVITY_TRACKING_ENABLED')
-    ? 'Pause'
-    : 'Start'
+  // const pauseMessage = store.get('ACTIVITY_TRACKING_ENABLED')
+  //   ? 'Pause'
+  //   : 'Start'
 
   const menuActions = [
     {
@@ -158,40 +166,40 @@ app.on('window-all-closed', () => {
   }
 });
 
-// app.on('before-quit', (event) => {
-//   stopTracking();
-// });
-
 app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
-});
+})
+
+// app.on('before-quit', (event) => {
+//   stopTracking();
+// });
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
 ipcMain.on('send-access-code', (ipcEvent, phoneNumber) => {
   sendAccessCode(phoneNumber, ipcEvent);
-});
+})
 
 ipcMain.on('check-access-code', (ipcEvent, accessCode) => {
   confirmAccessCode(accessCode, ipcEvent);
-});
+})
 
 ipcMain.on('start-tracking', ipcEvent => {
   startTracking(ipcEvent);
-});
+})
 
 ipcMain.on('stop-tracking', ipcEvent => {
   stopTracking(ipcEvent);
   forceQuit = true;
   app.quit();
-});
+})
 
 ipcMain.on('confirm-serial-number', (ipcEvent, options) => {
   // confirmAccessCode(ipcEvent, options);
   confirmSerialNumber(ipcEvent, options);
-});
+})

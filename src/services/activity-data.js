@@ -13,17 +13,19 @@ import Store from 'electron-store'
 import {
   postDataEntries,
   buildDataEntryFromWindowData,
-} from './data-entries'
+} from 'services/data-entries'
 
 import {
   SCRIPTS_PATH,
   WINDOWS_EXECUTABLE_PATH,
   MAC_EXECUTABLE_PATH,
-} from '../constants/scripts'
+} from 'constants/scripts'
+
+import { log } from 'utils/logging'
 
 // Initialization the data store
-export const store = new Store();
-export const DATA_ENTRIES_KEY = 'DATA_ENTRIES';
+export const store = new Store()
+export const DATA_ENTRIES_KEY = 'DATA_ENTRIES'
 
 export function cronTask(task) {
   captureActivityData();
@@ -47,11 +49,6 @@ export function stopCron() {
 // Helper function for starting the tracking cron job.
 export function stopTracking() {
   stopCron();
-}
-
-export function log(...args) {
-  console.log(process.env['NODE_ENV']);
-  console.log(...args);
 }
 
 export function readObjectStore(key) {
