@@ -37,10 +37,9 @@ import { log } from 'utils/logging'
 
 // Initialization the data store
 export const store = new Store()
-export const DATA_ENTRIES_KEY = 'DATA_ENTRIES'
 
 export function cronTask(task) {
-  captureActivityData();
+  captureActivityData()
 }
 
 // Initialize the tracking cron job
@@ -197,7 +196,7 @@ export async function getDataEntry() {
 export async function syncDataWithServer() {
   log('Syncing data with server...');
 
-  const dataEntries = store.get(DATA_ENTRIES_KEY);
+  const dataEntries = store.get(DATA_ENTRIES);
 
   try {
     const response = await postDataEntries(dataEntries);
