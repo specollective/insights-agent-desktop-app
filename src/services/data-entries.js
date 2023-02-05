@@ -26,7 +26,7 @@ export function postDataEntries (dataEntries) {
   * @returns {Object} - The data entry object.
 */
 export function buildDataEntryFromWindowData(windowData) {
-  const { appName, tabName, url, isConnected } = windowData;
+  const { appName, tabName, url, isConnected, idleTime } = windowData;
 
   return {
     survey_id: store.get('SURVEY_ID'),
@@ -37,6 +37,8 @@ export function buildDataEntryFromWindowData(windowData) {
     url: sanitizeUrl(url),
     internet_connection: isConnected ? 'online' : 'offline',
     timestamp: new Date().toISOString(),
+    token: store.get('SURVEY_TOKEN'),
+    idle_time: idleTime,
   }
 }
 
