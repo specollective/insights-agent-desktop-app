@@ -19,7 +19,7 @@ contextBridge.exposeInMainWorld(
   'api',
   {
     surveyToken: store.get('SURVEY_TOKEN'),
-    onboardingStep: store.get('ONBOARDING_STEP') || 'SEND_ACCESS_CODE',
+    onboardingStep: store.get('ONBOARDING_STEP') || 'LANDING_PAGE',
     sendAccessCode: (phoneNumber) => {
       sendMessage('send-access-code', phoneNumber)
     },

@@ -5,8 +5,10 @@ const BASE_URL = process.env.DEVELOPMENT === 'true'
   : process.env.BACKEND_API_URL;
  
 const BASE_INGESTION_URL = process.env.DEVELOPMENT === 'true'
-  ? 'http://localhost:6000'
+  ? 'https://localhost:8000'
   : process.env.INGESTION_URL;
+
+const INGESTION_URL = `${BASE_INGESTION_URL}/agent-data-ingestion`
 
 const DEFAULT_OPTIONS = {
   mode: 'cors',
@@ -18,5 +20,6 @@ const DEFAULT_OPTIONS = {
 module.exports = {
   DEFAULT_OPTIONS,
   BASE_URL,
-  BASE_INGESTION_URL
+  BASE_INGESTION_URL,
+  INGESTION_URL,
 }

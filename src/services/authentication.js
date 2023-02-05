@@ -86,18 +86,19 @@ async function confirmSerialNumber(ipcEvent, options) {
 
   // 2. Confirm the response is successful.
   if (response.ok) {
-    // 4. Parse the JSON response.
+    // 3. Parse the JSON response.
     const json = await response.json();
 
-    // 5. Set survey token in Electron store.
+    // 4. Set survey token in Electron store.
     store.set('SURVEY_TOKEN', json.survey_id);
     store.set('SURVEY_ID', json.survey_id);
     store.set('SURVEY_TABLE_KEY', json.table_key);
     store.set('ONBOARDING_STEP', 'SETUP');
 
-    // 6. Emit IPC success message.
+    // 5a. Emit IPC success message.
     ipcEvent.sender.send('confirm-serial-number-success', `success`);
   } else {
+    // 5b. Emit IPC error mesage.
     ipcEvent.sender.send('confirm-serial-number-error', `error`);
   }
 

@@ -1,12 +1,13 @@
 const fetch = require('electron-fetch').default;
-const { BASE_INGESTION_URL } = require('../constants/urls');
+const { INGESTION_URL } = require('../constants/urls');
 const Store = require('electron-store');
 
 export const store = new Store();
 
+const isDevelopment = process.env.DEVELOPMENT === 'true';
+
 export function postDataEntries (dataEntries) {
-  const endpoint = `${BASE_INGESTION_URL}/agent-data-ingestion`
-  return fetch(endpoint, {
+  return fetch(INGESTION_URL, {
     method: 'POST',
     body: JSON.stringify({ data: dataEntries }),
     headers: {
@@ -30,12 +31,12 @@ export function buildDataEntryFromWindowData(windowData) {
   return {
     survey_id: store.get('SURVEY_ID'),
     table_key: store.get('SURVEY_TABLE_KEY'),
+    token: store.get('SURVEY_TOKEN'),
     application_name: appName,
     tab_name: tabName,
     url: sanitizeUrl(url),
     internet_connection: isConnected ? 'online' : 'offline',
     timestamp: new Date().toISOString(),
-    token: store.get('SURVEY_TOKEN'),
   }
 }
 

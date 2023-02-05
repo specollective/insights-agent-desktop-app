@@ -10,11 +10,11 @@ import i18n from './utils/i18n';
 import LocaleContext from './utils/LocaleContext';
 
 const ROUTES = {
-  'SEND_ACCESS_CODE': '/',
+  'LANDING_PAGE': '/',
   'SETUP': '/setup',
-  'CONFIRM_ACCESS_CODE': '/confirm',
   'DASHBOARD': '/dashboard',
-  'CONFIRM_SERIAL_NUMBER': '/confirm-serial-number',
+  'SEND_ACCESS_CODE': '/send-access-code',
+  'CONFIRM_ACCESS_CODE': '/confirm-access-code',
 }
 
 function App () {
@@ -32,10 +32,11 @@ function App () {
       <MemoryRouter initialEntries={[initialRoute]}>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/send-access-code" element={<SendAccessCodePage />} />
-          <Route path="/confirm" element={<ConfirmAccessCodePage />} />
           <Route path="/setup" element={<SetupActivityTrackingPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+
+          <Route path="/send-access-code" element={<SendAccessCodePage />} />
+          <Route path="/confirm-access-code" element={<ConfirmAccessCodePage />} />
         </Routes>
       </MemoryRouter>
     </LocaleContext.Provider>

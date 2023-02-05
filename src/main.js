@@ -18,6 +18,7 @@ import {
 import {
   startTracking,
   stopTracking,
+  startCron,
 } from './services/activity-data';
 
 import makeMockAPI from './mock-api';
@@ -32,9 +33,9 @@ const isDevelopment = process.env.DEVELOPMENT === 'true';
 
 // NOTE: Depending on the environment you are running in, you may need to
 // change comment out these lines for manual testing.
-if (useMockApi && isDevelopment) {
-  makeMockAPI({ environment: 'development' });
-}
+// if (useMockApi && isDevelopment) {
+//   makeMockAPI({ environment: 'development' });
+// }
 
 const store = new Store();
 
@@ -45,6 +46,9 @@ let appIcon, contextMenu, mainWindow, forceQuit;
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
+
+store.set('DATA_ENTRIES', []);
+store.set('ERRORS', []);
 
 const createWindow = () => {
   // Create the browser window.
@@ -133,7 +137,7 @@ const createTrayMenu = () => {
                               store.get('ACTIVITY_TRACKING_ENABLED')
 
   if (startTrackingOnBoot) {
-    startTracking();
+    startCron();
   }
 }
 // This method will be called when Electron has finished
