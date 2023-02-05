@@ -1,0 +1,15 @@
+name: Test
+on: [push, pull_request]
+
+jobs:
+  test_on_linux:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@master
+      with:
+        node-version: 14
+    - name: Install dependencies
+      run: npm install
+    - name: Test
+      run: npm test

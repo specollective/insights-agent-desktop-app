@@ -1,10 +1,11 @@
+import { confirmSerialNumber } from 'services/authentication'
 import {
-  confirmSerialNumber,
-} from 'services/authentication';
+  CONFIRM_SERIAL_NUMBER_SUCCESS,
+  CONFIRM_SERIAL_NUMBER_ERROR,
+} from 'constants/events'
+import electronFetch from 'electron-fetch'
 
-import electronFetch from 'electron-fetch';
-
-jest.mock('electron-fetch');
+jest.mock('electron-fetch')
 
 jest.mock('electron-store', () => {
   class Store {
@@ -63,18 +64,18 @@ describe('confirmSerialNumber', () => {
     await confirmSerialNumber(mockIPCEvent, {});
 
     expect(mockIPCEvent.sender.send).toBeCalledWith(
-      'confirm-serial-number-success',
+      CONFIRM_SERIAL_NUMBER_SUCCESS,
       'success',
-    );
+    )
   })
 
   it('handles events for error states', async () => {
     electronFetch.mockImplementation(() => {
       return Promise.resolve({
         ok: false,
-        json: () => Promise.resolve({}),
-      });
-    });
+        json: () => Promise.resolve({ message: 'error' }),
+      })
+    })
 
     const mockIPCEvent = {
       sender: {
@@ -85,8 +86,8 @@ describe('confirmSerialNumber', () => {
     await confirmSerialNumber(mockIPCEvent, {});
 
     expect(mockIPCEvent.sender.send).toBeCalledWith(
-      'confirm-serial-number-error',
+      CONFIRM_SERIAL_NUMBER_ERROR,
       'error',
-    );
-  });
-});
+    )
+  })
+})
