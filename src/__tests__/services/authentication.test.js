@@ -70,7 +70,10 @@ describe('confirmSerialNumber', () => {
 
   it('handles events for error states', async () => {
     electronFetch.mockImplementation(() => {
-      return Promise.resolve({ ok: false });
+      return Promise.resolve({
+        ok: false,
+        json: () => Promise.resolve({}),
+      });
     });
 
     const mockIPCEvent = {
