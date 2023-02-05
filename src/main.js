@@ -57,14 +57,15 @@ require('dotenv').config()
 //   makeMockAPI({ environment: 'development' });
 // }
 
-const store = new Store();
+const store = new Store()
 
-let appIcon, contextMenu, mainWindow, forceQuit;
+// These are the only global variables we should have.
+let appIcon, contextMenu, mainWindow, forceQuit
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 // eslint-disable-next-line global-require
 if (require('electron-squirrel-startup')) {
-  app.quit();
+  app.quit()
 }
 
 const createWindow = async () => {
@@ -74,7 +75,7 @@ const createWindow = async () => {
     lng: locale,
     debug: true,
     resources: translations,
-  });
+  })
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -86,21 +87,21 @@ const createWindow = async () => {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
       nodeIntegration: true,
     },
-  });
+  })
 
   // and load the index.html of the app.
-  mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+  mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
 
   // Open the DevTools.
   if (DEVELOPMENT_MODE) {
-    mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools()
   }
 
   // Initial data entries store
   store.set(DATA_ENTRIES, []);
 
   // Log your config path.
-  log('APP_PATH', app.getPath('userData'));
+  log('APP_PATH', app.getPath('userData'))
 
   // Read the device's serial number
   serialNumber((error, value) => {
@@ -147,19 +148,17 @@ const createTrayMenu = () => {
     {
       label: i18next.t('menu.quit'),
       click() {
-        forceQuit = true;
-        stopTracking();
-
-        app.quit();
+        forceQuit = true
+        stopTracking()
+        app.quit()
       },
     },
     {
       label: i18next.t('menu.clear'),
       click() {
-        forceQuit = true;
-
+        forceQuit = true
         store.clear()
-        app.quit();
+        app.quit()
       },
     },
   ]
@@ -184,13 +183,13 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
-});
+})
 
 app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
+    createWindow()
   }
 })
 
