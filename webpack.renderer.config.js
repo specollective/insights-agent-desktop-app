@@ -20,6 +20,7 @@ module.exports = {
     alias: {
       components: path.resolve(__dirname, "./src/renderer/components"),
       services: path.resolve(__dirname, "./src/services"),
+      constants: path.resolve(__dirname, "./src/constants"),
     },
   },
   devtool: "nosources-source-map",

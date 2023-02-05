@@ -1,11 +1,10 @@
 // NodeJS Standard library depedencies
 import os from 'os'
-import { execSync, exec } from 'child_process'
+import { exec } from 'child_process'
 import isOnline from 'is-online'
 
 // Third party depedencies
 import cron from 'node-cron'
-import fetch from 'electron-fetch'
 import Store from 'electron-store'
 // TODO: Determine if bugs with active-win can be resolved.
 // const activeWindow = require('active-win');
@@ -14,20 +13,30 @@ import Store from 'electron-store'
 import {
   postDataEntries,
   buildDataEntryFromWindowData,
-} from './data-entries'
-
-import { BASE_URL } from '../constants/urls'
+} from 'services/data-entries'
 
 import {
   SCRIPTS_PATH,
   WINDOWS_EXECUTABLE_PATH,
   MAC_EXECUTABLE_PATH,
-} from '../constants/scripts'
+} from 'constants/scripts'
 
-let dataEntries = [];
+import {
+  ONBOARDING_STEP,
+  ONBOARDING_STEPS,
+  DATA_ENTRIES,
+} from 'constants/configs'
+
+import {
+  START_TRACKING_SUCCESS,
+  START_TRACKING_ERROR,
+} from 'constants/events'
+
+import { log } from 'utils/logging'
 
 // Initialization the data store
-export const store = new Store();
+export const store = new Store()
+export const DATA_ENTRIES_KEY = 'DATA_ENTRIES'
 
 export function cronTask(task) {
   captureActivityData();
@@ -40,83 +49,111 @@ export const trackingCron = cron.schedule(
   { scheduled: false },
 );
 
-// Helper function for starting the tracking cron job.
-export function stopTracking() {
+export function startCron() {
+  trackingCron.start();
+}
+
+export function stopCron() {
   trackingCron.stop();
 }
 
-export function log(...args) {
-  console.log(process.env['NODE_ENV']);
-  console.log(...args);
+// Helper function for starting the tracking cron job.
+export function stopTracking() {
+  stopCron()
+}
+
+export function readObjectStore(key) {
+  return store.get(key)
+}
+
+export function writeObjectStore(key, dataEntries) {
+  store.set(key, dataEntries)
+}
+
+export function initObjectStore(key) {
+  store.set(key, [])
+}
+
+// Helper method for testing the data entry tracking.
+export async function testGetDataEntry() {
+  log('testGetDataEntry');
+
+  let dataEntry
+  let dataEntryError
+
+  try {
+    dataEntry = await getDataEntry();
+  } catch (e) {
+    dataEntryError = e.message;
+  }
+
+  return [dataEntry, dataEntryError];
+}
+
+// Helper method for testing the data ingestion engine.
+export async function testDataIngestion(dataEntry) {
+  log('testDataIngestion');
+
+  let response
+  let responseError
+
+  try {
+    response = await postDataEntries([dataEntry]);
+
+    if (!response.ok) {
+      responseError = await response.text();
+    }
+  } catch (e) {
+    responseError = e.message;
+  }
+
+  return [response, responseError];
 }
 
 // Helper function for testing if tracking is working.
 export async function startTracking(ipcEvent) {
   log('startTracking');
 
-  let dataEntry, response
-
-  const errorMessages = [];
-
-  function sendMessage(message, data) {
-    if (ipcEvent) {
-      ipcEvent.sender.send(message, JSON.stringify(data));
-    }
-  }
-
-  if (store.get('ACTIVITY_TRACKING_ENABLED')) {
-    trackingCron.start();
-    sendMessage('start-tracking-success', 'success');
+  const [dataEntry, dataEntryError] = await testGetDataEntry()
+  if (!dataEntry || dataEntryError) {
+    log('Data entry error', dataEntryError)
+    ipcEvent.sender.send(START_TRACKING_ERROR, dataEntryError)
     return
   }
 
-  log('getDataEntry');
+  const [response, responseError] = await testDataIngestion(dataEntry)
+  if (!response || responseError) {
+    log('Request error', responseError)
+    ipcEvent.sender.send(START_TRACKING_ERROR, responseError)
+    return
+  }
+
+  if (!dataEntryError && !responseError) {
+    log('Tests success, starting cron')
+  }
+
   try {
-    dataEntry = await getDataEntry();
-    log('getDataEntrySuccess');
-  } catch (e) {
-    log('getDataEntryError', e.message);
-    errorMessages.push(e.message);
-    sendMessage('start-tracking-error', errorMessages);
+    // Start cron job
+    startCron()
+    // Update onboarding step
+    store.set(ONBOARDING_STEP, ONBOARDING_STEPS.DASHBOARD)
+  } catch(e) {
+    log('cron error', e.message)
+    ipcEvent.sender.send(START_TRACKING_ERROR, e.message)
     return
   }
 
-  log('postDataEntries');
-  try {
-    const response = await postDataEntries([dataEntry]);
-    log('postDataEntriesStatus', response.status);
-  } catch (e) {
-    log('postDataEntriesError', e.message);
-    errorMessages.push(e.message);
-    sendMessage('start-tracking-error', errorMessages);
-    return
-  }
-
-  log('trackingCron');
-  try {
-    trackingCron.start();
-
-    store.set('ACTIVITY_TRACKING_ENABLED', true);
-    store.set('ONBOARDING_STEP', 'DASHBOARD');
-
-    log('trackingCronSuccess');
-  } catch (e) {
-    log('trackingCronError', e.message);
-    errorMessages.push(e.message);
-    ipcEvent.sender.send('start-tracking-error', JSON.stringify(errorMessages));
-    return
-  }
-
-  ipcEvent.sender.send('start-tracking-success', 'success');
+  ipcEvent.sender.send(START_TRACKING_SUCCESS, 'success')
 }
 
+// Generate the path to run the native executable.
 export function trackingScriptPath() {
   if (os.platform() === 'win32') {
-    return `${SCRIPTS_PATH}\\${WINDOWS_EXECUTABLE_PATH}`;
+    return `${SCRIPTS_PATH}\\${WINDOWS_EXECUTABLE_PATH}`
   } else if (os.platform() === 'darwin') {
-    return `osascript ${SCRIPTS_PATH}/${MAC_EXECUTABLE_PATH}`;
+    return `osascript ${SCRIPTS_PATH}/${MAC_EXECUTABLE_PATH}`
   } else {
-    throw(`Unsupported platform ${os.platform()}`);
+    throw(`Unsupported platform ${os.platform()}`)
   }
 }
 
@@ -133,8 +170,7 @@ export async function getDataEntry() {
         return;
       }
 
-      const rawData = stdout.toString('utf8').split('\n')
-
+      const rawData = stdout.toString('utf8').split('\n');
       const [appName, tabName, url] = rawData;
 
       const windowData = {
@@ -151,50 +187,45 @@ export async function getDataEntry() {
   });
 }
 
-export function storeDataEntry(dataEntry) {
-  store.set(dataEntry.timestamp, JSON.stringify(dataEntry));
-
-  dataEntries.push(dataEntry);
-}
-
 export async function syncDataWithServer() {
+  log('Syncing data with server...');
+
+  const dataEntries = store.get(DATA_ENTRIES_KEY);
+
   try {
     const response = await postDataEntries(dataEntries);
     const json = await response.json();
 
-    if (response.status === 201) {
-      dataEntries = [];
+    if (response.ok) {
+      log(`Synced ${dataEntries.length} data entries`);
+      store.set(DATA_ENTRIES, []);
     } else {
+      log('Request error occurred');
+      const errorMessage = await response.text();
       throw new Error(JSON.stringify(json));
     }
   } catch (e) {
-    dataEntries = [];
+    log('Unknown error occurred', e.message);
   }
 }
 
 // Function triggers data collection and posts it the API.
 export async function captureActivityData() {
-  const isConnected = await isOnline();
+  log('capturing activity data');
 
-  let dataEntry
+  const isConnected = await isOnline();
+  const dataEntries = store.get(DATA_ENTRIES);
 
   try {
-    dataEntry = await getDataEntry();
+    const dataEntry = await getDataEntry();
     dataEntries.push(dataEntry);
+    store.set(DATA_ENTRIES, dataEntries);
   } catch (e) {
-    dataEntry = {
-      application_name: '',
-      tab_name: '',
-      url: '',
-      internet_connection: isConnected ? 'online' : 'offline',
-      timestamp: new Date().toISOString(),
-      token: store.get('SURVEY_TOKEN'),
-      error: e.message,
-    }
-    store.set(dataEntry.timestamp, JSON.stringify(dataEntry));
+    log('An error occurred capturing data');
+    log(e.message);
   }
 
   if (isConnected) {
     syncDataWithServer();
   }
-}   
+}

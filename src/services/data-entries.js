@@ -1,12 +1,11 @@
-const fetch = require('electron-fetch').default;
-const { BASE_INGESTION_URL } = require('../constants/urls');
-const Store = require('electron-store');
+import fetch from 'electron-fetch'
+import { INGESTION_URL } from 'constants/urls'
+import Store from 'electron-store'
 
-export const store = new Store();
+const store = new Store();
 
 export function postDataEntries (dataEntries) {
-  const endpoint = `${BASE_INGESTION_URL}/agent-data-ingestion`
-  return fetch(endpoint, {
+  return fetch(INGESTION_URL, {
     method: 'POST',
     body: JSON.stringify({ data: dataEntries }),
     headers: {
@@ -30,24 +29,24 @@ export function buildDataEntryFromWindowData(windowData) {
   return {
     survey_id: store.get('SURVEY_ID'),
     table_key: store.get('SURVEY_TABLE_KEY'),
+    token: store.get('SURVEY_TOKEN'),
     application_name: appName,
     tab_name: tabName,
     url: sanitizeUrl(url),
     internet_connection: isConnected ? 'online' : 'offline',
     timestamp: new Date().toISOString(),
-    token: store.get('SURVEY_TOKEN'),
   }
 }
 
 export function sanitizeUrl(rawUrl) {
-  if (!rawUrl || rawUrl === '') return '';
+  if (!rawUrl || rawUrl === '') return ''
 
   try {
     const url = new URL(rawUrl);
     const hostname = url.hostname;
     const protocol = url.protocol;
 
-    return `${protocol}//${hostname}`;
+    return `${protocol}//${hostname}`
   } catch(e) {
     return ''
   }
