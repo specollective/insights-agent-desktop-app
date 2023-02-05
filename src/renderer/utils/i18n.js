@@ -9,7 +9,7 @@ i18n
   .init({
     resources: translations,
     fallbackLng: 'en',
-    debug: true,
+    debug: false,
     whitelist: ['en', 'es'],
     detection: { order: ["path", "navigator"] },
 
