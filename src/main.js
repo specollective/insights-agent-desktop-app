@@ -68,6 +68,10 @@ if (require('electron-squirrel-startup')) {
   app.quit()
 }
 
+app.setLoginItemSettings({
+  openAtLogin: true,
+})
+
 const createWindow = async () => {
   const locale = app.getLocale()
 
