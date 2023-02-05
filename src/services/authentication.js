@@ -118,8 +118,9 @@ export async function confirmSerialNumber(ipcEvent, options) {
     // 5a. Emit IPC success message.
     ipcEvent.sender.send(CONFIRM_SERIAL_NUMBER_SUCCESS, `success`)
   } else {
+    const json = await response.json()
     // 5b. Emit IPC error mesage.
-    ipcEvent.sender.send(CONFIRM_SERIAL_NUMBER_ERROR, `error`)
+    ipcEvent.sender.send(CONFIRM_SERIAL_NUMBER_ERROR, json.message)
   }
 
   return true
