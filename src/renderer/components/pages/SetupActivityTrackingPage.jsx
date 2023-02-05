@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
 
 const STATUSES = {
   PENDING: 'PENDING',
@@ -8,20 +10,22 @@ const STATUSES = {
 }
 
 function ActivityTrackingStatusInstructions ({ status, error }) {
+  const { t } = useTranslation()
+
   if (status === STATUSES.PENDING) {
     return (
       <div>
-        <h1 className='py-2 text-2xl font-bold'>Before you click Start, please read this.</h1>
+        <h1 className='py-2 text-2xl font-bold'>{t('setup.before')}</h1>
         <ul className='list-disc py-4 pl-10 text-lg '>
-          <li>The purpose of this study is to collect data on how you use your computer.</li>
-          <li>The data will be anonymized to ensure your privacy.</li>
-          <li>You will be paid for taking part in this study.</li>
+          <li>{t('setup.purpose')}</li>
+          <li>{t('setup.privacy')}</li>
+          <li>{t('setup.paid')}</li>
         </ul>
         <p className='py-2 text-lg'>
-          By clicking on the Start button below, you agree that you are 18 years of age or older, have read the information above and are participating voluntarily.
+          {t('setup.agreement')}
         </p>
         <p className='py-2 text-base font-bold'>
-          Note: You will need to be connected to the internet to begin the process. Once running, continuous connection is required.
+          {t('setup.note')}
         </p>
       </div>
     )
