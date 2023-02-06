@@ -33,7 +33,7 @@ import {
   ONBOARDING_STEPS,
 } from 'constants/configs'
 
-import { log } from 'utils/logging'
+import { log, emitEvent } from 'utils/logging'
 
 // import makeMockAPI from './mock-api';
 import Store from 'electron-store'
@@ -141,38 +141,44 @@ const createWindow = async () => {
 
   // Override minimize default functionality.
   mainWindow.on('minimize', function (windowEvent) {
-    windowEvent.preventDefault();
-    mainWindow.hide();
+    windowEvent.preventDefault()
+    mainWindow.hide()
   });
 
   // Override close default functionality.
   mainWindow.on('close', function (windowEvent) {
-    if (forceQuit) return true;
+    console.log('closing app')
 
-    windowEvent.preventDefault();
-    mainWindow.hide();
+    if (forceQuit) return true
 
-    return false;
-  });
-};
+    windowEvent.preventDefault()
+    mainWindow.hide()
+
+    return false
+  })
+
+  createTrayMenu()
+}
 
 const createTrayMenu = () => {
-  appIcon = new Tray(path.join(__dirname, '/assets/icons/buildJUSTLYicon.png'));
+  appIcon = new Tray(path.join(__dirname, '/assets/icons/buildJUSTLYicon.png'))
+  const id = store.get('SERIAL_NUMBER')
 
   const menuActions = [
     {
       label: i18next.t('menu.dashboard'),
       click() {
         if (!mainWindow) {
-          throw new Error('"mainWindow" is not defined');
+          throw new Error('"mainWindow" is not defined')
         }
 
-        mainWindow.show();
+        mainWindow.show()
       },
     },
     {
       label: i18next.t('menu.quit'),
       click() {
+        emitEvent(`User quit the app on device ${id}`)
         forceQuit = true
         stopTracking()
         app.quit()
@@ -181,6 +187,7 @@ const createTrayMenu = () => {
     {
       label: i18next.t('menu.clear'),
       click() {
+        emitEvent(`User reset the app on device ${id}.`)
         forceQuit = true
         store.clear()
         app.quit()
@@ -193,13 +200,14 @@ const createTrayMenu = () => {
   appIcon.setToolTip('Insights Agent')
   appIcon.setContextMenu(contextMenu)
 }
+
 // This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
+// initialization and is ready to create browser windows and
+// the tray menu. Some APIs can only be used after this event occurs.
 app.on('ready', createWindow)
 
 // TODO: Document whenReady
-app.whenReady().then(createTrayMenu)
+// app.whenReady().then(createWindow)
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits

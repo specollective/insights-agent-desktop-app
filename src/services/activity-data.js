@@ -7,6 +7,8 @@ import isOnline from 'is-online'
 // Third party depedencies
 import cron from 'node-cron'
 import Store from 'electron-store'
+
+import * as Sentry from "@sentry/electron"
 // TODO: Determine if bugs with active-win can be resolved.
 // const activeWindow = require('active-win');
 
@@ -44,7 +46,7 @@ export function cronTask(task) {
 
 // Initialize the tracking cron job
 export const trackingCron = cron.schedule(
-  '*/1 * * * * *',
+  '*/5 * * * * *',
   cronTask,
   { scheduled: false },
 )
@@ -167,8 +169,8 @@ export async function getDataEntry() {
   return new Promise((resolve, reject) => {
     exec(scriptPath, (error, stdout, stderr) => {
       if (error) {
-        reject(error);
-        return;
+        reject(error)
+        return
       }
 
       // Get the raw data from the script.
@@ -230,7 +232,8 @@ export async function captureActivityData() {
     store.set(DATA_ENTRIES, dataEntries)
   } catch (e) {
     log('An error occurred capturing data')
-    log(e.message);
+    Sentry.captureMessage(e.message)
+    log(e.message)
   }
 
   if (isConnected) {
