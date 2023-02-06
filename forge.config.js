@@ -2,18 +2,18 @@ require("dotenv").config();
 
 module.exports = {
   packagerConfig: {
-    osxSign: {
-      identity: process.env["APPLE_IDENTITY"],
-      hardenedRuntime: true,
-      "gatekeeper-assess": false,
-      entitlements: "entitlements.plist",
-      "entitlements-inherit": "entitlements.plist",
-      "signature-flags": "library",
-    },
-    osxNotarize: {
-      appleId: process.env["APPLE_ID"],
-      appleIdPassword: process.env["APPLE_ID_PASS"],
-    },
+    // osxSign: {
+    //   identity: process.env["APPLE_IDENTITY"],
+    //   hardenedRuntime: true,
+    //   "gatekeeper-assess": false,
+    //   entitlements: "entitlements.plist",
+    //   "entitlements-inherit": "entitlements.plist",
+    //   "signature-flags": "library",
+    // },
+    // osxNotarize: {
+    //   appleId: process.env["APPLE_ID"],
+    //   appleIdPassword: process.env["APPLE_ID_PASS"],
+    // },
     executableName: "insights-agent-desktop-app",
     extraResource: [
       "./scripts/mac-data-tracker/program.scpt",
