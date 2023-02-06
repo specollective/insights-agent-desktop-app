@@ -7,6 +7,9 @@ module.exports = {
           "root": ["./src"],
         }]
       ]
+    },
+    development: {
+      compact: true,
     }
   }
 }
