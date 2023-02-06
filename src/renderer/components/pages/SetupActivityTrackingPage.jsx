@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-
 const STATUSES = {
   PENDING: 'PENDING',
   SUCCESS: 'SUCCESS',
@@ -119,7 +118,7 @@ function SetupActivityTrackingPage() {
 
     // https://patrickpassarella.com/blog/creating-electron-react-app;
     return () => window.api.removeAllListeners();
-  }, []);
+  }, [])
 
   return (
     <div className='grid place-content-center h-screen'>

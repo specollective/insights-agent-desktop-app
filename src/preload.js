@@ -33,6 +33,7 @@ const mapIpcOnMessageToCallback = (message, callback) =>
 contextBridge.exposeInMainWorld(
   'api',
   {
+    dataPath: store.get('DATA_PATH'),
     surveyToken: store.get('SURVEY_TOKEN'),
     onboardingStep: store.get('ONBOARDING_STEP') || 'LANDING_PAGE',
     sendAccessCode: (phoneNumber) => {
@@ -75,5 +76,8 @@ contextBridge.exposeInMainWorld(
       mapIpcOnMessageToCallback(CONFIRM_SERIAL_NUMBER_ERROR, callback);
     },
     removeAllListeners: () => ipcRenderer.removeAllListeners(),
+    openDataFile: (data) => {
+      sendMessage('OPEN_DATA_FILE', {})
+    },
   }
 );

@@ -44,17 +44,17 @@ export function cronTask(task) {
 
 // Initialize the tracking cron job
 export const trackingCron = cron.schedule(
-  '*/5 * * * * *',
+  '*/1 * * * * *',
   cronTask,
   { scheduled: false },
-);
+)
 
 export function startCron() {
-  trackingCron.start();
+  trackingCron.start()
 }
 
 export function stopCron() {
-  trackingCron.stop();
+  trackingCron.stop()
 }
 
 // Helper function for starting the tracking cron job.
@@ -194,24 +194,26 @@ export async function getDataEntry() {
 }
 
 export async function syncDataWithServer() {
-  log('Syncing data with server...');
+  log('Syncing data with server...')
 
-  const dataEntries = store.get(DATA_ENTRIES);
+  const dataEntries = store.get(DATA_ENTRIES)
+  const dataEntriesToSync = dataEntries.slice(0, 10)
+  const dataEntriesToKeep = dataEntries.slice(10)
 
   try {
-    const response = await postDataEntries(dataEntries);
-    const json = await response.json();
+    const response = await postDataEntries(dataEntriesToSync)
+    const json = await response.json()
 
     if (response.ok) {
-      log(`Synced ${dataEntries.length} data entries`);
-      store.set(DATA_ENTRIES, []);
+      log(`Synced ${dataEntriesToSync.length} data entries`)
+      store.set(DATA_ENTRIES, dataEntriesToKeep)
     } else {
-      log('Request error occurred');
-      const errorMessage = await response.text();
-      throw new Error(JSON.stringify(json));
+      log('Request error occurred')
+      const errorMessage = await response.text()
+      throw new Error(JSON.stringify(json))
     }
   } catch (e) {
-    log('Unknown error occurred', e.message);
+    log('Unknown error occurred', e.message)
   }
 }
 

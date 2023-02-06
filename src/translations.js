@@ -6,6 +6,9 @@ const translations = {
         code: "Please enter your verification code",
         noVerfication:"I did not receive a verification code",
       },
+      landingPage: {
+        heading: 'Setting up Insights Agent',
+      },
       dashboard: {
         welcome: "The Insights Agent is now running. By closing this window, you will not pause the study.",
         contact: "If you are having trouble or have any questions, please contact tech4all@buildjustly.org.",
@@ -36,6 +39,9 @@ const translations = {
       confirmation: {
         code: "Por favor ingresa tu código de verificación:",
         noVerfication:"No recibí un código de verificación",
+      },
+      landingPage: {
+        heading: 'Instalar Insights Agent',
       },
       dashboard: {
         welcome: "Insights Agents se está ejecutando ahora. Si cierra esta ventana, no se pausará el estudio.",

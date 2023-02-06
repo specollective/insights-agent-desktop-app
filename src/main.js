@@ -6,6 +6,7 @@ import {
   ipcMain,
   Menu,
   Tray,
+  shell,
 } from 'electron'
 
 import serialNumber from 'serial-number'
@@ -22,7 +23,7 @@ import {
   stopTracking,
 } from 'services/activity-data'
 
-import { DEVELOPMENT_MODE } from 'constants/environments'
+import { DEVELOPMENT_MODE, DEBUG_MODE } from 'constants/environments'
 
 import {
   DATA_ENTRIES,
@@ -68,9 +69,12 @@ if (require('electron-squirrel-startup')) {
   app.quit()
 }
 
-app.setLoginItemSettings({
-  openAtLogin: true,
-})
+if (!DEVELOPMENT_MODE && !DEBUG_MODE) {
+  app.setLoginItemSettings({
+    openAtLogin: true,
+    openAsHidden: true,
+  })
+}
 
 const createWindow = async () => {
   const locale = app.getLocale()
@@ -102,7 +106,8 @@ const createWindow = async () => {
   }
 
   // Initial data entries store
-  store.set(DATA_ENTRIES, []);
+  store.set(DATA_ENTRIES, [])
+  store.set('DATA_PATH', app.getPath('userData'))
 
   // Log your config path.
   log('APP_PATH', app.getPath('userData'))
@@ -224,4 +229,8 @@ ipcMain.on(STOP_TRACKING, ipcEvent => {
 
 ipcMain.on(CONFIRM_SERIAL_NUMBER, (ipcEvent, options) => {
   confirmSerialNumber(ipcEvent, options);
+})
+
+ipcMain.on('OPEN_DATA_FILE', (ipcEvent, options) => {
+  shell.openExternal(`file:///${store.get('DATA_PATH')}/config.json`)
 })
