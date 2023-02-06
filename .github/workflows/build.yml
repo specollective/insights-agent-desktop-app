@@ -8,7 +8,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@master
       with:
-        node-version: 14
+        node-version: 18
     - name: install dependencies
       run: npm install
     - name: Setup Windows Certificate
@@ -70,7 +70,7 @@ jobs:
   #   - uses: actions/checkout@v2
   #   - uses: actions/setup-node@master
   #     with:
-  #       node-version: 14
+  #       node-version: 18
   #   - name: install dependencies
   #     run: npm install
   #   - name: build
@@ -82,7 +82,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@master
       with:
-        node-version: 14
+        node-version: 18
     - name: install dependencies
       run: npm install
     - name: Add MacOS certs
