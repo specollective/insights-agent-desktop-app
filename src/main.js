@@ -11,6 +11,8 @@ import {
 
 import serialNumber from 'serial-number'
 
+import * as Sentry from '@sentry/electron'
+
 import {
   confirmAccessCode,
   confirmSerialNumber,
@@ -37,7 +39,8 @@ import { log } from 'utils/logging'
 import Store from 'electron-store'
 
 import i18next from 'i18next'
-import translations from './translations';
+import translations from './translations'
+import isOnline from 'is-online'
 
 import {
   SEND_ACCESS_CODE,
@@ -51,13 +54,26 @@ import {
 require('update-electron-app')({ updateInterval: '5 minutes' })
 require('dotenv').config()
 
-// NOTE: Depending on the environment you are running in, you may need to
-// change comment out these lines for manual testing.
-// const useMockApi = process.env.USE_MOCK_API === 'true';
-// if (useMockApi && isDevelopment) {
-//   makeMockAPI({ environment: 'development' });
-// }
+// Initial Sentry for error reporting.
+Sentry.init({
+  dsn: process.env.SENTRY_URL,
+  transportOptions: {
+    // The maximum number of days to keep an event in the queue.
+    maxQueueAgeDays: 30,
+    // The maximum number of events to keep in the queue.
+    maxQueueCount: 30,
+    // Called every time the number of requests in the queue changes.
+    queuedLengthChanged: (length) => {},
+    // Called before attempting to send an event to Sentry. Used to override queuing behavior.
+    //
+    // Return 'send' to attempt to send the event.
+    // Return 'queue' to queue and persist the event for sending later.
+    // Return 'drop' to drop the event.
+    beforeSend: async (request) => await isOnline() ? 'send' : 'queue'
+  }
+})
 
+// Initialize an instance electron store.
 const store = new Store()
 
 // These are the only global variables we should have.
@@ -180,17 +196,17 @@ const createTrayMenu = () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+app.on('ready', createWindow)
 
 // TODO: Document whenReady
-app.whenReady().then(createTrayMenu);
+app.whenReady().then(createTrayMenu)
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    app.quit();
+    app.quit()
   }
 })
 

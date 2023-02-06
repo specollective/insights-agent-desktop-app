@@ -5,6 +5,9 @@ import { useTranslation } from 'react-i18next';
 function DashboardPage() {
   const { t } = useTranslation();
 
+  window.addEventListener('online', () => console.log('Became online'));
+  window.addEventListener('offline', () => console.log('Became offline'));
+
   return (
     <>
       <section className='grid place-content-center h-screen text-lg'>

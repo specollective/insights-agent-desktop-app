@@ -219,17 +219,17 @@ export async function syncDataWithServer() {
 
 // Function triggers data collection and posts it the API.
 export async function captureActivityData() {
-  log('capturing activity data');
+  log('capturing activity data')
 
-  const isConnected = await isOnline();
-  const dataEntries = store.get(DATA_ENTRIES);
+  const isConnected = await isOnline()
+  const dataEntries = store.get(DATA_ENTRIES)
 
   try {
-    const dataEntry = await getDataEntry();
-    dataEntries.push(dataEntry);
-    store.set(DATA_ENTRIES, dataEntries);
+    const dataEntry = await getDataEntry()
+    dataEntries.push(dataEntry)
+    store.set(DATA_ENTRIES, dataEntries)
   } catch (e) {
-    log('An error occurred capturing data');
+    log('An error occurred capturing data')
     log(e.message);
   }
 
