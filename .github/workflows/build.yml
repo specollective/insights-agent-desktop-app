@@ -76,22 +76,22 @@ jobs:
   #   - name: build
   #     run: npm run make
 
-  # build_on_mac:
-  #   runs-on: macos-latest
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - uses: actions/setup-node@master
-  #     with:
-  #       node-version: 14
-  #   - name: install dependencies
-  #     run: npm install
-  #   - name: Add MacOS certs
-  #     run: chmod +x add-osx-cert.sh && ./add-osx-cert.sh
-  #     env:
-  #       CERTIFICATE_OSX_APPLICATION: ${{ secrets.CERTIFICATE_OSX_APPLICATION }}
-  #       CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
-  #   - name: build
-  #     run: npm run make
-  #     env:
-  #       APPLE_ID: ${{ secrets.APPLE_ID }}
-  #       APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
+  build_on_mac:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@master
+      with:
+        node-version: 14
+    - name: install dependencies
+      run: npm install
+    - name: Add MacOS certs
+      run: chmod +x add-osx-cert.sh && ./add-osx-cert.sh
+      env:
+        CERTIFICATE_OSX_APPLICATION: ${{ secrets.CERTIFICATE_OSX_APPLICATION }}
+        CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
+    - name: build
+      run: npm run make
+      env:
+        APPLE_ID: ${{ secrets.APPLE_ID }}
+        APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
