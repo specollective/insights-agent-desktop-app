@@ -33,7 +33,7 @@ import {
   ONBOARDING_STEPS,
 } from 'constants/configs'
 
-import { log, emitEvent } from 'utils/logging'
+import { log } from 'utils/logging'
 
 // import makeMockAPI from './mock-api';
 import Store from 'electron-store'
@@ -41,6 +41,8 @@ import Store from 'electron-store'
 import i18next from 'i18next'
 import translations from './translations'
 import isOnline from 'is-online'
+
+import { emitEvent } from './utils/sentry'
 
 import {
   SEND_ACCESS_CODE,
