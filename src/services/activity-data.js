@@ -73,7 +73,7 @@ export async function syncDataCronTask(task) {
 
 // Track data every second.
 export const trackingCron = cron.schedule(
-  '*/1 * * * * *',
+  '*/5 * * * * *',
   trackDataCron,
   { scheduled: false },
 )
