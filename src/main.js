@@ -51,6 +51,7 @@ import {
   CONFIRM_SERIAL_NUMBER,
   START_TRACKING,
   STOP_TRACKING,
+  EXIT_SURVEY,
 } from './constants/events'
 
 // TODO: Convert to ES6 syntax
@@ -278,7 +279,7 @@ ipcMain.on('OPEN_DATA_FILE', (ipcEvent, options) => {
   shell.openExternal(`file:///${store.get('DATA_PATH')}/config.json`)
 })
 
-ipcMain.on('EXIT_SURVEY', () => {
+ipcMain.on(EXIT_SURVEY, () => {
   emitEvent(`User exited the survey ${store.get('SERIAL_NUMBER')}`)
   forceQuit = true
   stopTracking()
