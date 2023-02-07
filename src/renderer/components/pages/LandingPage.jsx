@@ -37,6 +37,7 @@ function LandingPage() {
           <ol className='py-4 pl-10 text-lg list-decimal'>
             <li>Register the device's serial number with buildJUSTLY.</li>
             <li>Connect device to the Internet.</li>
+            <li>Run Insights Agent app as an administrator. </li>
             <li>Click the "Test Device" button.</li>
           </ol>
           <p className='py-2 text-lg'>

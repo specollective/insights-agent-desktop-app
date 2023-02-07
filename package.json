@@ -1,7 +1,7 @@
 {
   "name": "insights-agent-desktop-app",
   "productName": "insights-agent-desktop-app",
-  "version": "0.2.6-alpha",
+  "version": "0.2.7-alpha",
   "description": "Insights Agent Desktop Application",
   "main": ".webpack/main",
   "repository": "https://github.com/specollective/insights-agent-desktop-app.git",
