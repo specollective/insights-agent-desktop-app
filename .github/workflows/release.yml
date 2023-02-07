@@ -15,6 +15,11 @@ jobs:
         node-version: 14
     - name: install dependencies
       run: npm install
+    - name: Create .env file
+      run: |
+        touch .env
+        echo INGESTION_URL=${{ secrets.INGESTION_URL }} >> .env
+        echo BACKEND_API_URL=${{ secrets.BACKEND_API_URL }} >> .env
     - name: Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
