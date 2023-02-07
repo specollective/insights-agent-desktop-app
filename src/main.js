@@ -28,8 +28,8 @@ import {
 import { DEVELOPMENT_MODE, DEBUG_MODE } from 'constants/environments'
 
 import {
-  DATA_ENTRIES,
   DAILY_DATA_ENTRIES,
+  DATA_ENTRIES,
   ONBOARDING_STEP,
   ONBOARDING_STEPS,
 } from 'constants/configs'
@@ -46,12 +46,12 @@ import isOnline from 'is-online'
 import { emitEvent } from './utils/sentry'
 
 import {
-  SEND_ACCESS_CODE,
   CONFIRM_ACCESS_CODE,
   CONFIRM_SERIAL_NUMBER,
+  EXIT_SURVEY,
+  SEND_ACCESS_CODE,
   START_TRACKING,
   STOP_TRACKING,
-  EXIT_SURVEY,
 } from './constants/events'
 
 // TODO: Convert to ES6 syntax
