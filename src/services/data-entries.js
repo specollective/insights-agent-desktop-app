@@ -28,7 +28,6 @@ export function postDataEntries (dataEntries) {
 export function buildDataEntryFromWindowData(windowData) {
   const { appName, tabName, url, isConnected, idleTime } = windowData;
   const timestamp = new Date().toISOString();
-  console.log(timestamp);
 
   return {
     survey_id: store.get('SURVEY_ID'),
