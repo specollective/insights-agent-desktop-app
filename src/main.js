@@ -282,15 +282,13 @@ ipcMain.on(CONFIRM_SERIAL_NUMBER, (ipcEvent, options) => {
 ipcMain.on(DOWNLOAD_DATA, async (ipcEvent, options) => {
   try {
     const dataEntries = store.get(DAILY_DATA_ENTRIES)
-    // const csvData = new ObjectsToCsv(dataEntries)
-    // await csvData.toDisk(downloadPath)
     const downloadPath = `${app.getPath('downloads')}/data.csv`
     
     try {
-      const csv = await jsonexport(dataEntries, { rowDelimiter: ',' });
-      fs.writeFileSync(downloadPath, csv);
+      const csv = await jsonexport(dataEntries, { rowDelimiter: ',' })
+      fs.writeFileSync(downloadPath, csv)
     } catch (err) {
-        console.error(err);
+        console.error(err)
     }
     shell.openPath(downloadPath)
     ipcEvent.sender.send(DOWNLOAD_DATA_SUCCESS, true)
