@@ -44,6 +44,10 @@ export function cronTask(task) {
   captureActivityData()
 }
 
+export function cleanUpCronTask(task) {
+  cleanUpActivityData()
+}
+
 // Initialize the tracking cron job
 export const trackingCron = cron.schedule(
   '*/5 * * * * *',
@@ -51,12 +55,21 @@ export const trackingCron = cron.schedule(
   { scheduled: false },
 )
 
+// Maximum for 1 day is roughly 17.28 MB
+export const cleanUpCron = cron.schedule(
+  '0 0 * * *',
+  cleanUpCronTask,
+  { scheduled: false },
+)
+
 export function startCron() {
   trackingCron.start()
+  cleanUpCron.start()
 }
 
 export function stopCron() {
   trackingCron.stop()
+  cleanUpCron.stop()
 }
 
 // Helper function for starting the tracking cron job.
@@ -84,12 +97,12 @@ export async function testGetDataEntry() {
   let dataEntryError
 
   try {
-    dataEntry = await getDataEntry();
+    dataEntry = await getDataEntry()
   } catch (e) {
-    dataEntryError = e.message;
+    dataEntryError = e.message
   }
 
-  return [dataEntry, dataEntryError];
+  return [dataEntry, dataEntryError]
 }
 
 // Helper method for testing the data ingestion engine.
@@ -100,21 +113,21 @@ export async function testDataIngestion(dataEntry) {
   let responseError
 
   try {
-    response = await postDataEntries([dataEntry]);
+    response = await postDataEntries([dataEntry])
 
     if (!response.ok) {
-      responseError = await response.text();
+      responseError = await response.text()
     }
   } catch (e) {
-    responseError = e.message;
+    responseError = e.message
   }
 
-  return [response, responseError];
+  return [response, responseError]
 }
 
 // Helper function for testing if tracking is working.
 export async function startTracking(ipcEvent) {
-  log('startTracking');
+  log('startTracking')
 
   const [dataEntry, dataEntryError] = await testGetDataEntry()
   if (!dataEntry || dataEntryError) {
@@ -191,8 +204,8 @@ export async function getDataEntry() {
       const dataEntry = buildDataEntryFromWindowData(windowData)
 
       resolve(dataEntry)
-    });
-  });
+    })
+  })
 }
 
 export async function syncDataWithServer() {
@@ -225,11 +238,21 @@ export async function captureActivityData() {
 
   const isConnected = await isOnline()
   const dataEntries = store.get(DATA_ENTRIES)
+  const dailyDataEntries = store.get('DAILY_DATA_ENTRIES')
 
   try {
+    // Get the data entry.
     const dataEntry = await getDataEntry()
     dataEntries.push(dataEntry)
     store.set(DATA_ENTRIES, dataEntries)
+
+    dailyDataEntries.push(dataEntry)
+    store.set('DAILY_DATA_ENTRIES', dailyDataEntries)
+
+    // USED FOR DETERMINING THE SIZE OF THE DATA ENTRY
+    // import sizeof from 'object-sizeof'
+    // log('dataEntry', dataEntry)
+    // log('size: ', sizeof(dataEntry))
   } catch (e) {
     log('An error occurred capturing data')
     Sentry.captureMessage(e.message)
@@ -237,6 +260,10 @@ export async function captureActivityData() {
   }
 
   if (isConnected) {
-    syncDataWithServer();
+    syncDataWithServer()
   }
+}
+
+export function cleanUpActivityData() {
+  store.set('DAILY_DATA_ENTRIES', [])
 }

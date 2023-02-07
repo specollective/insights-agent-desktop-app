@@ -75,9 +75,11 @@ contextBridge.exposeInMainWorld(
     onConfirmSerialNumberError: (callback) => {
       mapIpcOnMessageToCallback(CONFIRM_SERIAL_NUMBER_ERROR, callback);
     },
-    removeAllListeners: () => ipcRenderer.removeAllListeners(),
-    openDataFile: (data) => {
-      sendMessage('OPEN_DATA_FILE', {})
+    onMainNavigation: (callback) => {
+      mapIpcOnMessageToCallback('MAIN_NAVIGATION', callback);
     },
+    removeAllListeners: () => ipcRenderer.removeAllListeners(),
+    openDataFile: (data) => sendMessage('OPEN_DATA_FILE', {}),
+    exitSurvey: () => sendMessage('EXIT_SURVEY', {}),
   }
 );

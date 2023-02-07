@@ -27,9 +27,9 @@ const translations = {
         note: "Note: You will need to be connected to the internet to begin the process. Once running, continuous connection is required.",
       },
       menu: {
+        open: "Open",
         quit: "Quit",
         clear: "Reset",
-        dashboard: "Dashboard",
       },
     },
   },

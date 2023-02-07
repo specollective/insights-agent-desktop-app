@@ -107,7 +107,6 @@ function SetupActivityTrackingPage() {
 
   useEffect(() => {
     window.api.onStartActivityTrackingSuccess((message) => {
-      // setStatus(STATUSES.SUCCESS);
       navigate('/dashboard');
     });
 
@@ -115,7 +114,11 @@ function SetupActivityTrackingPage() {
       setStatus(STATUSES.ERROR);
       setError(message);
     });
-
+    
+    window.api.onMainNavigation((routeName) => {
+      navigate(routeName);
+    });
+    
     // https://patrickpassarella.com/blog/creating-electron-react-app;
     return () => window.api.removeAllListeners();
   }, [])

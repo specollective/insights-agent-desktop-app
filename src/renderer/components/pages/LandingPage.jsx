@@ -11,10 +11,17 @@ function LandingPage() {
   }
 
   useEffect(() => {
-    window.api.onConfirmSerialNumberSuccess(() => navigate('/setup'))
+    window.api.onConfirmSerialNumberSuccess(() => {
+      navigate('/setup')
+    })
+
     window.api.onConfirmSerialNumberError((error) => {
       alert(error)
     })
+
+    window.api.onMainNavigation((routeName) => {
+      navigate(routeName);
+    });
 
     // https://patrickpassarella.com/blog/creating-electron-react-app
     return () => window.api.removeAllListeners()

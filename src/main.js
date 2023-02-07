@@ -29,6 +29,7 @@ import { DEVELOPMENT_MODE, DEBUG_MODE } from 'constants/environments'
 
 import {
   DATA_ENTRIES,
+  DAILY_DATA_ENTRIES,
   ONBOARDING_STEP,
   ONBOARDING_STEPS,
 } from 'constants/configs'
@@ -115,16 +116,25 @@ const createWindow = async () => {
     },
   })
 
+  store.set('WINDOW_OPEN', true);
+
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
 
   // Open the DevTools.
-  if (DEVELOPMENT_MODE) {
+  if (DEBUG_MODE) {
     mainWindow.webContents.openDevTools()
   }
 
   // Initial data entries store
-  store.set(DATA_ENTRIES, [])
+  if (!store.get(DATA_ENTRIES)) {
+    store.set(DATA_ENTRIES, [])
+  }
+
+  if (!store.get(DAILY_DATA_ENTRIES)) {
+    store.set(DAILY_DATA_ENTRIES, [])
+  }
+  
   store.set('DATA_PATH', app.getPath('userData'))
 
   // Log your config path.
@@ -153,6 +163,8 @@ const createWindow = async () => {
 
     if (forceQuit) return true
 
+    store.set('WINDOW_OPEN', false);
+
     windowEvent.preventDefault()
     mainWindow.hide()
 
@@ -168,34 +180,39 @@ const createTrayMenu = () => {
 
   const menuActions = [
     {
-      label: i18next.t('menu.dashboard'),
+      label: i18next.t('menu.open'),
       click() {
-        if (!mainWindow) {
-          throw new Error('"mainWindow" is not defined')
-        }
-
         mainWindow.show()
       },
     },
     {
       label: i18next.t('menu.quit'),
       click() {
-        emitEvent(`User quit the app on device ${id}`)
-        forceQuit = true
-        stopTracking()
-        app.quit()
+        log('Quit app')
+
+        if (store.get('WINDOW_OPEN')) {
+          mainWindow.webContents.send('MAIN_NAVIGATION', '/exit')
+        } else {
+          mainWindow.show()
+          // TODO: We need this timeout because the app is not ready to receive the event.
+          setTimeout(() => {
+            mainWindow.webContents.send('MAIN_NAVIGATION', '/exit')
+          }, 200)
+        }
       },
     },
-    {
+  ]
+
+  if (DEBUG_MODE) {
+    menuActions.push({
       label: i18next.t('menu.clear'),
       click() {
-        emitEvent(`User reset the app on device ${id}.`)
         forceQuit = true
         store.clear()
         app.quit()
       },
-    },
-  ]
+    })
+  }
 
   contextMenu = Menu.buildFromTemplate(menuActions)
 
@@ -259,4 +276,11 @@ ipcMain.on(CONFIRM_SERIAL_NUMBER, (ipcEvent, options) => {
 
 ipcMain.on('OPEN_DATA_FILE', (ipcEvent, options) => {
   shell.openExternal(`file:///${store.get('DATA_PATH')}/config.json`)
+})
+
+ipcMain.on('EXIT_SURVEY', () => {
+  emitEvent(`User exited the survey ${store.get('SERIAL_NUMBER')}`)
+  forceQuit = true
+  stopTracking()
+  app.quit()
 })

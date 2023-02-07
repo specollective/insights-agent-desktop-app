@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import dashboardStyles from '../styles/dashboard';
 import { useTranslation } from 'react-i18next';
 
 function DashboardPage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    window.api.onMainNavigation((routeName) => {
+      navigate(routeName);
+    });
+  }, [])
 
   window.addEventListener('online', () => console.log('Became online'));
   window.addEventListener('offline', () => console.log('Became offline'));
