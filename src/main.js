@@ -1,4 +1,7 @@
 import path from 'path'
+import fs from 'fs'
+import ObjectsToCsv from 'objects-to-csv'
+import jsonexport from 'jsonexport';
 
 import {
   app,
@@ -10,7 +13,6 @@ import {
 } from 'electron'
 
 import serialNumber from 'serial-number'
-
 import * as Sentry from '@sentry/electron'
 
 import {
@@ -52,6 +54,8 @@ import {
   SEND_ACCESS_CODE,
   START_TRACKING,
   STOP_TRACKING,
+  DOWNLOAD_DATA,
+  DOWNLOAD_DATA_SUCCESS,
 } from './constants/events'
 
 // TODO: Convert to ES6 syntax
@@ -160,7 +164,7 @@ const createWindow = async () => {
 
   // Override close default functionality.
   mainWindow.on('close', function (windowEvent) {
-    console.log('closing app')
+    log('mainWindow.close')
 
     if (forceQuit) return true
 
@@ -246,9 +250,9 @@ app.on('activate', () => {
   }
 })
 
-// app.on('before-quit', (event) => {
-//   stopTracking();
-// });
+app.on('before-quit', (event) => {
+  log('before-quit');
+});
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
@@ -275,13 +279,29 @@ ipcMain.on(CONFIRM_SERIAL_NUMBER, (ipcEvent, options) => {
   confirmSerialNumber(ipcEvent, options);
 })
 
-ipcMain.on('OPEN_DATA_FILE', (ipcEvent, options) => {
-  shell.openExternal(`file:///${store.get('DATA_PATH')}/config.json`)
+ipcMain.on(DOWNLOAD_DATA, async (ipcEvent, options) => {
+  try {
+    const dataEntries = store.get(DAILY_DATA_ENTRIES)
+    const downloadPath = `${app.getPath('downloads')}/data.csv`
+    
+    try {
+      const csv = await jsonexport(dataEntries, { rowDelimiter: ',' })
+      fs.writeFileSync(downloadPath, csv)
+    } catch (err) {
+        console.error(err)
+    }
+    shell.openPath(downloadPath)
+    ipcEvent.sender.send(DOWNLOAD_DATA_SUCCESS, true)
+  } catch (error) {
+    log(error)
+    ipcEvent.sender.send('DOWNLOAD_DATA_ERROR', false)
+  }
 })
 
-ipcMain.on(EXIT_SURVEY, () => {
+ipcMain.on(EXIT_SURVEY, async () => {
   emitEvent(`User exited the survey ${store.get('SERIAL_NUMBER')}`)
   forceQuit = true
   stopTracking()
+  store.clear()
   app.quit()
 })

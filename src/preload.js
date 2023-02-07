@@ -1,10 +1,8 @@
 // See the Electron documentation for details on how to use preload scripts:
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
-import path from 'path'
-const { readFileSync } = require('fs')
-const { ipcRenderer, contextBridge } = require('electron')
-const Store = require('electron-store')
+import { ipcRenderer, contextBridge } from 'electron'
+import Store from 'electron-store'
 import {
   CONFIRM_ACCESS_CODE_ERROR,
   CONFIRM_ACCESS_CODE_SUCCESS,
@@ -20,6 +18,8 @@ import {
   START_TRACKING_SUCCESS,
   START_TRACKING,
   STOP_TRACKING,
+  DOWNLOAD_DATA,
+  DOWNLOAD_DATA_SUCCESS,
 } from 'constants/events'
 
 // Initialization
@@ -79,8 +79,11 @@ contextBridge.exposeInMainWorld(
     onMainNavigation: (callback) => {
       mapIpcOnMessageToCallback('MAIN_NAVIGATION', callback);
     },
+    onDownloadSuccess: (callback) => {
+      mapIpcOnMessageToCallback(DOWNLOAD_DATA_SUCCESS, callback);
+    },
     removeAllListeners: () => ipcRenderer.removeAllListeners(),
     exitSurvey: () => sendMessage(EXIT_SURVEY, {}),
-    // openDataFile: (data) => sendMessage('OPEN_DATA_FILE', {}),
+    downloadData: (data) => sendMessage(DOWNLOAD_DATA, {}),
   }
 );

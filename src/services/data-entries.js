@@ -27,6 +27,7 @@ export function postDataEntries (dataEntries) {
 */
 export function buildDataEntryFromWindowData(windowData) {
   const { appName, tabName, url, isConnected, idleTime } = windowData;
+  const timestamp = new Date().toISOString();
 
   return {
     survey_id: store.get('SURVEY_ID'),
@@ -36,7 +37,7 @@ export function buildDataEntryFromWindowData(windowData) {
     tab_name: redactor.redact(tabName),
     url: sanitizeUrl(url),
     internet_connection: isConnected ? 'online' : 'offline',
-    timestamp: new Date().toISOString(),
+    timestamp,
     token: store.get('SURVEY_TOKEN'),
     idle_time: idleTime,
   }

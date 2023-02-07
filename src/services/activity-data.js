@@ -28,6 +28,7 @@ import {
   ONBOARDING_STEP,
   ONBOARDING_STEPS,
   DATA_ENTRIES,
+  DAILY_DATA_ENTRIES,
 } from 'constants/configs'
 
 import {
@@ -40,22 +41,51 @@ import { log } from 'utils/logging'
 // Initialization the data store
 export const store = new Store()
 
-export function cronTask(task) {
+// Data entries in memory
+let dataEntriesInMemory = []
+
+// Initialize the tracking activity
+export function trackDataCron(task) {
   captureActivityData()
 }
 
 export function cleanUpCronTask(task) {
-  cleanUpActivityData()
+  store.set(DAILY_DATA_ENTRIES, [])
 }
 
-// Initialize the tracking cron job
+// Writes daily data to disk and uploads to server.
+export async function syncDataCronTask(task) {
+  const isConnected = await isOnline()
+  const persistedDataEntries = store.get(DATA_ENTRIES)
+  const persistedDailyDataEntries = store.get(DAILY_DATA_ENTRIES)
+  const dataEntries = [...persistedDataEntries, ...dataEntriesInMemory]
+  const dailyDataEntries = [...persistedDailyDataEntries, ...dataEntriesInMemory]
+
+  store.set(DATA_ENTRIES, dataEntries)
+  store.set(DAILY_DATA_ENTRIES, dailyDataEntries)
+
+  dataEntriesInMemory = []
+
+  if (isConnected) {
+    syncDataWithServer(dataEntries)
+  }
+}
+
+// Track data every second.
 export const trackingCron = cron.schedule(
   '*/5 * * * * *',
-  cronTask,
+  trackDataCron,
   { scheduled: false },
 )
 
-// Maximum for 1 day is roughly 17.28 MB
+// Sync data every 10 seconds.
+export const syncDataCron = cron.schedule(
+  '*/10 * * * * *',
+  syncDataCronTask,
+  { scheduled: false },
+)
+
+// Clean up data dailys roughly 17.28 MB
 export const cleanUpCron = cron.schedule(
   '0 0 * * *',
   cleanUpCronTask,
@@ -64,29 +94,19 @@ export const cleanUpCron = cron.schedule(
 
 export function startCron() {
   trackingCron.start()
+  syncDataCron.start()
   cleanUpCron.start()
 }
 
 export function stopCron() {
   trackingCron.stop()
+  syncDataCron.start()
   cleanUpCron.stop()
 }
 
 // Helper function for starting the tracking cron job.
 export function stopTracking() {
   stopCron()
-}
-
-export function readObjectStore(key) {
-  return store.get(key)
-}
-
-export function writeObjectStore(key, dataEntries) {
-  store.set(key, dataEntries)
-}
-
-export function initObjectStore(key) {
-  store.set(key, [])
 }
 
 // Helper method for testing the data entry tracking.
@@ -107,7 +127,7 @@ export async function testGetDataEntry() {
 
 // Helper method for testing the data ingestion engine.
 export async function testDataIngestion(dataEntry) {
-  log('testDataIngestion');
+  log('testDataIngestion')
 
   let response
   let responseError
@@ -208,10 +228,9 @@ export async function getDataEntry() {
   })
 }
 
-export async function syncDataWithServer() {
+export async function syncDataWithServer(dataEntries) {
   log('Syncing data with server...')
 
-  const dataEntries = store.get(DATA_ENTRIES)
   const dataEntriesToSync = dataEntries.slice(0, 10)
   const dataEntriesToKeep = dataEntries.slice(10)
 
@@ -234,20 +253,15 @@ export async function syncDataWithServer() {
 
 // Function triggers data collection and posts it the API.
 export async function captureActivityData() {
-  log('capturing activity data')
-
-  const isConnected = await isOnline()
-  const dataEntries = store.get(DATA_ENTRIES)
-  const dailyDataEntries = store.get('DAILY_DATA_ENTRIES')
+  log('Capturing activity data...')
 
   try {
     // Get the data entry.
     const dataEntry = await getDataEntry()
-    dataEntries.push(dataEntry)
-    store.set(DATA_ENTRIES, dataEntries)
 
-    dailyDataEntries.push(dataEntry)
-    store.set('DAILY_DATA_ENTRIES', dailyDataEntries)
+    log('Timestamp', dataEntry.timestamp)
+
+    dataEntriesInMemory.push(dataEntry)
 
     // USED FOR DETERMINING THE SIZE OF THE DATA ENTRY
     // import sizeof from 'object-sizeof'
@@ -258,12 +272,8 @@ export async function captureActivityData() {
     Sentry.captureMessage(e.message)
     log(e.message)
   }
-
-  if (isConnected) {
-    syncDataWithServer()
-  }
 }
 
 export function cleanUpActivityData() {
-  store.set('DAILY_DATA_ENTRIES', [])
+  store.set(DAILY_DATA_ENTRIES, [])
 }
