@@ -15,4 +15,5 @@ window.api = {
   onStartActivityTrackingSuccess: jest.fn(),
   onStartActivityTrackingError: jest.fn(),
   startActivityTracking: jest.fn(),
+  onMainNavigation: jest.fn(),
 }

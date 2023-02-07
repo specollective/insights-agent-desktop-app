@@ -6,18 +6,19 @@ const { readFileSync } = require('fs')
 const { ipcRenderer, contextBridge } = require('electron')
 const Store = require('electron-store')
 import {
-  SEND_ACCESS_CODE,
-  SEND_ACCESS_CODE_SUCCESS,
-  SEND_ACCESS_CODE_ERROR,
-  CONFIRM_ACCESS_CODE,
-  CONFIRM_ACCESS_CODE_SUCCESS,
   CONFIRM_ACCESS_CODE_ERROR,
-  CONFIRM_SERIAL_NUMBER,
-  CONFIRM_SERIAL_NUMBER_SUCCESS,
+  CONFIRM_ACCESS_CODE_SUCCESS,
+  CONFIRM_ACCESS_CODE,
   CONFIRM_SERIAL_NUMBER_ERROR,
-  START_TRACKING,
-  START_TRACKING_SUCCESS,
+  CONFIRM_SERIAL_NUMBER_SUCCESS,
+  CONFIRM_SERIAL_NUMBER,
+  EXIT_SURVEY,
+  SEND_ACCESS_CODE_ERROR,
+  SEND_ACCESS_CODE_SUCCESS,
+  SEND_ACCESS_CODE,
   START_TRACKING_ERROR,
+  START_TRACKING_SUCCESS,
+  START_TRACKING,
   STOP_TRACKING,
 } from 'constants/events'
 
@@ -33,6 +34,7 @@ const mapIpcOnMessageToCallback = (message, callback) =>
 contextBridge.exposeInMainWorld(
   'api',
   {
+    dataPath: store.get('DATA_PATH'),
     surveyToken: store.get('SURVEY_TOKEN'),
     onboardingStep: store.get('ONBOARDING_STEP') || 'LANDING_PAGE',
     sendAccessCode: (phoneNumber) => {
@@ -74,6 +76,11 @@ contextBridge.exposeInMainWorld(
     onConfirmSerialNumberError: (callback) => {
       mapIpcOnMessageToCallback(CONFIRM_SERIAL_NUMBER_ERROR, callback);
     },
+    onMainNavigation: (callback) => {
+      mapIpcOnMessageToCallback('MAIN_NAVIGATION', callback);
+    },
     removeAllListeners: () => ipcRenderer.removeAllListeners(),
+    exitSurvey: () => sendMessage(EXIT_SURVEY, {}),
+    // openDataFile: (data) => sendMessage('OPEN_DATA_FILE', {}),
   }
 );

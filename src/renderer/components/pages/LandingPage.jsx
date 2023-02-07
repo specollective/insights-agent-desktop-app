@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 function LandingPage() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
   function confirmSerialNumber() {
@@ -9,10 +11,17 @@ function LandingPage() {
   }
 
   useEffect(() => {
-    window.api.onConfirmSerialNumberSuccess(() => navigate('/setup'))
+    window.api.onConfirmSerialNumberSuccess(() => {
+      navigate('/setup')
+    })
+
     window.api.onConfirmSerialNumberError((error) => {
       alert(error)
     })
+
+    window.api.onMainNavigation((routeName) => {
+      navigate(routeName);
+    });
 
     // https://patrickpassarella.com/blog/creating-electron-react-app
     return () => window.api.removeAllListeners()
@@ -23,7 +32,7 @@ function LandingPage() {
       <div>
         <div>
           <h1 className='py-2 text-2xl font-bold'>
-            Setting up Insights Agent
+            {t('landingPage.heading')}
           </h1>
           <ol className='py-4 pl-10 text-lg list-decimal'>
             <li>Register the device's serial number with buildJUSTLY.</li>

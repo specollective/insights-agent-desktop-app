@@ -7,6 +7,8 @@ import isOnline from 'is-online'
 // Third party depedencies
 import cron from 'node-cron'
 import Store from 'electron-store'
+
+import * as Sentry from "@sentry/electron"
 // TODO: Determine if bugs with active-win can be resolved.
 // const activeWindow = require('active-win');
 
@@ -42,19 +44,32 @@ export function cronTask(task) {
   captureActivityData()
 }
 
+export function cleanUpCronTask(task) {
+  cleanUpActivityData()
+}
+
 // Initialize the tracking cron job
 export const trackingCron = cron.schedule(
   '*/5 * * * * *',
   cronTask,
   { scheduled: false },
-);
+)
+
+// Maximum for 1 day is roughly 17.28 MB
+export const cleanUpCron = cron.schedule(
+  '0 0 * * *',
+  cleanUpCronTask,
+  { scheduled: false },
+)
 
 export function startCron() {
-  trackingCron.start();
+  trackingCron.start()
+  cleanUpCron.start()
 }
 
 export function stopCron() {
-  trackingCron.stop();
+  trackingCron.stop()
+  cleanUpCron.stop()
 }
 
 // Helper function for starting the tracking cron job.
@@ -82,12 +97,12 @@ export async function testGetDataEntry() {
   let dataEntryError
 
   try {
-    dataEntry = await getDataEntry();
+    dataEntry = await getDataEntry()
   } catch (e) {
-    dataEntryError = e.message;
+    dataEntryError = e.message
   }
 
-  return [dataEntry, dataEntryError];
+  return [dataEntry, dataEntryError]
 }
 
 // Helper method for testing the data ingestion engine.
@@ -98,21 +113,21 @@ export async function testDataIngestion(dataEntry) {
   let responseError
 
   try {
-    response = await postDataEntries([dataEntry]);
+    response = await postDataEntries([dataEntry])
 
     if (!response.ok) {
-      responseError = await response.text();
+      responseError = await response.text()
     }
   } catch (e) {
-    responseError = e.message;
+    responseError = e.message
   }
 
-  return [response, responseError];
+  return [response, responseError]
 }
 
 // Helper function for testing if tracking is working.
 export async function startTracking(ipcEvent) {
-  log('startTracking');
+  log('startTracking')
 
   const [dataEntry, dataEntryError] = await testGetDataEntry()
   if (!dataEntry || dataEntryError) {
@@ -167,8 +182,8 @@ export async function getDataEntry() {
   return new Promise((resolve, reject) => {
     exec(scriptPath, (error, stdout, stderr) => {
       if (error) {
-        reject(error);
-        return;
+        reject(error)
+        return
       }
 
       // Get the raw data from the script.
@@ -189,49 +204,66 @@ export async function getDataEntry() {
       const dataEntry = buildDataEntryFromWindowData(windowData)
 
       resolve(dataEntry)
-    });
-  });
+    })
+  })
 }
 
 export async function syncDataWithServer() {
-  log('Syncing data with server...');
+  log('Syncing data with server...')
 
-  const dataEntries = store.get(DATA_ENTRIES);
+  const dataEntries = store.get(DATA_ENTRIES)
+  const dataEntriesToSync = dataEntries.slice(0, 10)
+  const dataEntriesToKeep = dataEntries.slice(10)
 
   try {
-    const response = await postDataEntries(dataEntries);
-    const json = await response.json();
+    const response = await postDataEntries(dataEntriesToSync)
+    const json = await response.json()
 
     if (response.ok) {
-      log(`Synced ${dataEntries.length} data entries`);
-      store.set(DATA_ENTRIES, []);
+      log(`Synced ${dataEntriesToSync.length} data entries`)
+      store.set(DATA_ENTRIES, dataEntriesToKeep)
     } else {
-      log('Request error occurred');
-      const errorMessage = await response.text();
-      throw new Error(JSON.stringify(json));
+      log('Request error occurred')
+      const errorMessage = await response.text()
+      throw new Error(JSON.stringify(json))
     }
   } catch (e) {
-    log('Unknown error occurred', e.message);
+    log('Unknown error occurred', e.message)
   }
 }
 
 // Function triggers data collection and posts it the API.
 export async function captureActivityData() {
-  log('capturing activity data');
+  log('capturing activity data')
 
-  const isConnected = await isOnline();
-  const dataEntries = store.get(DATA_ENTRIES);
+  const isConnected = await isOnline()
+  const dataEntries = store.get(DATA_ENTRIES)
+  const dailyDataEntries = store.get('DAILY_DATA_ENTRIES')
 
   try {
-    const dataEntry = await getDataEntry();
-    dataEntries.push(dataEntry);
-    store.set(DATA_ENTRIES, dataEntries);
+    // Get the data entry.
+    const dataEntry = await getDataEntry()
+    dataEntries.push(dataEntry)
+    store.set(DATA_ENTRIES, dataEntries)
+
+    dailyDataEntries.push(dataEntry)
+    store.set('DAILY_DATA_ENTRIES', dailyDataEntries)
+
+    // USED FOR DETERMINING THE SIZE OF THE DATA ENTRY
+    // import sizeof from 'object-sizeof'
+    // log('dataEntry', dataEntry)
+    // log('size: ', sizeof(dataEntry))
   } catch (e) {
-    log('An error occurred capturing data');
-    log(e.message);
+    log('An error occurred capturing data')
+    Sentry.captureMessage(e.message)
+    log(e.message)
   }
 
   if (isConnected) {
-    syncDataWithServer();
+    syncDataWithServer()
   }
+}
+
+export function cleanUpActivityData() {
+  store.set('DAILY_DATA_ENTRIES', [])
 }
