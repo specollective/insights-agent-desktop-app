@@ -5,15 +5,17 @@
 import '@testing-library/jest-dom';
 
 window.api = {
-  sendAccessCode: jest.fn(),
-  onSendAccessCodeSuccess: jest.fn(),
-  onSendAccessCodeError: jest.fn(),
-  removeAllListeners: jest.fn(),
   confirmAccessCode: jest.fn(),
-  onConfirmAccessCodeSuccess: jest.fn(),
+  downloadData: jest.fn(),
   onConfirmAccessCodeError: jest.fn(),
-  onStartActivityTrackingSuccess: jest.fn(),
-  onStartActivityTrackingError: jest.fn(),
-  startActivityTracking: jest.fn(),
+  onConfirmAccessCodeSuccess: jest.fn(),
+  onDownloadSuccess: jest.fn(),
   onMainNavigation: jest.fn(),
+  onSendAccessCodeError: jest.fn(),
+  onSendAccessCodeSuccess: jest.fn(),
+  onStartActivityTrackingError: jest.fn(),
+  onStartActivityTrackingSuccess: jest.fn(),
+  removeAllListeners: jest.fn(),
+  sendAccessCode: jest.fn(),
+  startActivityTracking: jest.fn(),
 }

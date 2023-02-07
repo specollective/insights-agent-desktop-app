@@ -28,6 +28,7 @@ import {
   ONBOARDING_STEP,
   ONBOARDING_STEPS,
   DATA_ENTRIES,
+  DAILY_DATA_ENTRIES,
 } from 'constants/configs'
 
 import {
@@ -107,7 +108,7 @@ export async function testGetDataEntry() {
 
 // Helper method for testing the data ingestion engine.
 export async function testDataIngestion(dataEntry) {
-  log('testDataIngestion');
+  log('testDataIngestion')
 
   let response
   let responseError
@@ -238,7 +239,7 @@ export async function captureActivityData() {
 
   const isConnected = await isOnline()
   const dataEntries = store.get(DATA_ENTRIES)
-  const dailyDataEntries = store.get('DAILY_DATA_ENTRIES')
+  const dailyDataEntries = store.get(DAILY_DATA_ENTRIES)
 
   try {
     // Get the data entry.
@@ -247,7 +248,7 @@ export async function captureActivityData() {
     store.set(DATA_ENTRIES, dataEntries)
 
     dailyDataEntries.push(dataEntry)
-    store.set('DAILY_DATA_ENTRIES', dailyDataEntries)
+    store.set(DAILY_DATA_ENTRIES, dailyDataEntries)
 
     // USED FOR DETERMINING THE SIZE OF THE DATA ENTRY
     // import sizeof from 'object-sizeof'
@@ -265,5 +266,5 @@ export async function captureActivityData() {
 }
 
 export function cleanUpActivityData() {
-  store.set('DAILY_DATA_ENTRIES', [])
+  store.set(DAILY_DATA_ENTRIES, [])
 }

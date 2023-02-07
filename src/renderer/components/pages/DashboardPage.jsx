@@ -4,17 +4,21 @@ import dashboardStyles from '../styles/dashboard';
 import { useTranslation } from 'react-i18next';
 
 function DashboardPage() {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
+  const { t } = useTranslation()
+  const navigate = useNavigate()
 
   useEffect(() => {
     window.api.onMainNavigation((routeName) => {
-      navigate(routeName);
-    });
+      navigate(routeName)
+    })
+
+    // window.api.onDownloadSuccess(() => {
+    //   alert('Downloads successful!');
+    // });
   }, [])
 
-  window.addEventListener('online', () => console.log('Became online'));
-  window.addEventListener('offline', () => console.log('Became offline'));
+  window.addEventListener('online', () => console.log('Became online'))
+  window.addEventListener('offline', () => console.log('Became offline'))
 
   return (
     <>
@@ -30,13 +34,14 @@ function DashboardPage() {
         <p>
         </p><br />
         <div className='float-right pt-8'>
-          {/*
-            <button style={dashboardStyles.close} onClick={window.api.openDataFile}>
-              View Data
-            </button>
-          */}
           <button style={dashboardStyles.close} onClick={window.close}>
             {t('close')}
+          </button>
+          <button 
+            className="rounded p-2 h-11 bg-green-500 text-xl font-semibold active:bg-green-600"
+            onClick={window.api.downloadData}
+          >
+            Download Data
           </button>
         </div>
       </section>
