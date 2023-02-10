@@ -1,7 +1,6 @@
 import path from 'path'
 import fs from 'fs'
-import ObjectsToCsv from 'objects-to-csv'
-import jsonexport from 'jsonexport';
+import jsonexport from 'jsonexport'
 
 import {
   app,
@@ -10,6 +9,7 @@ import {
   Menu,
   Tray,
   shell,
+  nativeImage,
 } from 'electron'
 
 import serialNumber from 'serial-number'
@@ -111,6 +111,7 @@ const createWindow = async () => {
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
+    icon: process.env.ICON_PATH,
     width: 800,
     height: 600,
     autoHideMenuBar: true,
@@ -180,7 +181,7 @@ const createWindow = async () => {
 }
 
 const createTrayMenu = () => {
-  appIcon = new Tray(path.join(__dirname, '/assets/icons/buildJUSTLYicon.png'))
+  appIcon = new Tray(process.env.ICON_PATH)
   const id = store.get('SERIAL_NUMBER')
 
   const menuActions = [

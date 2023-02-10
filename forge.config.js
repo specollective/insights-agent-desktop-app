@@ -1,7 +1,9 @@
+const path = require('path');
 require("dotenv").config();
 
 module.exports = {
   packagerConfig: {
+    icon: path.resolve(__dirname, "./src/assets/icons/buildJUSTLYicon"),
     osxSign: {
       identity: process.env["APPLE_IDENTITY"],
       hardenedRuntime: true,
@@ -26,8 +28,8 @@ module.exports = {
       config: {
         name: "insights-agent-desktop-app",
         // NOTE: We are manually signing the executable right now.
-        certificateFile: process.env["CERTIFICATE_WINDOWS_PFX"],
-        certificatePassword: process.env["WINDOWS_CERTIFICATE_PASSWORD"],
+        // certificateFile: process.env["CERTIFICATE_WINDOWS_PFX"],
+        // certificatePassword: process.env["WINDOWS_CERTIFICATE_PASSWORD"],
       },
     },
     {

@@ -16,6 +16,7 @@ module.exports = {
     new webpack.EnvironmentPlugin({
       INGESTION_URL: JSON.stringify(process.env.INGESTION_URL),
       BACKEND_API_URL: JSON.stringify(process.env.BACKEND_API_URL),
+      ICON_PATH: path.resolve(__dirname, "./src/assets/icons/buildJUSTLYicon.png"),
     }),
   ],
   resolve: {
