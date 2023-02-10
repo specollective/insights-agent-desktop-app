@@ -3,7 +3,7 @@ require("dotenv").config();
 
 module.exports = {
   packagerConfig: {
-    icon: path.resolve(__dirname, "./assets/icons/icon"),
+    icon: path.resolve(__dirname, "./assets/icon"),
     osxSign: {
       identity: process.env["APPLE_IDENTITY"],
       hardenedRuntime: true,
