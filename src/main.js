@@ -81,6 +81,8 @@ Sentry.init({
   }
 })
 
+// const iconPath = path.join(__dirname, '/assets/icons/buildJUSTLYicon.png');
+
 // Initialize an instance electron store.
 const store = new Store()
 
