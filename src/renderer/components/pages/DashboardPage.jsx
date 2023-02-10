@@ -11,10 +11,6 @@ function DashboardPage() {
     window.api.onMainNavigation((routeName) => {
       navigate(routeName)
     })
-
-    // window.api.onDownloadSuccess(() => {
-    //   alert('Downloads successful!');
-    // });
   }, [])
 
   window.addEventListener('online', () => console.log('Became online'))
@@ -38,7 +34,7 @@ function DashboardPage() {
             {t('close')}
           </button>
           <button 
-            className="rounded p-2 h-11 bg-green-500 text-xl font-semibold active:bg-green-600"
+            className="rounded p-2 h-11 bg-[#70B443] text-xl font-semibold active:bg-green-600"
             onClick={window.api.downloadData}
           >
             Download Data
