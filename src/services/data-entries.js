@@ -26,8 +26,11 @@ export function postDataEntries (dataEntries) {
   * @returns {Object} - The data entry object.
 */
 export function buildDataEntryFromWindowData(windowData) {
-  const { appName, tabName, url, isConnected, idleTime } = windowData;
+  let { appName, tabName, url, isConnected, idleTime } = windowData;
   const timestamp = new Date().toISOString();
+
+  appName = (appName || '').replace(/\r/g, '')
+  tabName = (tabName || '').replace(/\r/g, '')
 
   return {
     survey_id: store.get('SURVEY_ID'),

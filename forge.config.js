@@ -1,7 +1,9 @@
+const path = require('path');
 require("dotenv").config();
 
 module.exports = {
   packagerConfig: {
+    icon: path.resolve(__dirname, "./src/assets/icons/buildJUSTLYicon"),
     osxSign: {
       identity: process.env["APPLE_IDENTITY"],
       hardenedRuntime: true,
