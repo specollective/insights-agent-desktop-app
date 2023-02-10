@@ -36,6 +36,8 @@ import {
   ONBOARDING_STEPS,
 } from 'constants/configs'
 
+import { ICON_PATH } from 'constants/scripts'
+
 import { log } from 'utils/logging'
 
 // import makeMockAPI from './mock-api';
@@ -81,8 +83,6 @@ Sentry.init({
   }
 })
 
-// const iconPath = path.join(__dirname, '/assets/icons/buildJUSTLYicon.png');
-
 // Initialize an instance electron store.
 const store = new Store()
 
@@ -113,7 +113,7 @@ const createWindow = async () => {
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    icon: process.env.ICON_PATH,
+    icon: ICON_PATH,
     width: 800,
     height: 600,
     autoHideMenuBar: true,
@@ -183,7 +183,7 @@ const createWindow = async () => {
 }
 
 const createTrayMenu = () => {
-  appIcon = new Tray(process.env.ICON_PATH)
+  appIcon = new Tray(ICON_PATH)
   const id = store.get('SERIAL_NUMBER')
 
   const menuActions = [

@@ -3,7 +3,7 @@ require("dotenv").config();
 
 module.exports = {
   packagerConfig: {
-    icon: path.resolve(__dirname, "./src/assets/icons/buildJUSTLYicon"),
+    icon: "./assets/icons/buildJUSTLYicon",
     osxSign: {
       identity: process.env["APPLE_IDENTITY"],
       hardenedRuntime: true,
@@ -20,6 +20,7 @@ module.exports = {
     extraResource: [
       "./scripts/mac-data-tracker/program.scpt",
       "./scripts/windows-data-tracker/build",
+      "./assets/icons",
     ],
   },
   makers: [
