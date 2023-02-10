@@ -36,6 +36,8 @@ import {
   ONBOARDING_STEPS,
 } from 'constants/configs'
 
+import { ICON_PATH } from 'constants/scripts'
+
 import { log } from 'utils/logging'
 
 // import makeMockAPI from './mock-api';
@@ -81,8 +83,6 @@ Sentry.init({
   }
 })
 
-// const iconPath = path.join(__dirname, '/assets/icons/buildJUSTLYicon.png');
-
 // Initialize an instance electron store.
 const store = new Store()
 
@@ -104,6 +104,7 @@ if (!DEVELOPMENT_MODE && !DEBUG_MODE) {
 
 const createWindow = async () => {
   const locale = app.getLocale()
+  const iconPath = path.resolve(__dirname, './assets/icons/buildJUSTLYicon.png')
 
   await i18next.init({
     lng: locale,
@@ -113,7 +114,7 @@ const createWindow = async () => {
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    icon: process.env.ICON_PATH,
+    icon: iconPath,
     width: 800,
     height: 600,
     autoHideMenuBar: true,
@@ -179,11 +180,11 @@ const createWindow = async () => {
     return false
   })
 
-  createTrayMenu()
+  createTrayMenu(iconPath)
 }
 
-const createTrayMenu = () => {
-  appIcon = new Tray(process.env.ICON_PATH)
+const createTrayMenu = (iconPath) => {
+  appIcon = new Tray(iconPath)
   const id = store.get('SERIAL_NUMBER')
 
   const menuActions = [
@@ -234,7 +235,7 @@ const createTrayMenu = () => {
 app.on('ready', createWindow)
 
 // TODO: Document whenReady
-// app.whenReady().then(createWindow)
+// app.whenReady().then(createTrayMenu)
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
