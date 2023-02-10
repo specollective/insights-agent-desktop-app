@@ -104,7 +104,6 @@ if (!DEVELOPMENT_MODE && !DEBUG_MODE) {
 
 const createWindow = async () => {
   const locale = app.getLocale()
-  const iconPath = path.resolve(__dirname, './assets/icons/buildJUSTLYicon.png')
 
   await i18next.init({
     lng: locale,
@@ -114,7 +113,7 @@ const createWindow = async () => {
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    icon: iconPath,
+    icon: ICON_PATH,
     width: 800,
     height: 600,
     autoHideMenuBar: true,
@@ -180,11 +179,11 @@ const createWindow = async () => {
     return false
   })
 
-  createTrayMenu(iconPath)
+  createTrayMenu()
 }
 
-const createTrayMenu = (iconPath) => {
-  appIcon = new Tray(iconPath)
+const createTrayMenu = () => {
+  appIcon = new Tray(ICON_PATH)
   const id = store.get('SERIAL_NUMBER')
 
   const menuActions = [
