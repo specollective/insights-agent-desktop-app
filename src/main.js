@@ -113,7 +113,7 @@ const createWindow = async () => {
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    icon: ICON_PATH,
+    icon: path.join(__dirname, '/assets/icon.png'),
     width: 800,
     height: 600,
     autoHideMenuBar: true,
@@ -183,7 +183,7 @@ const createWindow = async () => {
 }
 
 const createTrayMenu = () => {
-  appIcon = new Tray(ICON_PATH)
+  appIcon = new Tray(path.join(__dirname, '/assets/icons/24x24.png'))
   const id = store.get('SERIAL_NUMBER')
 
   const menuActions = [
