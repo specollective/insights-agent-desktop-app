@@ -180,7 +180,7 @@ const createWindow = async () => {
 }
 
 const createTrayMenu = () => {
-  appIcon = new Tray(path.join(__dirname, '/assets/icon.png'))
+  appIcon = new Tray(path.join(__dirname, '../assets/icons/16x16.png'))
   const id = store.get('SERIAL_NUMBER')
 
   const menuActions = [

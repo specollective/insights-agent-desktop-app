@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   /**
@@ -17,6 +18,12 @@ module.exports = {
       INGESTION_URL: JSON.stringify(process.env.INGESTION_URL),
       BACKEND_API_URL: JSON.stringify(process.env.BACKEND_API_URL),
     }),
+    new CopyWebpackPlugin({
+      patterns: [{
+        from: path.resolve(__dirname, 'src/assets'),
+        to: path.resolve(__dirname, '.webpack/assets'),
+      }]
+    })
   ],
   resolve: {
     alias: {
