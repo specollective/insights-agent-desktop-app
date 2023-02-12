@@ -44,7 +44,7 @@ function ExitPage() {
         <div className="float-right pt-8">
           <button
             onClick={continueSurvey}
-            className="rounded p-2 h-11 bg-green-500 text-white text-xl font-semibold"
+            className="rounded p-2 h-11 bg-[#70B443] text-white text-xl font-semibold"
           >
             Continue Survey
           </button>
