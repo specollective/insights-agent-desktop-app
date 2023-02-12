@@ -1,27 +1,21 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 function LandingPage() {
+  const [isLoading, setLoading] = useState(false)
   const { t } = useTranslation()
   const navigate = useNavigate()
 
   function confirmSerialNumber() {
+    setLoading(true)
     window.api.confirmSerialNumber()
   }
 
   useEffect(() => {
-    window.api.onConfirmSerialNumberSuccess(() => {
-      navigate('/setup')
-    })
-
-    window.api.onConfirmSerialNumberError((error) => {
-      alert(error)
-    })
-
-    window.api.onMainNavigation((routeName) => {
-      navigate(routeName);
-    });
+    window.api.onConfirmSerialNumberSuccess(() => navigate('/setup'))
+    window.api.onConfirmSerialNumberError((error) => alert(error))
+    window.api.onMainNavigation((routeName) => navigate(routeName))
 
     // https://patrickpassarella.com/blog/creating-electron-react-app
     return () => window.api.removeAllListeners()
@@ -32,7 +26,7 @@ function LandingPage() {
       <div>
         <div>
           <h1 className='py-2 text-2xl font-bold'>
-            {t('landingPage.heading')}
+            { t('landingPage.heading') }
           </h1>
           <ol className='py-4 pl-10 text-lg list-decimal'>
             <li>Register the device's serial number with buildJUSTLY.</li>
@@ -48,6 +42,7 @@ function LandingPage() {
         <div className="float-right pt-8">
           <button
             onClick={confirmSerialNumber}
+            disabled={isLoading}
             className="rounded p-2 h-11 bg-[#70B443] text-xl font-semibold"
           >
             Test Device

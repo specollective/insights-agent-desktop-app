@@ -113,8 +113,12 @@ const createWindow = async () => {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    // frame: false,
+    alwaysOnTop: true,
+    kiosk: true,
     autoHideMenuBar: true,
     fullscreenable: false,
+    skipTaskbar: true,
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
       nodeIntegration: true,
@@ -123,6 +127,8 @@ const createWindow = async () => {
 
   store.set('WINDOW_OPEN', true);
 
+  mainWindow.removeMenu()
+  // mainWindow.hide()
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
 
