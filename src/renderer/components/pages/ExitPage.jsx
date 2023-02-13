@@ -1,22 +1,17 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-// import { useTranslation } from 'react-i18next'
+import { ROUTES } from 'constants/routes'
 
 function ExitPage() {
+  const [appState, setAppState] = useState()
   const navigate = useNavigate()
+  const continueSurvey = ( )=> navigate(ROUTES[appState.ONBOARDING_STEP])
 
-  function exitSurvey() {
-    window.api.exitSurvey()
-  }
+  useEffect(() => {
+    if (!appState) { window.api.loadState() }
 
-  function continueSurvey() {
-    console.log(window.api.onboardingStep)
-    if (window.api.onboardingStep === 'DASHBOARD') {
-      navigate('/dashboard')
-    } else {
-      navigate('/')
-    }
-  }
+    window.api.onLoadStateSuccess((data) => setAppState(data))
+  }, [])
 
   return (
     <div className='grid place-content-center h-screen'>
@@ -44,15 +39,16 @@ function ExitPage() {
         <div className="float-right pt-8">
           <button
             onClick={continueSurvey}
-            className="rounded p-2 h-11 bg-[#70B443] text-white text-xl font-semibold"
+            className="rounded p-2 h-11 w-40 bg-[#70B443] text-white text-xl font-semibold mr-4"
           >
-            Continue Survey
+            Continue
           </button>
+
           <button
-            onClick={exitSurvey}
-            className="rounded p-2 h-11 bg-red-500 text-white text-xl font-semibold"
+            onClick={window.api.exitSurvey}
+            className="rounded p-2 h-11 w-40 bg-red-500 text-white text-xl font-semibold"
           >
-            Exit Survey
+            Quit
           </button>
         </div>
       </div>

@@ -10,17 +10,27 @@ import ExitPage from './components/pages/ExitPage';
 import i18n from './utils/i18n';
 import LocaleContext from './utils/LocaleContext';
 import { ROUTES } from '../constants/routes';
+import { use } from 'i18next';
+
 
 function App () {
-  console.log('App', window.api.onboardingStep);
-
-  const initialRoute = ROUTES[window.api.onboardingStep]
+  const [appState, setAppState] = useState()
   const [locale, setLocale] = useState(localStorage.getItem('locale') || 'en')
 
   useEffect(() => {
     localStorage.setItem('locale', locale)
     i18n.changeLanguage(locale)
   }, [locale])
+
+  useEffect(() => {
+    if (!appState) { window.api.loadState() }
+    window.api.onLoadStateSuccess((data) => setAppState(data))
+    return () => window.api.removeAllListeners()
+  }, [])
+
+  if (!appState) return null
+
+  const initialRoute = ROUTES[appState.ONBOARDING_STEP]
 
   return (
     <LocaleContext.Provider value={{ locale, setLocale }}>

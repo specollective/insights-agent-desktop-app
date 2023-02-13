@@ -6,6 +6,7 @@ function LandingPage() {
   const [isLoading, setLoading] = useState(false)
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const buttonColor = isLoading ? 'bg-gray-400' : 'bg-[#70B443]'
 
   function confirmSerialNumber() {
     setLoading(true)
@@ -31,10 +32,10 @@ function LandingPage() {
             <li>Register the device's serial number with buildJUSTLY.</li>
             <li>Connect device to the Internet.</li>
             <li>Run Insights Agent app as an administrator. </li>
-            <li>Click the "Test Device" button.</li>
+            <li>Click the "Continue" button.</li>
           </ol>
           <p className='py-2 text-lg'>
-            By clicking on the "Test Device" button below will connect your device with the Insights Agent server.
+            By clicking on the button below will connect your device with the Insights Agent server to confirm you are registered.
           </p>
         </div>
 
@@ -42,9 +43,9 @@ function LandingPage() {
           <button
             onClick={confirmSerialNumber}
             disabled={isLoading}
-            className="rounded p-2 h-11 bg-[#70B443] text-xl font-semibold"
+            className={`rounded p-2 h-11 w-40 ${buttonColor} text-xl font-semibold`}
           >
-            { isLoading ? 'Loading...' : 'Test' }
+            { isLoading ? 'Connecting...' : 'Continue' }
           </button>
         </div>
       </div>

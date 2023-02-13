@@ -11,33 +11,6 @@ const STATUSES = {
 function ActivityTrackingStatusInstructions ({ status, error }) {
   const { t } = useTranslation()
 
-  if (status === STATUSES.PENDING) {
-    return (
-      <div>
-        <h1 className='py-2 text-2xl font-bold'>{t('setup.before')}</h1>
-        <ul className='list-disc py-4 pl-10 text-lg '>
-          <li>{t('setup.purpose')}</li>
-          <li>{t('setup.privacy')}</li>
-          <li>{t('setup.paid')}</li>
-        </ul>
-        <p className='py-2 text-lg'>
-          {t('setup.agreement')}
-        </p>
-        <p className='py-2 text-base font-bold'>
-          {t('setup.note')}
-        </p>
-      </div>
-    )
-  }
-
-  if (status === STATUSES.LOADING) {
-    return (
-      <div>
-        Loading...
-      </div>
-    )
-  }
-
   if (status === STATUSES.ERROR) {
     return (
       <div>
@@ -49,10 +22,27 @@ function ActivityTrackingStatusInstructions ({ status, error }) {
       </div>
     )
   }
+
+  return (
+    <div>
+      <h1 className='py-2 text-2xl font-bold'>{t('setup.before')}</h1>
+      <ul className='list-disc py-4 pl-10 text-lg '>
+        <li>{t('setup.purpose')}</li>
+        <li>{t('setup.privacy')}</li>
+        <li>{t('setup.paid')}</li>
+      </ul>
+      <p className='py-2 text-lg'>
+        {t('setup.agreement')}
+      </p>
+      <p className='py-2 text-base font-bold'>
+        {t('setup.note')}
+      </p>
+    </div>
+  )
 }
 
 function ActivityTrackingButtonText({ status }) {
-  if (status === STATUSES.LOADING) return 'Wait'
+  if (status === STATUSES.LOADING) return 'Connecting...'
   if (status === STATUSES.SUCCESS) return 'Continue'
   if (status === STATUSES.ERROR) return 'Get help'
 
@@ -60,15 +50,18 @@ function ActivityTrackingButtonText({ status }) {
 }
 
 function ActivityTrackingActions({ status, handleSubmit, handleCancel }) {
-  const disabled = status === STATUSES.LOADING ? true : false;
+  const disabled = status === STATUSES.LOADING
+  const buttonColor = disabled ? 'bg-gray-400' : 'bg-[#70B443]'
 
   return (
     <div className="float-right py-5">
-      <button className="bg-none pr-12" onClick={handleCancel}>Cancel</button>
+      <button className="bg-none pr-12" onClick={handleCancel}>
+        Cancel
+      </button>
 
       <button
         data-testid="action-button"
-        className='rounded w-28 h-11 bg-[#70B443] text-xl font-semibold'
+        className={`rounded w-40 h-11 ${buttonColor} text-xl font-semibold`}
         disabled={disabled}
         onClick={handleSubmit}
       >
@@ -79,18 +72,18 @@ function ActivityTrackingActions({ status, handleSubmit, handleCancel }) {
 }
 
 function SetupActivityTrackingPage() {
-  const navigate = useNavigate();
-  const [status, setStatus] = useState(STATUSES.PENDING);
-  const [error, setError] = useState();
+  const navigate = useNavigate()
+  const [status, setStatus] = useState(STATUSES.PENDING)
+  const [error, setError] = useState()
 
   function handleSubmit () {
     if (status === STATUSES.PENDING) {
-      setStatus(STATUSES.LOADING);
-      window.api.startActivityTracking();
+      setStatus(STATUSES.LOADING)
+      window.api.startActivityTracking()
     } else if (status === STATUSES.SUCCESS) {
-      navigate('/dashboard');
+      navigate('/dashboard')
     } else if (status === STATUSES.ERROR) {
-      window.open('https://insights-agent-web-app.specollective.org/');
+      window.open('https://insights-agent-web-app.specollective.org/')
     }
   }
 
@@ -129,7 +122,7 @@ function SetupActivityTrackingPage() {
         status={status}
         error={error}
       />
-      <div className='float-right pt-8'>
+      <div className='float-right'>
         <ActivityTrackingActions
           status={status}
           handleSubmit={handleSubmit}

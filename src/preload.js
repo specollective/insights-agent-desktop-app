@@ -1,89 +1,59 @@
 // See the Electron documentation for details on how to use preload scripts:
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
-import { ipcRenderer, contextBridge } from 'electron'
-import Store from 'electron-store'
-import {
-  CONFIRM_ACCESS_CODE_ERROR,
-  CONFIRM_ACCESS_CODE_SUCCESS,
-  CONFIRM_ACCESS_CODE,
-  CONFIRM_SERIAL_NUMBER_ERROR,
-  CONFIRM_SERIAL_NUMBER_SUCCESS,
-  CONFIRM_SERIAL_NUMBER,
-  EXIT_SURVEY,
-  SEND_ACCESS_CODE_ERROR,
-  SEND_ACCESS_CODE_SUCCESS,
-  SEND_ACCESS_CODE,
-  START_TRACKING_ERROR,
-  START_TRACKING_SUCCESS,
-  START_TRACKING,
-  STOP_TRACKING,
-  DOWNLOAD_DATA,
-  DOWNLOAD_DATA_SUCCESS,
-} from 'constants/events'
+const { ipcRenderer, contextBridge } = require('electron');
 
-// Initialization
-const store = new Store();
-const sendMessage = (id, data) => ipcRenderer.send(id, data);
-const onMessage = (id, callback) => ipcRenderer.on(id, callback);
+const START_TRACKING = 'start-tracking'
+const START_TRACKING_SUCCESS = 'start-tracking-success'
+const START_TRACKING_ERROR = 'start-tracking-error'
+const STOP_TRACKING = 'stop-tracking'
+const SEND_ACCESS_CODE = 'send-access-code'
+const CONFIRM_ACCESS_CODE = 'confirm-access-code'
+const CONFIRM_SERIAL_NUMBER = 'confirm-serial-number'
+const SEND_ACCESS_CODE_SUCCESS = 'send-access-code-success'
+const SEND_ACCESS_CODE_ERROR = 'send-access-code-error'
+const CONFIRM_ACCESS_CODE_SUCCESS = 'confirm-access-code-success'
+const CONFIRM_ACCESS_CODE_ERROR = 'confirm-access-code-success'
+const CONFIRM_SERIAL_NUMBER_SUCCESS = 'confirm-serial-number-success'
+const CONFIRM_SERIAL_NUMBER_ERROR = 'confirm-serial-number-error'
+const EXIT_SURVEY = 'exit-survey'
+const DOWNLOAD_DATA = 'download-data'
+const DOWNLOAD_DATA_SUCCESS = 'download-data-success'
+const MAIN_NAVIGATION = 'main-navigation'
+const HIDE_APP = 'hide-app'
+const LOAD_STATE = 'load-state'
+const LOAD_STATE_SUCCESS = 'load-state-success'
 
-const mapIpcOnMessageToCallback = (message, callback) =>
-  onMessage(message, (ipcEvent, data) => callback(data));
+const sendMessage = (id, data) => ipcRenderer.send(id, data)
+const onMessageHandler = (id, cb) => ipcRenderer.on(id, cb)
+const onMessage = (msg, cb) => onMessageHandler(msg, (evt, data) => cb(data))
 
 // Set up context bridge exposing it to the window.api.
 contextBridge.exposeInMainWorld(
   'api',
   {
-    dataPath: store.get('DATA_PATH'),
-    surveyToken: store.get('SURVEY_TOKEN'),
-    onboardingStep: store.get('ONBOARDING_STEP') || 'LANDING_PAGE',
-    sendAccessCode: (phoneNumber) => {
-      sendMessage(SEND_ACCESS_CODE, phoneNumber)
-    },
-    onSendAccessCodeSuccess: (callback) => {
-      mapIpcOnMessageToCallback(SEND_ACCESS_CODE_SUCCESS, callback);
-    },
-    onSendAccessCodeError: (callback) => {
-      mapIpcOnMessageToCallback(SEND_ACCESS_CODE_ERROR, callback);
-    },
-    confirmAccessCode: (accessCode) => {
-      sendMessage(CONFIRM_ACCESS_CODE, accessCode)
-    },
-    onConfirmAccessCodeSuccess: (callback) => {
-      mapIpcOnMessageToCallback(CONFIRM_ACCESS_CODE_SUCCESS, callback);
-    },
-    onConfirmAccessCodeError: (callback) => {
-      mapIpcOnMessageToCallback(CONFIRM_ACCESS_CODE_ERROR, callback);
-    },
-    startActivityTracking: (callback) => {
-      sendMessage(START_TRACKING);
-    },
-    cancelActivityTracking: (callback) => {
-      sendMessage(STOP_TRACKING);
-    },
-    onStartActivityTrackingSuccess: (callback) => {
-      mapIpcOnMessageToCallback(START_TRACKING_SUCCESS, callback);
-    },
-    onStartActivityTrackingError: (callback) => {
-      mapIpcOnMessageToCallback(START_TRACKING_ERROR, callback);
-    },
-    confirmSerialNumber: () => {
-      sendMessage(CONFIRM_SERIAL_NUMBER, {})
-    },
-    onConfirmSerialNumberSuccess: (callback) => {
-      mapIpcOnMessageToCallback(CONFIRM_SERIAL_NUMBER_SUCCESS, callback);
-    },
-    onConfirmSerialNumberError: (callback) => {
-      mapIpcOnMessageToCallback(CONFIRM_SERIAL_NUMBER_ERROR, callback);
-    },
-    onMainNavigation: (callback) => {
-      mapIpcOnMessageToCallback('MAIN_NAVIGATION', callback);
-    },
-    onDownloadSuccess: (callback) => {
-      mapIpcOnMessageToCallback(DOWNLOAD_DATA_SUCCESS, callback);
-    },
-    removeAllListeners: () => ipcRenderer.removeAllListeners(),
-    exitSurvey: () => sendMessage(EXIT_SURVEY, {}),
+    // Actions
+    cancelActivityTracking: (callback) => sendMessage(STOP_TRACKING),
+    confirmAccessCode: (accessCode) => sendMessage(CONFIRM_ACCESS_CODE, accessCode),
+    confirmSerialNumber: () => sendMessage(CONFIRM_SERIAL_NUMBER, {}),
     downloadData: (data) => sendMessage(DOWNLOAD_DATA, {}),
+    hideApp: () => sendMessage(HIDE_APP, {}),
+    exitSurvey: () => sendMessage(EXIT_SURVEY, {}),
+    loadState: () => sendMessage(LOAD_STATE),
+    removeAllListeners: () => ipcRenderer.removeAllListeners(),
+    sendAccessCode: (phoneNumber) => sendMessage(SEND_ACCESS_CODE, phoneNumber),
+    startActivityTracking: (callback) => sendMessage(START_TRACKING),
+    // Event listeners
+    onConfirmAccessCodeError: (callback) => onMessage(CONFIRM_ACCESS_CODE_ERROR, callback),
+    onConfirmAccessCodeSuccess: (callback) => onMessage(CONFIRM_ACCESS_CODE_SUCCESS, callback),
+    onConfirmSerialNumberError: (callback) => onMessage(CONFIRM_SERIAL_NUMBER_ERROR, callback),
+    onConfirmSerialNumberSuccess: (callback) => onMessage(CONFIRM_SERIAL_NUMBER_SUCCESS, callback),
+    onDownloadSuccess: (callback) => onMessage(DOWNLOAD_DATA_SUCCESS, callback),
+    onLoadStateSuccess: (callback) => onMessage(LOAD_STATE_SUCCESS, callback),
+    onMainNavigation: (callback) => onMessage(MAIN_NAVIGATION, callback),
+    onSendAccessCodeError: (callback) => onMessage(SEND_ACCESS_CODE_ERROR, callback),
+    onSendAccessCodeSuccess: (callback) => onMessage(SEND_ACCESS_CODE_SUCCESS, callback),
+    onStartActivityTrackingError: (callback) => onMessage(START_TRACKING_ERROR, callback),
+    onStartActivityTrackingSuccess: (callback) => onMessage(START_TRACKING_SUCCESS, callback),
   }
-);
+)

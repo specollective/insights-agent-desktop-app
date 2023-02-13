@@ -56,6 +56,7 @@ import {
   STOP_TRACKING,
   DOWNLOAD_DATA,
   DOWNLOAD_DATA_SUCCESS,
+  MAIN_NAVIGATION,
 } from './constants/events'
 
 // TODO: Convert to ES6 syntax
@@ -121,7 +122,8 @@ const createWindow = async () => {
     skipTaskbar: true,
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
-      nodeIntegration: true,
+      nodeIntegration: false,
+      preload: path.join(__dirname, '../renderer/preload.js'),
     },
   })
 
@@ -198,10 +200,10 @@ const createTrayMenu = () => {
         log('Quit app')
 
         if (mainWindow.isVisible()) {
-          mainWindow.webContents.send('MAIN_NAVIGATION', '/exit')
+          mainWindow.webContents.send(MAIN_NAVIGATION, '/exit')
         } else {
           mainWindow.show()
-          mainWindow.webContents.send('MAIN_NAVIGATION', '/exit')
+          mainWindow.webContents.send(MAIN_NAVIGATION, '/exit')
         }
       },
     },
@@ -251,7 +253,7 @@ app.on('activate', () => {
 
 app.on('before-quit', (event) => {
   log('before-quit');
-});
+})
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
@@ -295,6 +297,16 @@ ipcMain.on(DOWNLOAD_DATA, async (ipcEvent, options) => {
     log(error)
     ipcEvent.sender.send('DOWNLOAD_DATA_ERROR', false)
   }
+})
+
+ipcMain.on('hide-app', async () => {
+  mainWindow.hide()
+})
+
+ipcMain.on('load-state', (ipcEvent) => {
+  ipcEvent.sender.send('load-state-success', {
+    ONBOARDING_STEP: store.get(ONBOARDING_STEP),
+  })
 })
 
 ipcMain.on(EXIT_SURVEY, async () => {
