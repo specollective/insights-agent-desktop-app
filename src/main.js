@@ -50,13 +50,16 @@ import { emitEvent } from './utils/sentry'
 import {
   CONFIRM_ACCESS_CODE,
   CONFIRM_SERIAL_NUMBER,
+  DOWNLOAD_DATA_SUCCESS,
+  DOWNLOAD_DATA,
   EXIT_SURVEY,
+  LOAD_STATE_SUCCESS,
+  LOAD_STATE,
+  MAIN_NAVIGATION,
   SEND_ACCESS_CODE,
   START_TRACKING,
   STOP_TRACKING,
-  DOWNLOAD_DATA,
-  DOWNLOAD_DATA_SUCCESS,
-  MAIN_NAVIGATION,
+  HIDE_APP,
 } from './constants/events'
 
 // TODO: Convert to ES6 syntax
@@ -255,32 +258,7 @@ app.on('before-quit', (event) => {
   log('before-quit');
 })
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
-
-ipcMain.on(SEND_ACCESS_CODE, (ipcEvent, phoneNumber) => {
-  sendAccessCode(phoneNumber, ipcEvent)
-})
-
-ipcMain.on(CONFIRM_ACCESS_CODE, (ipcEvent, accessCode) => {
-  confirmAccessCode(accessCode, ipcEvent)
-})
-
-ipcMain.on(START_TRACKING, ipcEvent => {
-  startTracking(ipcEvent)
-})
-
-ipcMain.on(STOP_TRACKING, ipcEvent => {
-  stopTracking(ipcEvent)
-  forceQuit = true
-  app.quit()
-})
-
-ipcMain.on(CONFIRM_SERIAL_NUMBER, (ipcEvent, options) => {
-  confirmSerialNumber(ipcEvent, options);
-})
-
-ipcMain.on(DOWNLOAD_DATA, async (ipcEvent, options) => {
+async function downloadData(ipcEvent, options) {
   try {
     const dataEntries = store.get(DAILY_DATA_ENTRIES)
     const downloadPath = `${app.getPath('downloads')}/data.csv`
@@ -297,22 +275,27 @@ ipcMain.on(DOWNLOAD_DATA, async (ipcEvent, options) => {
     log(error)
     ipcEvent.sender.send('DOWNLOAD_DATA_ERROR', false)
   }
-})
+}
 
-ipcMain.on('hide-app', async () => {
-  mainWindow.hide()
-})
-
-ipcMain.on('load-state', (ipcEvent) => {
-  ipcEvent.sender.send('load-state-success', {
+function loadState(ipcEvent) {
+  ipcEvent.sender.send(LOAD_STATE_SUCCESS, {
     ONBOARDING_STEP: store.get(ONBOARDING_STEP),
   })
-})
+}
 
-ipcMain.on(EXIT_SURVEY, async () => {
+function exitSurvey(ipcEvent) {
   emitEvent(`User exited the survey ${store.get('SERIAL_NUMBER')}`)
   forceQuit = true
   stopTracking()
   store.clear()
   app.quit()
-})
+}
+
+ipcMain.on(CONFIRM_SERIAL_NUMBER, (ipcEvent, options) => confirmSerialNumber(ipcEvent, options))
+ipcMain.on(START_TRACKING, ipcEvent => startTracking(ipcEvent))
+ipcMain.on(SEND_ACCESS_CODE, (ipcEvent, phoneNumber) => sendAccessCode(phoneNumber, ipcEvent))
+ipcMain.on(CONFIRM_ACCESS_CODE, (ipcEvent, accessCode) => confirmAccessCode(accessCode, ipcEvent))
+ipcMain.on(DOWNLOAD_DATA, (ipcEvent, options) => downloadData(ipcEvent, options))
+ipcMain.on(HIDE_APP, () => mainWindow.hide())
+ipcMain.on(LOAD_STATE, (ipcEvent) => loadState(ipcEvent))
+ipcMain.on(EXIT_SURVEY, (ipcEvent) => exitSurvey(ipcEvent))

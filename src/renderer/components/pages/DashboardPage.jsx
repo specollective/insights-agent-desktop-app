@@ -14,9 +14,9 @@ function DashboardPage() {
   return (
     <>
       <section className='grid place-content-center h-screen text-lg'>
-        <p className="block">{ t('dashboard.welcome') }</p>
-        <p className="block">{ t('dashboard.contact') }</p>
-        <p className="block">{ t('dashboard.optout') }</p>
+        <p className="block mb-4">{ t('dashboard.welcome') }</p>
+        <p className="block mb-4">{ t('dashboard.contact') }</p>
+        <p className="block mb-4">{ t('dashboard.optout') }</p>
 
         <div className='float-right pt-8 text-right'>
           <button className="p-2 text-xl underline w-40" onClick={window.api.hideApp}>
