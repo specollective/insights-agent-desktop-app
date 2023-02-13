@@ -303,6 +303,12 @@ ipcMain.on('hide-app', async () => {
   mainWindow.hide()
 })
 
+ipcMain.on('load-state', (ipcEvent) => {
+  ipcEvent.sender.send('load-state-success', {
+    ONBOARDING_STEP: store.get(ONBOARDING_STEP),
+  })
+})
+
 ipcMain.on(EXIT_SURVEY, async () => {
   emitEvent(`User exited the survey ${store.get('SERIAL_NUMBER')}`)
   forceQuit = true

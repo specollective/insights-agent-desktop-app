@@ -29,12 +29,12 @@ function DashboardPage() {
           {t('dashboard.optout')}
         <p>
         </p><br />
-        <div className='float-right pt-8'>
-          <button style={dashboardStyles.close} onClick={window.api.hideApp}>
+        <div className='float-right pt-8 text-right'>
+          <button className="p-2 text-xl underline w-40" onClick={window.api.hideApp}>
             {t('close')}
           </button>
           <button 
-            className="rounded p-2 h-11 bg-[#70B443] text-xl font-semibold active:bg-green-600"
+            className="rounded p-2 h-11 w-40 bg-[#70B443] text-xl font-semibold active:bg-green-600"
             onClick={window.api.downloadData}
           >
             Download Data

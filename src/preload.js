@@ -21,6 +21,8 @@ const DOWNLOAD_DATA = 'download-data'
 const DOWNLOAD_DATA_SUCCESS = 'download-data-success'
 const MAIN_NAVIGATION = 'main-navigation'
 const HIDE_APP = 'hide-app'
+const LOAD_STATE = 'load-state'
+const LOAD_STATE_SUCCESS = 'load-state-success'
 
 const sendMessage = (id, data) => ipcRenderer.send(id, data)
 const onMessageHandler = (id, cb) => ipcRenderer.on(id, cb)
@@ -47,7 +49,7 @@ contextBridge.exposeInMainWorld(
     onConfirmSerialNumberError: (callback) => onMessage(CONFIRM_SERIAL_NUMBER_ERROR, callback),
     onConfirmSerialNumberSuccess: (callback) => onMessage(CONFIRM_SERIAL_NUMBER_SUCCESS, callback),
     onDownloadSuccess: (callback) => onMessage(DOWNLOAD_DATA_SUCCESS, callback),
-    onLoadStateSuccess: () => sendMessage(LOAD_STATE_SUCCESS),
+    onLoadStateSuccess: (callback) => onMessage(LOAD_STATE_SUCCESS, callback),
     onMainNavigation: (callback) => onMessage(MAIN_NAVIGATION, callback),
     onSendAccessCodeError: (callback) => onMessage(SEND_ACCESS_CODE_ERROR, callback),
     onSendAccessCodeSuccess: (callback) => onMessage(SEND_ACCESS_CODE_SUCCESS, callback),
