@@ -12,9 +12,9 @@ import LocaleContext from './utils/LocaleContext';
 import { ROUTES } from '../constants/routes';
 
 function App () {
-  console.log('App', window.api.onboardingStep);
+  // console.log('App', window.api.onboardingStep);
 
-  const initialRoute = ROUTES[window.api.onboardingStep]
+  const initialRoute = ROUTES['LANDING_PAGE']
   const [locale, setLocale] = useState(localStorage.getItem('locale') || 'en')
 
   useEffect(() => {

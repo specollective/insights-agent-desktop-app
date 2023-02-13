@@ -30,7 +30,7 @@ function DashboardPage() {
         <p>
         </p><br />
         <div className='float-right pt-8'>
-          <button style={dashboardStyles.close} onClick={window.close}>
+          <button style={dashboardStyles.close} onClick={window.api.hideApp}>
             {t('close')}
           </button>
           <button 

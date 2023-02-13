@@ -19,10 +19,16 @@ module.exports = {
       BACKEND_API_URL: JSON.stringify(process.env.BACKEND_API_URL),
     }),
     new CopyWebpackPlugin({
-      patterns: [{
-        from: path.resolve(__dirname, 'src/assets'),
-        to: path.resolve(__dirname, '.webpack/assets'),
-      }]
+      patterns: [
+        {
+          from: path.resolve(__dirname, 'src/assets'),
+          to: path.resolve(__dirname, '.webpack/assets'),
+        },
+        {
+          from: path.resolve(__dirname, 'src/preload.js'),
+          to: path.resolve(__dirname, '.webpack/renderer/preload.js'),
+        },
+      ]
     })
   ],
   resolve: {
