@@ -114,8 +114,8 @@ const createWindow = async () => {
     width: 800,
     height: 600,
     // frame: false,
-    alwaysOnTop: true,
-    kiosk: true,
+    // alwaysOnTop: true,
+    // kiosk: true,
     autoHideMenuBar: true,
     fullscreenable: false,
     skipTaskbar: true,
@@ -124,8 +124,6 @@ const createWindow = async () => {
       nodeIntegration: true,
     },
   })
-
-  store.set('WINDOW_OPEN', true)
 
   mainWindow.removeMenu()
 
@@ -174,8 +172,6 @@ const createWindow = async () => {
 
     if (forceQuit) return true
 
-    store.set('WINDOW_OPEN', false);
-
     windowEvent.preventDefault()
     mainWindow.hide()
 
@@ -201,14 +197,11 @@ const createTrayMenu = () => {
       click() {
         log('Quit app')
 
-        if (store.get('WINDOW_OPEN')) {
+        if (mainWindow.isVisible()) {
           mainWindow.webContents.send('MAIN_NAVIGATION', '/exit')
         } else {
           mainWindow.show()
-          // TODO: We need this timeout because the app is not ready to receive the event.
-          setTimeout(() => {
-            mainWindow.webContents.send('MAIN_NAVIGATION', '/exit')
-          }, 200)
+          mainWindow.webContents.send('MAIN_NAVIGATION', '/exit')
         }
       },
     },
