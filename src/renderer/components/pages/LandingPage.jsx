@@ -17,7 +17,6 @@ function LandingPage() {
     window.api.onConfirmSerialNumberError((error) => alert(error))
     window.api.onMainNavigation((routeName) => navigate(routeName))
 
-    // https://patrickpassarella.com/blog/creating-electron-react-app
     return () => window.api.removeAllListeners()
   }, [])
 
@@ -45,12 +44,12 @@ function LandingPage() {
             disabled={isLoading}
             className="rounded p-2 h-11 bg-[#70B443] text-xl font-semibold"
           >
-            Test Device
+            { isLoading ? 'Loading...' : 'Test' }
           </button>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export default LandingPage

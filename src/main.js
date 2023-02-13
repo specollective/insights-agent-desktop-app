@@ -125,10 +125,10 @@ const createWindow = async () => {
     },
   })
 
-  store.set('WINDOW_OPEN', true);
+  store.set('WINDOW_OPEN', true)
 
   mainWindow.removeMenu()
-  // mainWindow.hide()
+
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
 

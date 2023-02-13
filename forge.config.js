@@ -28,7 +28,7 @@ module.exports = {
         // NOTE: We are manually signing the executable right now.
         // certificateFile: process.env["CERTIFICATE_WINDOWS_PFX"],
         // certificatePassword: process.env["WINDOWS_CERTIFICATE_PASSWORD"],
-        loadingGif: './src/assets/virtual-hug.gif'
+        loadingGif: './src/assets/loading.gif'
       },
     },
     {
